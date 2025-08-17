@@ -1,14 +1,14 @@
 <?php
 namespace App\Repositories;
 
-use App\Models\Lokasi;
+use App\Models\Kelas;
 use Illuminate\Support\Facades\DB;
 
-class LokasiRepository
+class KelasRepository
 {
     protected $model;
 
-    public function __construct(Lokasi $model)
+    public function __construct(Kelas $model)
     {
         $this->model = $model;
     }
@@ -19,17 +19,11 @@ class LokasiRepository
 
         if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->where('nama', 'REGEXP', $search)
-                    ->orWhere('kode', 'REGEXP', $search)
-                    ->orWhere('latitude', 'REGEXP', $search)
-                    ->orWhere('longitude', 'REGEXP', $search)
-                    ->orWhere('radius', 'REGEXP', $search)
-                    ->orWhere('alamat', 'REGEXP', $search)
-                    ->orWhere('telepon', 'REGEXP', $search);
+                $q->where('nama', 'REGEXP', $search);
             });
         }
 
-        if (in_array($orderBy, ['id', 'kode', 'nama', 'latitude', 'longitude', 'radius', 'alamat', 'telepon', 'created_at', 'updated_at'])) {
+        if (in_array($orderBy, ['id', 'nama', 'created_at', 'updated_at'])) {
             $sortBy = strtolower($sortBy) === 'desc' ? 'desc' : 'asc';
             $query->orderBy($orderBy, $sortBy);
         } else {
@@ -52,9 +46,8 @@ class LokasiRepository
     {
         DB::beginTransaction();
         try {
-            $lokasi = $this->model->create($data);
-            DB::commit();
-            return $lokasi;
+            $kelas = $this->model->create($data);
+            return $kelas;
         } catch (\Throwable $e) {
             DB::rollBack();
             throw $e;
@@ -65,10 +58,10 @@ class LokasiRepository
     {
         DB::beginTransaction();
         try {
-            $lokasi = $this->findById($id);
-            $lokasi->update($data);
+            $kelas = $this->findById($id);
+            $kelas->update($data);
             DB::commit();
-            return $lokasi;
+            return $kelas;
         } catch (\Throwable $e) {
             DB::rollBack();
             throw $e;
@@ -79,8 +72,8 @@ class LokasiRepository
     {
         DB::beginTransaction();
         try {
-            $lokasi = $this->findById($id);
-            $lokasi->delete();
+            $kelas = $this->findById($id);
+            $kelas->delete();
             DB::commit();
             return true;
         } catch (\Throwable $e) {

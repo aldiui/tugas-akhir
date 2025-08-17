@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\LokasiRequest;
 use App\Services\LokasiService;
 use Illuminate\Http\JsonResponse;

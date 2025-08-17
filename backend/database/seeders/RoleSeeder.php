@@ -1,8 +1,8 @@
 <?php
 namespace Database\Seeders;
 
-use App\Models\Role;
 use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder
@@ -33,142 +33,60 @@ class RoleSeeder extends Seeder
         }
 
         $dataPermission = [
-            [
-                'kode' => 'CRUSR',
-                'nama' => 'Membuat User',
-            ],
-            [
-                'kode' => 'RUSR',
-                'nama' => 'Melihat User',
-            ],
-            [
-                'kode' => 'UUSR',
-                'nama' => 'Mengupdate User',
-            ],
-            [
-                'kode' => 'DUSR',
-                'nama' => 'Menghapus User',
-            ],
-            [
-                'kode' => 'CRPRM',
-                'nama' => 'Membuat Permission',
-            ],
-            [
-                'kode' => 'RPRM',
-                'nama' => 'Melihat Permission',
-            ],
-            [
-                'kode' => 'UPRM',
-                'nama' => 'Mengupdate Permission',
-            ],
-            [
-                'kode' => 'DPRM',
-                'nama' => 'Menghapus Permission',
-            ],
-            [
-                'kode' => 'CRROL',
-                'nama' => 'Membuat Role',
-            ],
-            [
-                'kode' => 'RROL',
-                'nama' => 'Melihat Role',
-            ],
-            [
-                'kode' => 'UROL',
-                'nama' => 'Mengupdate Role',
-            ],
-            [
-                'kode' => 'DROL',
-                'nama' => 'Menghapus Role',
-            ],
-            [
-                'kode' => 'CRNGR',
-                'nama' => 'Membuat Negara',
-            ],
-            [
-                'kode' => 'RNGR',
-                'nama' => 'Melihat Negara',
-            ],
-            [
-                'kode' => 'UNGR',
-                'nama' => 'Mengupdate Negara',
-            ],
-            [
-                'kode' => 'DNGR',
-                'nama' => 'Menghapus Negara',
-            ],
-            [
-                'kode' => 'CRLKS',
-                'nama' => 'Membuat Lokasi',
-            ],
-            [
-                'kode' => 'RLKS',
-                'nama' => 'Melihat Lokasi',
-            ],
-            [
-                'kode' => 'ULKS',
-                'nama' => 'Mengupdate Lokasi',
-            ],
-            [
-                'kode' => 'DLKS',
-                'nama' => 'Menghapus Lokasi',
-            ],
-            [
-                'kode' => 'CRKLS',
-                'nama' => 'Membuat Kelas',
-            ],
-            [
-                'kode' => 'RKLS',
-                'nama' => 'Melihat Kelas',
-            ],
-            [
-                'kode' => 'UKLS',
-                'nama' => 'Mengupdate Kelas',
-            ],
-            [
-                'kode' => 'DKLS',
-                'nama' => 'Menghapus Kelas',
-            ],
-            [
-                'kode' => 'CRMPL',
-                'nama' => 'Membuat Mata Pelajaran',
-            ],
-            [
-                'kode' => 'RMPL',
-                'nama' => 'Melihat Mata Pelajaran',
-            ],
-            [
-                'kode' => 'UMPL',
-                'nama' => 'Mengupdate Mata Pelajaran',
-            ],
-            [
-                'kode' => 'DMPL',
-                'nama' => 'Menghapus Mata Pelajaran',
-            ],
+            // USER
+            ['kode' => 'USR_CREATE', 'nama' => 'Membuat User'],
+            ['kode' => 'USR_READ', 'nama' => 'Melihat User'],
+            ['kode' => 'USR_UPDATE', 'nama' => 'Mengupdate User'],
+            ['kode' => 'USR_DELETE', 'nama' => 'Menghapus User'],
 
-            [
-                'kode' => 'CRJLP',
-                'nama' => 'Membuat Jadwal Pelajaran',
-            ],
-            [
-                'kode' => 'RJLP',
-                'nama' => 'Melihat Jadwal Pelajaran',
-            ],
-            [
-                'kode' => 'UJLP',
-                'nama' => 'Mengupdate Jadwal Pelajaran',
-            ],
-            [
-                'kode' => 'DJLP',
-                'nama' => 'Menghapus Jadwal Pelajaran',
-            ],
+            // PERMISSION
+            ['kode' => 'PERM_CREATE', 'nama' => 'Membuat Permission'],
+            ['kode' => 'PERM_READ', 'nama' => 'Melihat Permission'],
+            ['kode' => 'PERM_UPDATE', 'nama' => 'Mengupdate Permission'],
+            ['kode' => 'PERM_DELETE', 'nama' => 'Menghapus Permission'],
+
+            // ROLE
+            ['kode' => 'ROL_CREATE', 'nama' => 'Membuat Role'],
+            ['kode' => 'ROL_READ', 'nama' => 'Melihat Role'],
+            ['kode' => 'ROL_UPDATE', 'nama' => 'Mengupdate Role'],
+            ['kode' => 'ROL_DELETE', 'nama' => 'Menghapus Role'],
+
+            // NEGARA
+            ['kode' => 'NGR_CREATE', 'nama' => 'Membuat Negara'],
+            ['kode' => 'NGR_READ', 'nama' => 'Melihat Negara'],
+            ['kode' => 'NGR_UPDATE', 'nama' => 'Mengupdate Negara'],
+            ['kode' => 'NGR_DELETE', 'nama' => 'Menghapus Negara'],
+
+            // LOKASI
+            ['kode' => 'LKS_CREATE', 'nama' => 'Membuat Lokasi'],
+            ['kode' => 'LKS_READ', 'nama' => 'Melihat Lokasi'],
+            ['kode' => 'LKS_UPDATE', 'nama' => 'Mengupdate Lokasi'],
+            ['kode' => 'LKS_DELETE', 'nama' => 'Menghapus Lokasi'],
+
+            // KELAS
+            ['kode' => 'KLS_CREATE', 'nama' => 'Membuat Kelas'],
+            ['kode' => 'KLS_READ', 'nama' => 'Melihat Kelas'],
+            ['kode' => 'KLS_UPDATE', 'nama' => 'Mengupdate Kelas'],
+            ['kode' => 'KLS_DELETE', 'nama' => 'Menghapus Kelas'],
+
+            // MATA PELAJARAN
+            ['kode' => 'MPL_CREATE', 'nama' => 'Membuat Mata Pelajaran'],
+            ['kode' => 'MPL_READ', 'nama' => 'Melihat Mata Pelajaran'],
+            ['kode' => 'MPL_UPDATE', 'nama' => 'Mengupdate Mata Pelajaran'],
+            ['kode' => 'MPL_DELETE', 'nama' => 'Menghapus Mata Pelajaran'],
+
+            // JADWAL PELAJARAN
+            ['kode' => 'JPL_CREATE', 'nama' => 'Membuat Jadwal Pelajaran'],
+            ['kode' => 'JPL_READ', 'nama' => 'Melihat Jadwal Pelajaran'],
+            ['kode' => 'JPL_UPDATE', 'nama' => 'Mengupdate Jadwal Pelajaran'],
+            ['kode' => 'JPL_DELETE', 'nama' => 'Menghapus Jadwal Pelajaran'],
         ];
 
         foreach ($dataPermission as $permission) {
             Permission::create($permission);
         }
 
-        $role = Role::where('tipe', 'Admin')->get();
+        $role       = Role::where('tipe', 'Admin')->get();
         $permission = Permission::all();
 
         foreach ($role as $item) {

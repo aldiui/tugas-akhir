@@ -1,14 +1,14 @@
 <?php
 namespace App\Repositories;
 
-use App\Models\Lokasi;
+use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 
-class LokasiRepository
+class RoleRepository
 {
     protected $model;
 
-    public function __construct(Lokasi $model)
+    public function __construct(Role $model)
     {
         $this->model = $model;
     }
@@ -20,16 +20,11 @@ class LokasiRepository
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('nama', 'REGEXP', $search)
-                    ->orWhere('kode', 'REGEXP', $search)
-                    ->orWhere('latitude', 'REGEXP', $search)
-                    ->orWhere('longitude', 'REGEXP', $search)
-                    ->orWhere('radius', 'REGEXP', $search)
-                    ->orWhere('alamat', 'REGEXP', $search)
-                    ->orWhere('telepon', 'REGEXP', $search);
+                    ->orWhere('tipe', 'REGEXP', $search);
             });
         }
 
-        if (in_array($orderBy, ['id', 'kode', 'nama', 'latitude', 'longitude', 'radius', 'alamat', 'telepon', 'created_at', 'updated_at'])) {
+        if (in_array($orderBy, ['id', 'nama', 'tipe', 'created_at', 'updated_at'])) {
             $sortBy = strtolower($sortBy) === 'desc' ? 'desc' : 'asc';
             $query->orderBy($orderBy, $sortBy);
         } else {
@@ -52,9 +47,9 @@ class LokasiRepository
     {
         DB::beginTransaction();
         try {
-            $lokasi = $this->model->create($data);
-            DB::commit();
-            return $lokasi;
+            $role = $this->model->create($data);
+            $role->permissions()->sync($data['permissions']);
+            return $role;
         } catch (\Throwable $e) {
             DB::rollBack();
             throw $e;
@@ -65,10 +60,11 @@ class LokasiRepository
     {
         DB::beginTransaction();
         try {
-            $lokasi = $this->findById($id);
-            $lokasi->update($data);
+            $role = $this->findById($id);
+            $role->permissions()->sync($data['permissions']);
+            $role->update($data);
             DB::commit();
-            return $lokasi;
+            return $role;
         } catch (\Throwable $e) {
             DB::rollBack();
             throw $e;
@@ -79,8 +75,9 @@ class LokasiRepository
     {
         DB::beginTransaction();
         try {
-            $lokasi = $this->findById($id);
-            $lokasi->delete();
+            $role = $this->findById($id);
+            $role->permissions()->detach();
+            $role->delete();
             DB::commit();
             return true;
         } catch (\Throwable $e) {

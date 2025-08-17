@@ -1,14 +1,14 @@
 <?php
 namespace App\Repositories;
 
-use App\Models\Lokasi;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
-class LokasiRepository
+class UserRepository
 {
     protected $model;
 
-    public function __construct(Lokasi $model)
+    public function __construct(User $model)
     {
         $this->model = $model;
     }
@@ -20,16 +20,11 @@ class LokasiRepository
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('nama', 'REGEXP', $search)
-                    ->orWhere('kode', 'REGEXP', $search)
-                    ->orWhere('latitude', 'REGEXP', $search)
-                    ->orWhere('longitude', 'REGEXP', $search)
-                    ->orWhere('radius', 'REGEXP', $search)
-                    ->orWhere('alamat', 'REGEXP', $search)
-                    ->orWhere('telepon', 'REGEXP', $search);
+                    ->orWhere('email', 'REGEXP', $search);
             });
         }
 
-        if (in_array($orderBy, ['id', 'kode', 'nama', 'latitude', 'longitude', 'radius', 'alamat', 'telepon', 'created_at', 'updated_at'])) {
+        if (in_array($orderBy, ['id', 'nama', 'email', 'created_at', 'updated_at'])) {
             $sortBy = strtolower($sortBy) === 'desc' ? 'desc' : 'asc';
             $query->orderBy($orderBy, $sortBy);
         } else {
@@ -48,13 +43,17 @@ class LokasiRepository
         return $this->model->findOrFail($id);
     }
 
+    public function findByEmail(string $email)
+    {
+        return $this->model->where('email', $email)->firstOrFail();
+    }
+
     public function create(array $data)
     {
         DB::beginTransaction();
         try {
-            $lokasi = $this->model->create($data);
-            DB::commit();
-            return $lokasi;
+            $user = $this->model->create($data);
+            return $user;
         } catch (\Throwable $e) {
             DB::rollBack();
             throw $e;
@@ -65,10 +64,15 @@ class LokasiRepository
     {
         DB::beginTransaction();
         try {
-            $lokasi = $this->findById($id);
-            $lokasi->update($data);
+            $user = $this->findById($id);
+            $user->update([
+                'nama'     => $data['nama'],
+                'email'    => $data['email'],
+                'role_id'  => $data['role_id'],
+                'password' => isset($data['password']) ? bcrypt($data['password']) : $user->password,
+            ]);
             DB::commit();
-            return $lokasi;
+            return $user;
         } catch (\Throwable $e) {
             DB::rollBack();
             throw $e;
@@ -79,8 +83,8 @@ class LokasiRepository
     {
         DB::beginTransaction();
         try {
-            $lokasi = $this->findById($id);
-            $lokasi->delete();
+            $user = $this->findById($id);
+            $user->delete();
             DB::commit();
             return true;
         } catch (\Throwable $e) {

@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Middleware\CheckPermission;
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Validation\ValidationException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Spatie\Permission\Exceptions\UnauthorizedException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Validation\UnauthorizedException;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,35 +17,37 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'permission' => CheckPermission::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (Exception $e, $request) {
             $code    = 500;
-            $message = 'Terjadi kesalahan pada server';
-            $errors  = $e->getMessage();
+            $message = $e->getMessage() ?: 'Terjadi kesalahan pada server';
+            $errors  = null;
 
             if ($e instanceof AuthenticationException) {
                 $code    = 401;
-                $message = 'Tidak terautentikasi';
+                $message = $e->getMessage() ?: 'Tidak terautentikasi';
                 $errors  = null;
             }
 
             if ($e instanceof UnauthorizedException) {
                 $code    = 403;
-                $message = 'Tidak memiliki izin';
+                $message = $e->getMessage() ?: 'Tidak memiliki izin';
                 $errors  = null;
             }
 
             if ($e instanceof ValidationException) {
                 $code    = 422;
-                $message = 'Validasi gagal';
+                $message = $e->getMessage() ?: 'Validasi gagal';
                 $errors  = $e->validator->errors()->toArray();
             }
 
             if ($e instanceof NotFoundHttpException) {
                 $code    = 404;
-                $message = 'Data tidak ditemukan';
+                $message = $e->getMessage() ?: 'Data tidak ditemukan';
                 $errors  = null;
             }
 

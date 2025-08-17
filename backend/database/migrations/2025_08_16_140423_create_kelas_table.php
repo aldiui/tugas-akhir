@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('kelas', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->uuid('pengajar_id')->nullable();
             $table->uuid('lokasi_id');
             $table->string('nama');
             $table->timestamps();

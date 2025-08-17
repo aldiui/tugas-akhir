@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jadwal_pelajaran', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->uuid('kelas_id')->nullable();
-            $table->uuid('pengajar_id')->nullable();
             $table->uuid('mata_pelajaran_id')->nullable();
             $table->enum('hari', ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']);
             $table->time('jam_masuk')->nullable();
