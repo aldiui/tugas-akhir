@@ -11,5 +11,5 @@ class Negara extends Model
     use HasFactory, HasUuids, SoftDeletes;
 
     protected $table   = 'negara';
-protected $guarded = [];
+    protected $guarded = [];
 }

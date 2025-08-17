@@ -11,6 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('negara', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('kode');
+            $table->string('nama');
+            $table->string('mata_uang')->nullable();
+            $table->string('kode_mata_uang', 3)->nullable();
+            $table->string('simbol_mata_uang', 5)->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
         Schema::create('lokasi', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('kode')->unique();
@@ -35,5 +46,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('lokasi');
+        Schema::dropIfExists('negara');
     }
 };
