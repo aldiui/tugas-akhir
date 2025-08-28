@@ -6,35 +6,35 @@ use App\Repositories\LokasiRepository;
 
 class LokasiService
 {
-    protected $repository;
+    protected $lokasiRepository;
 
-    public function __construct(LokasiRepository $repository)
+    public function __construct(LokasiRepository $lokasiRepository)
     {
-        $this->repository = $repository;
+        $this->lokasiRepository = $lokasiRepository;
     }
 
     public function list($perPage, $search, $orderBy, $sortBy)
     {
-        return $this->repository->getAll($perPage, $search, $orderBy, $sortBy);
+        return $this->lokasiRepository->getAll($perPage, $search, $orderBy, $sortBy);
     }
 
     public function create(array $data)
     {
-        return $this->repository->create($data);
+        return $this->lokasiRepository->create($data);
     }
 
     public function find(string $id)
     {
-        return $this->repository->findById($id);
+        return $this->lokasiRepository->findById($id);
     }
 
     public function update(string $id, array $data)
     {
-        return $this->repository->update($id, $data);
+        return $this->lokasiRepository->update($id, $data);
     }
 
     public function delete(string $id)
     {
-        return $this->repository->delete($id);
+        return $this->lokasiRepository->delete($id);
     }
 }

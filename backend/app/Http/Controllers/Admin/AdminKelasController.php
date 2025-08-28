@@ -1,19 +1,19 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\KelasRequest;
+use App\Http\Requests\AdminKelasRequest;
 use App\Services\KelasService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class KelasController extends Controller
+class AdminKelasController extends Controller
 {
-    protected $service;
+    protected $kelasService;
 
-    public function __construct(KelasService $service)
+    public function __construct(KelasService $kelasService)
     {
-        $this->service = $service;
+        $this->kelasService = $kelasService;
     }
 
     /**
@@ -26,7 +26,7 @@ class KelasController extends Controller
         $orderBy = $request->input('order_by', 'created_at');
         $sortBy  = $request->input('sort_by', 'asc');
 
-        $kelas = $this->service->list($perPage, $search, $orderBy, $sortBy);
+        $kelas = $this->kelasService->list($perPage, $search, $orderBy, $sortBy);
 
         return $this->successResponse($kelas, 'Data kelas berhasil diambil');
     }
@@ -34,9 +34,9 @@ class KelasController extends Controller
     /**
      * Tambah data kelas baru
      */
-    public function store(KelasRequest $request): JsonResponse
+    public function store(AdminKelasRequest $request): JsonResponse
     {
-        $kelas = $this->service->create($request->validated());
+        $kelas = $this->kelasService->create($request->validated());
 
         return $this->successResponse($kelas, 'Data kelas berhasil ditambahkan', 201);
     }
@@ -46,7 +46,7 @@ class KelasController extends Controller
      */
     public function show(string $id): JsonResponse
     {
-        $kelas = $this->service->find($id);
+        $kelas = $this->kelasService->find($id);
 
         return $this->successResponse($kelas, 'Detail kelas berhasil diambil');
     }
@@ -54,9 +54,9 @@ class KelasController extends Controller
     /**
      * Perbarui data kelas berdasarkan ID
      */
-    public function update(KelasRequest $request, string $id): JsonResponse
+    public function update(AdminKelasRequest $request, string $id): JsonResponse
     {
-        $kelas = $this->service->update($id, $request->validated());
+        $kelas = $this->kelasService->update($id, $request->validated());
 
         return $this->successResponse($kelas, 'Data kelas berhasil diperbarui');
     }
@@ -66,7 +66,7 @@ class KelasController extends Controller
      */
     public function destroy(string $id): JsonResponse
     {
-        $this->service->delete($id);
+        $this->kelasService->delete($id);
 
         return $this->successResponse(null, 'Data kelas berhasil dihapus');
     }

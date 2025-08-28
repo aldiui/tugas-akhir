@@ -1,40 +1,39 @@
 <?php
-
 namespace App\Services;
 
 use App\Repositories\KelasRepository;
 
 class KelasService
 {
-    protected $repository;
+    protected $kelasRepository;
 
-    public function __construct(KelasRepository $repository)
+    public function __construct(KelasRepository $kelasRepository)
     {
-        $this->repository = $repository;
+        $this->kelasRepository = $kelasRepository;
     }
 
     public function list($perPage, $search, $orderBy, $sortBy)
     {
-        return $this->repository->getAll($perPage, $search, $orderBy, $sortBy);
+        return $this->kelasRepository->getAll($perPage, $search, $orderBy, $sortBy);
     }
 
     public function create(array $data)
     {
-        return $this->repository->create($data);
+        return $this->kelasRepository->create($data);
     }
 
     public function find(string $id)
     {
-        return $this->repository->findById($id);
+        return $this->kelasRepository->findById($id);
     }
 
     public function update(string $id, array $data)
     {
-        return $this->repository->update($id, $data);
+        return $this->kelasRepository->update($id, $data);
     }
 
     public function delete(string $id)
     {
-        return $this->repository->delete($id);
+        return $this->kelasRepository->delete($id);
     }
 }

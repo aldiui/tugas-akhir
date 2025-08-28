@@ -3,7 +3,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LokasiRequest extends FormRequest
+class AdminLokasiRequest extends FormRequest
 {
     public function authorize(): bool
     {

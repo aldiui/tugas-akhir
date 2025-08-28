@@ -20,7 +20,7 @@ class RoleSeeder extends Seeder
             ],
             [
                 'nama' => 'Pengajar',
-                'tipe' => 'Admin',
+                'tipe' => 'Pengajar',
             ],
             [
                 'nama' => 'CPMI',

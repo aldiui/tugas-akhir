@@ -6,35 +6,35 @@ use App\Repositories\RoleRepository;
 
 class RoleService
 {
-    protected $repository;
+    protected $roleRepository;
 
-    public function __construct(RoleRepository $repository)
+    public function __construct(RoleRepository $roleRepository)
     {
-        $this->repository = $repository;
+        $this->roleRepository = $roleRepository;
     }
 
     public function list($perPage, $search, $orderBy, $sortBy)
     {
-        return $this->repository->getAll($perPage, $search, $orderBy, $sortBy);
+        return $this->roleRepository->getAll($perPage, $search, $orderBy, $sortBy);
     }
 
     public function create(array $data)
     {
-        return $this->repository->create($data);
+        return $this->roleRepository->create($data);
     }
 
     public function find(string $id)
     {
-        return $this->repository->findById($id);
+        return $this->roleRepository->findById($id);
     }
 
     public function update(string $id, array $data)
     {
-        return $this->repository->update($id, $data);
+        return $this->roleRepository->update($id, $data);
     }
 
     public function delete(string $id)
     {
-        return $this->repository->delete($id);
+        return $this->roleRepository->delete($id);
     }
 }

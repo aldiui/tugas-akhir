@@ -1,19 +1,19 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\MataPelajaranRequest;
+use App\Http\Requests\AdminMataPelajaranRequest;
 use App\Services\MataPelajaranService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class MataPelajaranController extends Controller
+class AdminMataPelajaranController extends Controller
 {
-    protected $service;
+    protected $mataPelajaranService;
 
-    public function __construct(MataPelajaranService $service)
+    public function __construct(MataPelajaranService $mataPelajaranService)
     {
-        $this->service = $service;
+        $this->mataPelajaranService = $mataPelajaranService;
     }
 
     /**
@@ -26,7 +26,7 @@ class MataPelajaranController extends Controller
         $orderBy = $request->input('order_by', 'created_at');
         $sortBy  = $request->input('sort_by', 'asc');
 
-        $mataPelajaran = $this->service->list($perPage, $search, $orderBy, $sortBy);
+        $mataPelajaran = $this->mataPelajaranService->list($perPage, $search, $orderBy, $sortBy);
 
         return $this->successResponse($mataPelajaran, 'Data mata pelajaran berhasil diambil');
     }
@@ -34,9 +34,9 @@ class MataPelajaranController extends Controller
     /**
      * Tambah data mata pelajaran baru
      */
-    public function store(MataPelajaranRequest $request): JsonResponse
+    public function store(AdminMataPelajaranRequest $request): JsonResponse
     {
-        $mataPelajaran = $this->service->create($request->validated());
+        $mataPelajaran = $this->mataPelajaranService->create($request->validated());
 
         return $this->successResponse($mataPelajaran, 'Data mata pelajaran berhasil ditambahkan', 201);
     }
@@ -46,7 +46,7 @@ class MataPelajaranController extends Controller
      */
     public function show(string $id): JsonResponse
     {
-        $mataPelajaran = $this->service->find($id);
+        $mataPelajaran = $this->mataPelajaranService->find($id);
 
         return $this->successResponse($mataPelajaran, 'Detail mata pelajaran berhasil diambil');
     }
@@ -54,9 +54,9 @@ class MataPelajaranController extends Controller
     /**
      * Perbarui data mata pelajaran berdasarkan ID
      */
-    public function update(MataPelajaranRequest $request, string $id): JsonResponse
+    public function update(AdminMataPelajaranRequest $request, string $id): JsonResponse
     {
-        $mataPelajaran = $this->service->update($id, $request->validated());
+        $mataPelajaran = $this->mataPelajaranService->update($id, $request->validated());
 
         return $this->successResponse($mataPelajaran, 'Data mata pelajaran berhasil diperbarui');
     }
@@ -66,7 +66,7 @@ class MataPelajaranController extends Controller
      */
     public function destroy(string $id): JsonResponse
     {
-        $this->service->delete($id);
+        $this->mataPelajaranService->delete($id);
 
         return $this->successResponse(null, 'Data mata pelajaran berhasil dihapus');
     }

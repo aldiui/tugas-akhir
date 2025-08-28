@@ -12,16 +12,22 @@ class JadwalPelajaran extends Model
 {
     use HasFactory, HasUuids, SoftDeletes;
 
-    protected $table   = 'jadwal_pelajaran';
-    protected $guarded = [];
+    protected $table    = 'jadwal_pelajaran';
+    protected $fillable = [
+        'mata_pelajaran_id',
+        'kelas_id',
+        'hari',
+        'jam_masuk',
+        'jam_keluar',
+    ];
 
     public function mataPelajaran()
     {
-        return $this->hasOne(MataPelajaran::class);
+        return $this->belongsTo(MataPelajaran::class);
     }
 
     public function kelas()
     {
-        return $this->hasOne(Kelas::class);
+        return $this->belongsTo(Kelas::class);
     }
 }

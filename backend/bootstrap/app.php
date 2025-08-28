@@ -23,31 +23,31 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (Exception $e, $request) {
-            $code    = 500;
-            $message = $e->getMessage() ?: 'Terjadi kesalahan pada server';
+            $code    = 400;
+            $message = $e->getMessage() ?? 'Terjadi kesalahan pada server';
             $errors  = null;
 
             if ($e instanceof AuthenticationException) {
                 $code    = 401;
-                $message = $e->getMessage() ?: 'Tidak terautentikasi';
+                $message = 'Tidak terautentikasi';
                 $errors  = null;
             }
 
             if ($e instanceof UnauthorizedException) {
                 $code    = 403;
-                $message = $e->getMessage() ?: 'Tidak memiliki izin';
+                $message = 'Tidak memiliki izin';
                 $errors  = null;
             }
 
             if ($e instanceof ValidationException) {
                 $code    = 422;
-                $message = $e->getMessage() ?: 'Validasi gagal';
+                $message = 'Validasi gagal';
                 $errors  = $e->validator->errors()->toArray();
             }
 
             if ($e instanceof NotFoundHttpException) {
                 $code    = 404;
-                $message = $e->getMessage() ?: 'Data tidak ditemukan';
+                $message = 'Data tidak ditemukan';
                 $errors  = null;
             }
 

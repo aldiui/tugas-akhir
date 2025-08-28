@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('role', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('nama')->unique();
-            $table->enum('tipe', ['CPMI', 'Admin'])->default('Admin');
+            $table->enum('tipe', ['CPMI', 'Pengajar', 'Admin'])->default('Admin');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -35,8 +35,11 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('role_id');
+            $table->uuid('lokasi_id')->nullable();
+            $table->uuid('kelas_id')->nullable();
             $table->string('nama');
             $table->string('email')->unique();
+            $table->string('nomor_telepon')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

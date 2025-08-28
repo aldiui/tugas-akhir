@@ -3,7 +3,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class KelasRequest extends FormRequest
+class AdminNegaraRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -15,19 +15,21 @@ class KelasRequest extends FormRequest
         $id = $this->route('id');
 
         $baseRules = [
-            'pengajar_id'       => 'required|uuid|exists:users,id',
-            'mata_pelajaran_id' => 'required|uuid|exists:mata_pelajaran,id',
+            'nama'             => 'required|string|max:255',
+            'mata_uang'        => 'required|string|max:100',
+            'kode_mata_uang'   => 'required|string|max:3',
+            'simbol_mata_uang' => 'required|string|max:5',
         ];
 
         if ($this->isMethod('post')) {
             return array_merge($baseRules, [
-                'nama' => 'required|string|max:50|unique:kelas,nama',
+                'kode' => 'required|string|max:10|unique:negara,kode',
             ]);
         }
 
         if ($this->isMethod('put') || $this->isMethod('patch')) {
             return array_merge($baseRules, [
-                'nama' => 'required|string|max:50|unique:kelas,nama' . $id,
+                'kode' => 'required|string|max:10|unique:negara,kode,' . $id,
             ]);
         }
 

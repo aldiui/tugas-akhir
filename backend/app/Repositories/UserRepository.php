@@ -13,7 +13,7 @@ class UserRepository
         $this->model = $model;
     }
 
-    public function getAll($perPage = 10, $search = null, $orderBy = 'created_at', $sortBy = 'asc')
+    public function getAll(int $perPage = 10, string $search = null, string $orderBy = 'created_at', string $sortBy = 'asc')
     {
         $query = $this->model->query();
 
@@ -48,6 +48,11 @@ class UserRepository
         return $this->model->where('email', $email)->firstOrFail();
     }
 
+    public function findByNomorTelepon(string $nomor_telepon)
+    {
+        return $this->model->where('nomor_telepon', $nomor_telepon)->firstOrFail();
+    }
+
     public function create(array $data)
     {
         DB::beginTransaction();
@@ -66,10 +71,13 @@ class UserRepository
         try {
             $user = $this->findById($id);
             $user->update([
-                'nama'     => $data['nama'],
-                'email'    => $data['email'],
-                'role_id'  => $data['role_id'],
-                'password' => isset($data['password']) ? bcrypt($data['password']) : $user->password,
+                'nama'          => $data['nama'],
+                'email'         => $data['email'],
+                'nomor_telepon' => $data['nomor_telepon'] ?? null,
+                'role_id'       => $data['role_id'],
+                'lokasi_id'     => $data['lokasi_id'] ?? null,
+                'kelas_id'      => $data['kelas_id'] ?? null,
+                'password'      => isset($data['password']) ? bcrypt($data['password']) : $user->password,
             ]);
             DB::commit();
             return $user;
@@ -85,6 +93,40 @@ class UserRepository
         try {
             $user = $this->findById($id);
             $user->delete();
+            DB::commit();
+            return true;
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+    public function updateProfile(string $id, array $data)
+    {
+        DB::beginTransaction();
+        try {
+            $user = $this->findById($id);
+            $user->update([
+                'nama'          => $data['nama'],
+                'email'         => $data['email'],
+                'nomor_telepon' => $data['nomor_telepon'] ?? null,
+            ]);
+            DB::commit();
+            return $user;
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+    public function changePassword(string $id, array $data)
+    {
+        DB::beginTransaction();
+        try {
+            $user = $this->findById($id);
+            $user->update([
+                'password' => bcrypt($data['password']),
+            ]);
             DB::commit();
             return true;
         } catch (\Throwable $e) {

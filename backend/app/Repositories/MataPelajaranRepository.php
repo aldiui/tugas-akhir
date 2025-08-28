@@ -13,7 +13,7 @@ class MataPelajaranRepository
         $this->model = $model;
     }
 
-    public function getAll($perPage = 10, $search = null, $orderBy = 'created_at', $sortBy = 'asc')
+    public function getAll(int $perPage = 10, string $search = null, string $orderBy = 'created_at', string $sortBy = 'asc')
     {
         $query = $this->model->query();
 

@@ -5,15 +5,15 @@ use App\Repositories\PermissionRepository;
 
 class PermissionService
 {
-    protected $repository;
+    protected $permissionRepository;
 
-    public function __construct(PermissionRepository $repository)
+    public function __construct(PermissionRepository $permissionRepository)
     {
-        $this->repository = $repository;
+        $this->permissionRepository = $permissionRepository;
     }
 
     public function list()
     {
-        return $this->repository->getAll();
+        return $this->permissionRepository->getAll();
     }
 }

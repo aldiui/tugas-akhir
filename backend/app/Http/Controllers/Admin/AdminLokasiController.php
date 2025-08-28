@@ -1,19 +1,19 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LokasiRequest;
+use App\Http\Requests\AdminLokasiRequest;
 use App\Services\LokasiService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class LokasiController extends Controller
+class AdminLokasiController extends Controller
 {
-    protected $service;
+    protected $lokasiService;
 
-    public function __construct(LokasiService $service)
+    public function __construct(LokasiService $lokasiService)
     {
-        $this->service = $service;
+        $this->lokasiService = $lokasiService;
     }
 
     /**
@@ -26,7 +26,7 @@ class LokasiController extends Controller
         $orderBy = $request->input('order_by', 'created_at');
         $sortBy  = $request->input('sort_by', 'asc');
 
-        $lokasi = $this->service->list($perPage, $search, $orderBy, $sortBy);
+        $lokasi = $this->lokasiService->list($perPage, $search, $orderBy, $sortBy);
 
         return $this->successResponse($lokasi, 'Data lokasi berhasil diambil');
     }
@@ -34,9 +34,9 @@ class LokasiController extends Controller
     /**
      * Tambah data lokasi baru
      */
-    public function store(LokasiRequest $request): JsonResponse
+    public function store(AdminLokasiRequest $request): JsonResponse
     {
-        $lokasi = $this->service->create($request->validated());
+        $lokasi = $this->lokasiService->create($request->validated());
 
         return $this->successResponse($lokasi, 'Data lokasi berhasil ditambahkan', 201);
     }
@@ -46,7 +46,7 @@ class LokasiController extends Controller
      */
     public function show(string $id): JsonResponse
     {
-        $lokasi = $this->service->find($id);
+        $lokasi = $this->lokasiService->find($id);
 
         return $this->successResponse($lokasi, 'Detail lokasi berhasil diambil');
     }
@@ -54,9 +54,9 @@ class LokasiController extends Controller
     /**
      * Perbarui data lokasi berdasarkan ID
      */
-    public function update(LokasiRequest $request, string $id): JsonResponse
+    public function update(AdminLokasiRequest $request, string $id): JsonResponse
     {
-        $lokasi = $this->service->update($id, $request->validated());
+        $lokasi = $this->lokasiService->update($id, $request->validated());
 
         return $this->successResponse($lokasi, 'Data lokasi berhasil diperbarui');
     }
@@ -66,7 +66,7 @@ class LokasiController extends Controller
      */
     public function destroy(string $id): JsonResponse
     {
-        $this->service->delete($id);
+        $this->lokasiService->delete($id);
 
         return $this->successResponse(null, 'Data lokasi berhasil dihapus');
     }

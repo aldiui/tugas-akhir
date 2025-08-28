@@ -1,20 +1,19 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\AdminUserRequest;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class AdminUserController extends Controller
 {
-    protected $service;
+    protected $userService;
 
-    public function __construct(UserService $service)
+    public function __construct(UserService $userService)
     {
-        $this->service = $service;
+        $this->userService = $userService;
     }
 
     /**
@@ -27,7 +26,7 @@ class UserController extends Controller
         $orderBy = $request->input('order_by', 'created_at');
         $sortBy  = $request->input('sort_by', 'asc');
 
-        $user = $this->service->list($perPage, $search, $orderBy, $sortBy);
+        $user = $this->userService->list($perPage, $search, $orderBy, $sortBy);
 
         return $this->successResponse($user, 'Data user berhasil diambil');
     }
@@ -35,9 +34,9 @@ class UserController extends Controller
     /**
      * Tambah data user baru
      */
-    public function store(UserRequest $request): JsonResponse
+    public function store(AdminUserRequest $request): JsonResponse
     {
-        $user = $this->service->create($request->validated());
+        $user = $this->userService->create($request->validated());
 
         return $this->successResponse($user, 'Data user berhasil ditambahkan', 201);
     }
@@ -47,7 +46,7 @@ class UserController extends Controller
      */
     public function show(string $id): JsonResponse
     {
-        $user = $this->service->find($id);
+        $user = $this->userService->find($id);
 
         return $this->successResponse($user, 'Detail user berhasil diambil');
     }
@@ -55,9 +54,9 @@ class UserController extends Controller
     /**
      * Perbarui data user berdasarkan ID
      */
-    public function update(UserRequest $request, string $id): JsonResponse
+    public function update(AdminUserRequest $request, string $id): JsonResponse
     {
-        $user = $this->service->update($id, $request->validated());
+        $user = $this->userService->update($id, $request->validated());
 
         return $this->successResponse($user, 'Data user berhasil diperbarui');
     }
@@ -67,28 +66,8 @@ class UserController extends Controller
      */
     public function destroy(string $id): JsonResponse
     {
-        $this->service->delete($id);
+        $this->userService->delete($id);
 
         return $this->successResponse(null, 'Data user berhasil dihapus');
-    }
-
-    /**
-     * Login user
-     */
-    public function login(LoginRequest $request): JsonResponse
-    {
-        $user = $this->service->login($request->validated());
-
-        return $this->successResponse($user, 'Login berhasil');
-    }
-
-    /**
-     * Logout user
-     */
-    public function logout(Request $request): JsonResponse
-    {
-        $this->service->logout($request);
-
-        return $this->successResponse(null, 'Logout berhasil');
     }
 }

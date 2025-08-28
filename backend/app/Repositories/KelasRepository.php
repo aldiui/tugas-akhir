@@ -13,7 +13,7 @@ class KelasRepository
         $this->model = $model;
     }
 
-    public function getAll($perPage = 10, $search = null, $orderBy = 'created_at', $sortBy = 'asc')
+    public function getAll(int $perPage = 10, string $search = null, string $orderBy = 'created_at', string $sortBy = 'asc')
     {
         $query = $this->model->query();
 
@@ -46,7 +46,17 @@ class KelasRepository
     {
         DB::beginTransaction();
         try {
-            $kelas = $this->model->create($data);
+            $kelas = $this->model->create([
+                'nama'        => $data['nama'],
+                'pengajar_id' => $data['pengajar_id'],
+                'lokasi_id'   => $data['lokasi_id'],
+            ]);
+
+            if (isset($data['mata_pelajaran'])) {
+                $kelas->jadwalPelajaran()->createMany($data['mata_pelajaran']);
+            }
+
+            DB::commit();
             return $kelas;
         } catch (\Throwable $e) {
             DB::rollBack();
@@ -59,7 +69,25 @@ class KelasRepository
         DB::beginTransaction();
         try {
             $kelas = $this->findById($id);
-            $kelas->update($data);
+            $kelas->update([
+                'nama'        => $data['nama'],
+                'pengajar_id' => $data['pengajar_id'],
+                'lokasi_id'   => $data['lokasi_id'],
+            ]);
+
+            if (isset($data['mata_pelajaran'])) {
+                foreach ($data['mata_pelajaran'] as $mp) {
+                    if (isset($mp['id'])) {
+                        $jadwal = $kelas->jadwalPelajaran()->find($mp['id']);
+                        if ($jadwal) {
+                            $jadwal->update($mp);
+                        }
+                    } else {
+                        $kelas->jadwalPelajaran()->create($mp);
+                    }
+                }
+            }
+
             DB::commit();
             return $kelas;
         } catch (\Throwable $e) {

@@ -1,19 +1,19 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RoleRequest;
+use App\Http\Requests\AdminRoleRequest;
 use App\Services\RoleService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class RoleController extends Controller
+class AdminRoleController extends Controller
 {
-    protected $service;
+    protected $roleService;
 
-    public function __construct(RoleService $service)
+    public function __construct(RoleService $roleService)
     {
-        $this->service = $service;
+        $this->roleService = $roleService;
     }
 
     /**
@@ -26,7 +26,7 @@ class RoleController extends Controller
         $orderBy = $request->input('order_by', 'created_at');
         $sortBy  = $request->input('sort_by', 'asc');
 
-        $role = $this->service->list($perPage, $search, $orderBy, $sortBy);
+        $role = $this->roleService->list($perPage, $search, $orderBy, $sortBy);
 
         return $this->successResponse($role, 'Data role berhasil diambil');
     }
@@ -34,9 +34,9 @@ class RoleController extends Controller
     /**
      * Tambah data role baru
      */
-    public function store(RoleRequest $request): JsonResponse
+    public function store(AdminRoleRequest $request): JsonResponse
     {
-        $role = $this->service->create($request->validated());
+        $role = $this->roleService->create($request->validated());
 
         return $this->successResponse($role, 'Data role berhasil ditambahkan', 201);
     }
@@ -46,7 +46,7 @@ class RoleController extends Controller
      */
     public function show(string $id): JsonResponse
     {
-        $role = $this->service->find($id);
+        $role = $this->roleService->find($id);
 
         return $this->successResponse($role, 'Detail role berhasil diambil');
     }
@@ -54,9 +54,9 @@ class RoleController extends Controller
     /**
      * Perbarui data role berdasarkan ID
      */
-    public function update(RoleRequest $request, string $id): JsonResponse
+    public function update(AdminRoleRequest $request, string $id): JsonResponse
     {
-        $role = $this->service->update($id, $request->validated());
+        $role = $this->roleService->update($id, $request->validated());
 
         return $this->successResponse($role, 'Data role berhasil diperbarui');
     }
@@ -66,7 +66,7 @@ class RoleController extends Controller
      */
     public function destroy(string $id): JsonResponse
     {
-        $this->service->delete($id);
+        $this->roleService->delete($id);
 
         return $this->successResponse(null, 'Data role berhasil dihapus');
     }

@@ -16,6 +16,6 @@ class Absensi extends Model
 
     public function cpmi()
     {
-        return $this->hasOne(User::class, 'id', 'cpmi_id');
+        return $this->belongsTo(User::class, 'id', 'cpmi_id');
     }
 }

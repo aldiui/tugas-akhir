@@ -3,7 +3,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MataPelajaranRequest extends FormRequest
+class AdminRoleRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -15,19 +15,20 @@ class MataPelajaranRequest extends FormRequest
         $id = $this->route('id');
 
         $baseRules = [
-            'nama'      => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
+            'tipe'          => 'required|string|in:CPMI,Admin,Pengajar',
+            'permissions'   => 'required|array|min:1',
+            'permissions.*' => 'required|string|exists:permission,id',
         ];
 
         if ($this->isMethod('post')) {
             return array_merge($baseRules, [
-                'kode' => 'required|string|max:50|unique:mata_pelajaran,kode',
+                'nama' => 'required|string|max:255|unique:role,nama',
             ]);
         }
 
         if ($this->isMethod('put') || $this->isMethod('patch')) {
             return array_merge($baseRules, [
-                'kode' => 'required|string|max:50|unique:mata_pelajaran,kode,' . $id,
+                'nama' => 'required|string|max:255|unique:role,kode,' . $id,
             ]);
         }
 
