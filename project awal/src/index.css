@@ -1,0 +1,258 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom CSS Variables for Theme */
+:root {
+  /* Light Mode Colors */
+  --color-light-body: #F8FAFC;
+  --color-light-card: #FFFFFF;
+  --color-light-text-main: #0F172A;
+  --color-light-text-secondary: #475569;
+  --color-light-border: #E2E8F0;
+  --color-light-button-primary: #0F172A;
+  
+  /* Dark Mode Colors */
+  --color-dark-body: #0F172A;
+  --color-dark-card: #1E293B;
+  --color-dark-text-main: #F8FAFC;
+  --color-dark-text-secondary: #CBD5E1;
+  --color-dark-border: #334155;
+  --color-dark-button-primary: #38BDF8;
+}
+
+@layer base {
+  * {
+    @apply box-border;
+  }
+  
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply font-sans antialiased;
+    @apply bg-light-body dark:bg-dark-body;
+    @apply text-light-text-main dark:text-dark-text-main;
+    @apply transition-colors duration-300;
+    line-height: 1.6;
+  }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 3px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748B;
+}
+
+@layer components {
+  /* Card Components */
+  .card {
+    @apply bg-light-card dark:bg-dark-card;
+    @apply border border-light-border dark:border-dark-border;
+    @apply rounded-lg shadow-sm;
+    @apply transition-all duration-200;
+  }
+  
+  .card-hover {
+    @apply hover:shadow-md hover:scale-[1.02];
+  }
+  
+  /* Button Components */
+  .btn-primary {
+    @apply bg-light-button-primary dark:bg-dark-button-primary;
+    @apply text-white dark:text-dark-body;
+    @apply px-4 py-2 rounded-lg font-medium;
+    @apply transition-all duration-200;
+    @apply hover:opacity-90 active:scale-95;
+  }
+  
+  .btn-secondary {
+    @apply bg-transparent;
+    @apply text-light-text-main dark:text-dark-text-main;
+    @apply border border-light-border dark:border-dark-border;
+    @apply px-4 py-2 rounded-lg font-medium;
+    @apply transition-all duration-200;
+    @apply hover:bg-light-border dark:hover:bg-dark-border;
+  }
+  
+  /* Input Components */
+  .input-field {
+    @apply w-full px-3 py-2 rounded-lg;
+    @apply bg-light-card dark:bg-dark-card;
+    @apply border border-light-border dark:border-dark-border;
+    @apply text-light-text-main dark:text-dark-text-main;
+    @apply placeholder-light-text-secondary dark:placeholder-dark-text-secondary;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-400;
+    @apply transition-all duration-200;
+  }
+  
+  /* Status Badge */
+  .status-badge {
+    @apply px-3 py-1 rounded-full text-sm font-medium;
+  }
+  
+  .status-aktif {
+    @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
+  }
+  
+  .status-piket {
+    @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200;
+  }
+  
+  .status-terbang {
+    @apply bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200;
+  }
+  
+  .status-izin {
+    @apply bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200;
+  }
+  
+  .status-tidak-aktif {
+    @apply bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200;
+  }
+  
+  /* Navigation */
+  .nav-bottom {
+    @apply fixed bottom-0 left-0 right-0 z-50;
+    @apply bg-light-card dark:bg-dark-card;
+    @apply border-t border-light-border dark:border-dark-border;
+    @apply px-4 py-2;
+  }
+  
+  .nav-item {
+    @apply flex flex-col items-center justify-center;
+    @apply text-light-text-secondary dark:text-dark-text-secondary;
+    @apply transition-colors duration-200;
+  }
+  
+  .nav-item.active {
+    @apply text-light-button-primary dark:text-dark-button-primary;
+  }
+  
+  /* Header */
+  .header {
+    @apply bg-light-card dark:bg-dark-card;
+    @apply border-b border-light-border dark:border-dark-border;
+    @apply px-4 py-3;
+  }
+}
+
+@layer utilities {
+  .text-secondary {
+    @apply text-light-text-secondary dark:text-dark-text-secondary;
+  }
+  
+  .border-custom {
+    @apply border-light-border dark:border-dark-border;
+  }
+  
+  .bg-card {
+    @apply bg-light-card dark:bg-dark-card;
+  }
+  
+  .safe-area-top {
+    padding-top: 1rem;
+  }
+  
+  /* Mobile viewport and keyboard handling */
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* Ensure proper viewport height on mobile */
+  .h-screen {
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height for mobile */
+  }
+  
+  /* Mobile keyboard handling */
+  @supports (-webkit-touch-callout: none) {
+    .h-screen {
+      height: -webkit-fill-available;
+    }
+  }
+  
+  /* Prevent zoom on input focus for mobile */
+  @media screen and (max-width: 768px) {
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    textarea {
+      font-size: 16px;
+    }
+  }
+  
+  /* Chat input container custom styles */
+  .chat-input-container {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+  
+  .chat-input-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    height: 48px;
+    width: 48px;
+  }
+  
+  .chat-input-textarea {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border-radius: 1rem;
+    resize: none;
+    overflow: hidden;
+    min-height: 48px;
+    max-height: 128px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  /* Slider styling for location settings */
+  .slider::-webkit-slider-thumb {
+    appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #10b981;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  
+  .slider::-moz-range-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #10b981;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+}

@@ -42,6 +42,12 @@ return new class extends Migration
             $table->string('nomor_telepon')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->date('tanggal_lahir')->nullable();
+            $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan'])->nullable();
+            $table->enum('pendidikan_terakhir', ['SD', 'SMP', 'SMA', 'D3', 'S1', 'S2', 'S3'])->nullable();
+            $table->integer('pengalaman_kerja')->nullable();
+            $table->string('alamat')->nullable();
+            $table->enum('status', ['Pendaftaran', 'Aktif', 'Tidak Aktif', 'Sudah Terbang'])->default('Pendaftaran');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

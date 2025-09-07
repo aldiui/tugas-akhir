@@ -24,6 +24,4 @@ class CpmiAbsensiController extends Controller
 
         return $this->successResponse($absensi['data'], $absensi['message'], isset($absensi['data']['jam_keluar']) ? 200 : 201);
     }
-
-    
 }

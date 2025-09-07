@@ -1,0 +1,225 @@
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once '../vendor/autoload.php';
+require_once '../database/connection.php';
+
+// Cek apakah ID dan tanggal sertifikat dikirim melalui URL
+if (!isset($_GET['id']) || !isset($_GET['tanggal_sertifikat'])) {
+    die('ID atau tanggal sertifikat tidak ditemukan.');
+}
+
+$id = intval($_GET['id']);
+$tanggalSertifikat = htmlspecialchars($_GET['tanggal_sertifikat']);
+
+// Ubah tanggal ke format Indonesia (misal: 12 JANUARI 2025)
+$bulanIndo = [
+    1 => 'JANUARI',
+    2 => 'FEBRUARI',
+    3 => 'MARET',
+    4 => 'APRIL',
+    5 => 'MEI',
+    6 => 'JUNI',
+    7 => 'JULI',
+    8 => 'AGUSTUS',
+    9 => 'SEPTEMBER',
+    10 => 'OKTOBER',
+    11 => 'NOVEMBER',
+    12 => 'DESEMBER'
+];
+
+$tanggal = date('d', strtotime($tanggalSertifikat));
+$bulan = (int)date('m', strtotime($tanggalSertifikat));
+$tahun = date('Y', strtotime($tanggalSertifikat));
+$tanggalSertifikatFormatted = $tanggal . ' ' . $bulanIndo[$bulan] . ' ' . $tahun;
+
+// Ambil data dari database berdasarkan ID
+$sql = "SELECT * FROM cpmi_data WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows == 0) {
+    die('Data tidak ditemukan.');
+}
+
+$data = $result->fetch_assoc();
+$namaCPM = htmlspecialchars($data['nama_cpm']);
+$jabatan = htmlspecialchars($data['jabatan']);
+
+// Logika untuk menentukan awalan nomor seri berdasarkan jabatan
+$prefixes = [
+    'Pertanian' => 183000,
+    'Peternakan' => 194000,
+    'Panti Jompo' => 205000,
+    'Nursing Home' => 205000,
+    'Konstruksi' => 216000,
+    'Construction Worker' => 216000,
+    'Worker' => 116000
+];
+
+$jabatanNormalized = strtolower(trim($jabatan));
+$prefix = isset($prefixes[$jabatan]) ? $prefixes[$jabatan] : 999000;
+
+// Ambil semua data CPMI berdasarkan jabatan dan urutkan berdasarkan waktu unggah
+$sqlOrder = "SELECT id, nama_cpm FROM cpmi_data WHERE LOWER(TRIM(jabatan)) = ? ORDER BY id ASC";
+$stmtOrder = $conn->prepare($sqlOrder);
+$stmtOrder->bind_param("s", $jabatanNormalized);
+$stmtOrder->execute();
+$resultOrder = $stmtOrder->get_result();
+
+if ($resultOrder->num_rows == 0) {
+    die('Tidak ada data CPMI untuk jabatan ini.');
+}
+
+$dataCPMI = [];
+while ($row = $resultOrder->fetch_assoc()) {
+    $dataCPMI[] = $row;
+}
+
+// Cari posisi nama CPMI saat ini berdasarkan ID
+$urut = 0;
+foreach ($dataCPMI as $index => $cpm) {
+    if ($cpm['id'] == $id) {
+        $urut = $index + 1;
+        break;
+    }
+}
+
+if ($urut == 0) {
+    die('ID CPMI tidak ditemukan dalam daftar.');
+}
+
+$nomorSeri = $prefix + $urut;
+
+// Buat PDF dengan mPDF
+$mpdf = new \Mpdf\Mpdf([
+    'format' => [297, 210],
+    'margin_left' => 0,
+    'margin_right' => 0,
+    'margin_top' => 0,
+    'margin_bottom' => 0,
+    'tempDir' => __DIR__ . '/../tmp/mpdf',
+]);
+
+$backgroundUrlPage1 = 'https://bahanamegaprestasi.id/wp-content/uploads/2025/01/Pabrik-Depan.jpg';
+$mpdf->SetWatermarkImage($backgroundUrlPage1, 1, [297, 210]);
+$mpdf->showWatermarkImage = true;
+
+$htmlPage1 = "
+<!DOCTYPE html>
+<html lang='id'>
+<head>
+    <meta charset='UTF-8'>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            width: 297mm;
+            height: 210mm;
+        }
+        .nomorseri-container {
+            position: absolute;
+            top: 24mm;
+            width: 100%;
+            font-size: 20px;
+            text-transform: uppercase;
+            color: black;
+            text-align: center;
+            font-weight: bold;
+            z-index: 999;
+            margin-left: -19px;
+        }
+        .name-container {
+            position: absolute;
+            bottom: 37%;
+            width: 100%;
+            font-size: 45px;
+            text-transform: uppercase;
+            color: black;
+            text-align: center;
+            font-weight: normal;
+            z-index: 999;
+            font-family: 'poppinsblack', sans-serif;
+            margin-left: -26px;
+        }
+        .content-container {
+            position: absolute;
+            bottom: 48px;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.2;
+            color: black;
+            z-index: 999;
+            margin-left: -25px;
+        }
+        .content-container b {
+            font-weight: bold;
+        }
+        .content-container span {
+            text-transform: uppercase;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class='nomorseri-container'><b>{$nomorSeri}</b></div>
+    <div class='name-container'><b>{$namaCPM}</b></div>
+    <div class='content-container'>
+        Berdasarkan keputusan Kepala Dinas Tenaga Kerja Kota Bekasi <b>NOMOR : 560/KEP.455/DISNAKER.LATKER</b>
+        Pada Tanggal <b>26 FEBRUARI 2018</b><br>
+        dengan ini menyatakan dan menerangkan bahwa siswa <span><b>{$namaCPM}</b></span> telah mendapatkan Pelatihan Dasar Industri Manufaktur<br>
+        di <b>LPK BAHANA MEGA PRESTASI</b>, yang dinyatakan <b>LULUS</b> Pada Tanggal : <span><b>{$tanggalSertifikatFormatted}</b></span>
+    </div>
+</body>
+</html>
+";
+
+$mpdf->WriteHTML($htmlPage1);
+
+// Halaman kedua (opsional QR Code)
+$mpdf->AddPage();
+$backgroundUrlPage2 = 'https://bahanamegaprestasi.id/wp-content/uploads/2025/01/pabrik-belakang.jpg';
+$mpdf->SetWatermarkImage($backgroundUrlPage2, 1, [297, 210]);
+$mpdf->showWatermarkImage = true;
+
+$htmlPage2 = "
+<!DOCTYPE html>
+<html lang='id'>
+<head>
+    <meta charset='UTF-8'>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            position: relative;
+            width: 297mm;
+            height: 210mm;
+        }
+        .qr-container {
+            position: absolute;
+            bottom: 10mm;
+            right: 10mm;
+            width: 75px;
+            height: 70px;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+</body>
+</html>
+";
+
+$mpdf->WriteHTML($htmlPage2);
+
+// Output PDF
+$mpdf->Output("Sertifikat_{$namaCPM}.pdf", 'I');
+?>

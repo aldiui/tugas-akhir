@@ -1,0 +1,124 @@
+{
+  "riwayat_absensi": [
+    {
+      "id": "ABS001",
+      "tanggal": "2024-01-22",
+      "hari": "Senin",
+      "jam_masuk": "07:05",
+      "jam_pulang": "16:10",
+      "status": "Hadir",
+      "keterangan": "Tepat waktu",
+      "lokasi_absen": "LPK Bahana Mega Prestasi",
+      "jarak_dari_kelas": "15m"
+    },
+    {
+      "id": "ABS002",
+      "tanggal": "2024-01-21",
+      "hari": "Minggu",
+      "jam_masuk": null,
+      "jam_pulang": null,
+      "status": "Libur",
+      "keterangan": "Hari libur mingguan",
+      "lokasi_absen": null,
+      "jarak_dari_kelas": null
+    },
+    {
+      "id": "ABS003",
+      "tanggal": "2024-01-20",
+      "hari": "Sabtu",
+      "jam_masuk": null,
+      "jam_pulang": null,
+      "status": "Libur",
+      "keterangan": "Hari libur mingguan",
+      "lokasi_absen": null,
+      "jarak_dari_kelas": null
+    },
+    {
+      "id": "ABS004",
+      "tanggal": "2024-01-19",
+      "hari": "Jumat",
+      "jam_masuk": "07:18",
+      "jam_pulang": "16:05",
+      "status": "Terlambat",
+      "keterangan": "Terlambat 18 menit - Macet di jalan raya",
+      "lokasi_absen": "LPK Bahana Mega Prestasi",
+      "jarak_dari_kelas": "8m",
+      "alasan_telat": "Macet parah di jalan raya Bogor karena ada kecelakaan"
+    },
+    {
+      "id": "ABS005",
+      "tanggal": "2024-01-18",
+      "hari": "Kamis",
+      "jam_masuk": "07:02",
+      "jam_pulang": "16:15",
+      "status": "Hadir",
+      "keterangan": "Tepat waktu",
+      "lokasi_absen": "LPK Bahana Mega Prestasi",
+      "jarak_dari_kelas": "12m"
+    },
+    {
+      "id": "ABS006",
+      "tanggal": "2024-01-17",
+      "hari": "Rabu",
+      "jam_masuk": "06:58",
+      "jam_pulang": "16:08",
+      "status": "Hadir",
+      "keterangan": "Datang lebih awal",
+      "lokasi_absen": "LPK Bahana Mega Prestasi",
+      "jarak_dari_kelas": "5m"
+    },
+    {
+      "id": "ABS007",
+      "tanggal": "2024-01-16",
+      "hari": "Selasa",
+      "jam_masuk": null,
+      "jam_pulang": null,
+      "status": "Izin",
+      "keterangan": "Izin sakit demam",
+      "lokasi_absen": null,
+      "jarak_dari_kelas": null,
+      "surat_izin": "Surat dokter RS Hermina"
+    },
+    {
+      "id": "ABS008",
+      "tanggal": "2024-01-15",
+      "hari": "Senin",
+      "jam_masuk": "07:10",
+      "jam_pulang": "16:00",
+      "status": "Hadir",
+      "keterangan": "Hari pertama pelatihan",
+      "lokasi_absen": "LPK Bahana Mega Prestasi",
+      "jarak_dari_kelas": "20m"
+    }
+  ],
+  "statistik_bulanan": {
+    "bulan": "Januari 2024",
+    "total_hari_kerja": 22,
+    "hadir": 18,
+    "terlambat": 2,
+    "izin": 1,
+    "alpha": 0,
+    "libur": 8,
+    "persentase_kehadiran": 90.9
+  },
+  "laporan_piket": [
+    {
+      "id": "PIKET001",
+      "tanggal": "2024-01-10",
+      "jam_input": "19:30",
+      "kegiatan": "Hari ini saya membantu Oma Chen membersihkan rumah. Pagi-pagi saya bangun jam 05:30, kemudian membantu menyiapkan sarapan bubur ayam untuk Oma. Setelah itu saya membersihkan kamar tidur, ruang tamu, dan dapur. Siang hari saya menemani Oma jalan-jalan ke taman dekat rumah untuk olahraga ringan. Sore hari saya membantu menyiapkan makan malam dan memberikan obat-obatan sesuai jadwal. Oma Chen sangat baik dan sabar mengajari saya cara memasak sup tomat telur ala Taiwan.",
+      "foto_kegiatan": ["/images/piket1.jpg", "/images/piket2.jpg"],
+      "lokasi": "Rumah Oma Chen - Taipei",
+      "evaluasi_majikan": "Sangat baik dan rajin"
+    },
+    {
+      "id": "PIKET002",
+      "tanggal": "2024-01-09",
+      "jam_input": "20:15",
+      "kegiatan": "Hari kedua piket di rumah Oma Chen. Pagi ini saya belajar cara menggunakan mesin cuci otomatis dan menyetrika pakaian dengan benar. Oma Chen mengajari saya cara melipat pakaian ala Taiwan yang rapi. Siang hari saya membantu Oma mandi dan mengganti pakaian. Saya juga belajar mengukur tekanan darah dan gula darah menggunakan alat digital. Sore hari kami masak bersama beef noodle soup yang sangat enak. Oma bilang masakan saya sudah lumayan bagus untuk pemula.",
+      "foto_kegiatan": ["/images/piket3.jpg"],
+      "lokasi": "Rumah Oma Chen - Taipei",
+      "evaluasi_majikan": "Cepat belajar dan teliti"
+    }
+  ]
+}

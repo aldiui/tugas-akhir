@@ -1,0 +1,64 @@
+{
+  "cpmi": {
+    "id": "CPMI001",
+    "nama": "Siti Nurhaliza",
+    "nik": "3201234567890123",
+    "email": "siti.nurhaliza@email.com",
+    "telepon": "081234567890",
+    "alamat": "Jl. Merdeka No. 123, Bandung, Jawa Barat",
+    "tanggal_lahir": "1995-03-15",
+    "foto": "/images/profile-placeholder.jpg",
+    "status": "Piket",
+    "kelas": "Taiwan Batch 15",
+    "pengajar": "Bu Mei Lin",
+    "tanggal_mulai_pelatihan": "2024-01-15",
+    "target_keberangkatan": "2024-06-15",
+    "agency": "Golden Bridge Manpower",
+    "lokasi_penempatan": "Taipei, Taiwan",
+    "jenis_pekerjaan": "Caregiver"
+  },
+  "status_options": [
+    {
+      "value": "Aktif",
+      "label": "Aktif",
+      "description": "Mengikuti pelatihan di LPK",
+      "color": "green"
+    },
+    {
+      "value": "Piket",
+      "label": "Piket",
+      "description": "Magang di rumah calon majikan",
+      "color": "yellow"
+    },
+    {
+      "value": "Terbang",
+      "label": "Terbang",
+      "description": "Sudah diberangkatkan ke Taiwan",
+      "color": "blue"
+    },
+    {
+      "value": "Izin",
+      "label": "Izin",
+      "description": "Sedang izin sementara",
+      "color": "purple"
+    },
+    {
+      "value": "Tidak Aktif",
+      "label": "Tidak Aktif",
+      "description": "Tidak mengikuti pelatihan",
+      "color": "red"
+    }
+  ],
+  "lokasi_kelas": {
+    "nama": "LPK Bahana Mega Prestasi",
+    "alamat": "Jl. Raya Bogor KM 25, Cibinong, Bogor",
+    "latitude": -6.4817,
+    "longitude": 106.8540,
+    "radius": 100
+  },
+  "jam_operasional": {
+    "jam_masuk": "07:00",
+    "batas_telat": "07:15",
+    "jam_pulang": "16:00"
+  }
+}
