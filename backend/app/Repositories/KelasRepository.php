@@ -6,16 +6,16 @@ use Illuminate\Support\Facades\DB;
 
 class KelasRepository
 {
-    protected $model;
+    protected $kelasModel;
 
-    public function __construct(Kelas $model)
+    public function __construct(Kelas $kelasModel)
     {
-        $this->model = $model;
+        $this->kelasModel = $kelasModel;
     }
 
     public function getAll(int $perPage = 10, string $search = null, string $orderBy = 'created_at', string $sortBy = 'asc')
     {
-        $query = $this->model->query();
+        $query = $this->kelasModel->query();
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -39,14 +39,14 @@ class KelasRepository
 
     public function findById(string $id)
     {
-        return $this->model->findOrFail($id);
+        return $this->kelasModel->findOrFail($id);
     }
 
     public function create(array $data)
     {
         DB::beginTransaction();
         try {
-            $kelas = $this->model->create([
+            $kelas = $this->kelasModel->create([
                 'nama'        => $data['nama'],
                 'pengajar_id' => $data['pengajar_id'],
                 'lokasi_id'   => $data['lokasi_id'],

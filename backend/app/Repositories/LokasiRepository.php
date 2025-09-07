@@ -6,16 +6,16 @@ use Illuminate\Support\Facades\DB;
 
 class LokasiRepository
 {
-    protected $model;
+    protected $lokasiModel;
 
-    public function __construct(Lokasi $model)
+    public function __construct(Lokasi $lokasiModel)
     {
-        $this->model = $model;
+        $this->lokasiModel = $lokasiModel;
     }
 
     public function getAll(int $perPage = 10, string $search = null, string $orderBy = 'created_at', string $sortBy = 'asc')
     {
-        $query = $this->model->query();
+        $query = $this->lokasiModel->query();
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -45,14 +45,14 @@ class LokasiRepository
 
     public function findById(string $id)
     {
-        return $this->model->findOrFail($id);
+        return $this->lokasiModel->findOrFail($id);
     }
 
     public function create(array $data)
     {
         DB::beginTransaction();
         try {
-            $lokasi = $this->model->create($data);
+            $lokasi = $this->lokasiModel->create($data);
             DB::commit();
             return $lokasi;
         } catch (\Throwable $e) {

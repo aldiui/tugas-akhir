@@ -6,16 +6,16 @@ use Illuminate\Support\Facades\DB;
 
 class NegaraRepository
 {
-    protected $model;
+    protected $negaraModel;
 
-    public function __construct(Negara $model)
+    public function __construct(Negara $negaraModel)
     {
-        $this->model = $model;
+        $this->negaraModel = $negaraModel;
     }
 
     public function getAll(int $perPage = 10, string $search = null, string $orderBy = 'created_at', string $sortBy = 'asc')
     {
-        $query = $this->model->query();
+        $query = $this->negaraModel->query();
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -43,7 +43,7 @@ class NegaraRepository
 
     public function findById(string $id)
     {
-        return $this->model->findOrFail($id);
+        return $this->negaraModel->findOrFail($id);
     }
 
     public function create(array $data)

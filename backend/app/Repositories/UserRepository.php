@@ -6,16 +6,16 @@ use Illuminate\Support\Facades\DB;
 
 class UserRepository
 {
-    protected $model;
+    protected $userModel;
 
-    public function __construct(User $model)
+    public function __construct(User $userModel)
     {
-        $this->model = $model;
+        $this->userModel = $userModel;
     }
 
     public function getAll(int $perPage = 10, string $search = null, string $orderBy = 'created_at', string $sortBy = 'asc')
     {
-        $query = $this->model->query();
+        $query = $this->userModel->query();
 
         if ($search) {
             $query->where(function ($q) use ($search) {

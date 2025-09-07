@@ -6,16 +6,16 @@ use Illuminate\Support\Facades\DB;
 
 class RoleRepository
 {
-    protected $model;
+    protected $roleModel;
 
-    public function __construct(Role $model)
+    public function __construct(Role $roleModel)
     {
-        $this->model = $model;
+        $this->roleModel = $roleModel;
     }
 
     public function getAll(int $perPage = 10, string $search = null, string $orderBy = 'created_at', string $sortBy = 'asc')
     {
-        $query = $this->model->query();
+        $query = $this->roleModel->query();
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -40,7 +40,7 @@ class RoleRepository
 
     public function findById(string $id)
     {
-        return $this->model->findOrFail($id);
+        return $this->roleModel->findOrFail($id);
     }
 
     public function create(array $data)

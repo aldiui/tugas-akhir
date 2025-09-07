@@ -6,16 +6,16 @@ use Illuminate\Support\Facades\DB;
 
 class MataPelajaranRepository
 {
-    protected $model;
+    protected $mataPelajaranModel;
 
-    public function __construct(MataPelajaran $model)
+    public function __construct(MataPelajaran $mataPelajaranModel)
     {
-        $this->model = $model;
+        $this->mataPelajaranModel = $mataPelajaranModel;
     }
 
     public function getAll(int $perPage = 10, string $search = null, string $orderBy = 'created_at', string $sortBy = 'asc')
     {
-        $query = $this->model->query();
+        $query = $this->mataPelajaranModel->query();
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -41,7 +41,7 @@ class MataPelajaranRepository
 
     public function findById(string $id)
     {
-        return $this->model->findOrFail($id);
+        return $this->mataPelajaranModel->findOrFail($id);
     }
 
     public function create(array $data)

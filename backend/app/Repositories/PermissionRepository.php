@@ -5,15 +5,15 @@ use App\Models\Permission;
 
 class PermissionRepository
 {
-    protected $model;
+    protected $permissionModel;
 
-    public function __construct(Permission $model)
+    public function __construct(Permission $permissionModel)
     {
-        $this->model = $model;
+        $this->permissionModel = $permissionModel;
     }
 
     public function getAll()
     {
-        return $this->model->all();
+        return $this->permissionModel->all();
     }
 }

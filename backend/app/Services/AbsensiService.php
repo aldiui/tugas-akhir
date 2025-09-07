@@ -19,13 +19,13 @@ class AbsensiService
 
     public function create($request)
     {
-        $user = auth()->user();
+        $cpmi = auth()->user();
 
-        if (! $user || ! $user->role->tipe != 'CPMI') {
+        if (! $cpmi || ! $cpmi->role->tipe != 'CPMI') {
             throw new \Exception('Hanya CPMI yang dapat melakukan absensi');
         }
 
-        $lokasi = $this->lokasiRepository->findById($user->lokasi_id);
+        $lokasi = $this->lokasiRepository->findById($cpmi->lokasi_id);
         if (! $lokasi) {
             throw new \Exception('Lokasi tidak ditemukan');
         }
@@ -33,7 +33,7 @@ class AbsensiService
         $tanggal = Carbon::now()->locale('id')->format('Y-m-d');
         $jam     = Carbon::now()->locale('id')->format('H:i:s');
 
-        $absensi = $this->absensiRepository->findByUserAndDate($user->id, $tanggal);
+        $absensi = $this->absensiRepository->findByCpmiAndDate($cpmi->id, $tanggal);
 
         [$latitude, $longitude] = explode(",", $request->lokasi);
         $latitude               = trim($latitude);
@@ -78,7 +78,7 @@ class AbsensiService
 
         if (! $absensi) {
             $data = [
-                'user_id'         => $user->id,
+                'cpmi_id'         => $cpmi->id,
                 'tanggal'         => $tanggal,
                 'jam_masuk'       => $jam,
                 'latitude_masuk'  => $latitude,

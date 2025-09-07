@@ -1,28 +1,23 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 class CpmiPiketRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'jam_mulai'       => 'required|date_format:H:i',
+            'jam_selesai'     => 'required|date_format:H:i|after:jam_mulai',
+            'kegiatan'        => 'required|string',
+            'foto_kegiatan'   => 'nullable|array',
+            'foto_kegiatan.*' => 'image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
 }

@@ -1,23 +1,24 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminKelasController;
-use App\Http\Controllers\Admin\AdminLokasiController;
-use App\Http\Controllers\Admin\AdminMataPelajaranController;
-use App\Http\Controllers\Admin\AdminNegaraController;
-use App\Http\Controllers\Admin\AdminPermissionController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MeController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Cpmi\CpmiPiketController;
 use App\Http\Controllers\Admin\AdminRoleController;
 use App\Http\Controllers\Admin\AdminUserController;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\AdminKelasController;
 use App\Http\Controllers\Cpmi\CpmiAbsensiController;
-use App\Http\Controllers\MeController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AdminLokasiController;
+use App\Http\Controllers\Admin\AdminNegaraController;
+use App\Http\Controllers\Admin\AdminPermissionController;
+use App\Http\Controllers\Admin\AdminMataPelajaranController;
 
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::put('/change-password', [MeController::class, 'changePassword']);
-    Route::get('/profile', [MeController::class, 'profile']);   
+    Route::get('/profile', [MeController::class, 'profile']);
     Route::put('/update-profile', [MeController::class, 'updateProfile']);
 
     Route::prefix('admin')->group(function () {
@@ -62,5 +63,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('cpmi')->group(function () {
         Route::post('/absensi', [CpmiAbsensiController::class, 'store']);
+        Route::post('/piket', [CpmiPiketController::class, 'store']);
     });
 });

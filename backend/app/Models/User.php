@@ -1,15 +1,17 @@
 <?php
 namespace App\Models;
 
-use App\Models\Kelas;
-use App\Models\Lokasi;
 use App\Models\Role;
+use App\Models\Kelas;
+use App\Models\Piket;
+use App\Models\Lokasi;
+use App\Models\Absensi;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -51,5 +53,15 @@ class User extends Authenticatable
     public function kelas()
     {
         return $this->belongsTo(Kelas::class);
+    }
+
+    public function absensis()
+    {
+        return $this->hasMany(Absensi::class, 'cpmi_id', 'id');
+    }
+
+    public function pikets()
+    {
+        return $this->hasMany(Piket::class, 'cpmi_id', 'id');
     }
 }
