@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mata_pelajaran', function (Blueprint $table) {
+        Schema::create('notifikasi', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('kode')->unique();
-            $table->string('nama');
+            $table->uuid('judul')->nullable();
+            $table->longText('deskripsi')->nullable();
+            $table->enum('status', ['urgent', 'biasa'])->default('biasa');
+            $table->enum('target', ['semua', 'spesifik'])->default('semua');
+            $table->json('cpmi_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mata_pelajaran');
+        Schema::dropIfExists('notifikasi');
     }
 };

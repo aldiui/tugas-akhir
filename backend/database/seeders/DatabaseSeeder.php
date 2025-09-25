@@ -5,6 +5,7 @@ use Database\Seeders\LokasiSeeder;
 use Database\Seeders\NegaraSeeder;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\UserSeeder;
+use Database\Seeders\MataPelajaranSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,5 +16,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(NegaraSeeder::class);
         $this->call(LokasiSeeder::class);
+        $this->call(MataPelajaranSeeder::class);
     }
 }

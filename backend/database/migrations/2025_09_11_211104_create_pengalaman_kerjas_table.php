@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mata_pelajaran', function (Blueprint $table) {
+        Schema::create('pengalaman_kerja', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('kode')->unique();
-            $table->string('nama');
+            $table->uuid('cpmi_id')->nullable();
+            $table->string('perusahaan')->nullable();
+            $table->string('posisi')->nullable();
+            $table->date('tanggal_mulai')->nullable();
+            $table->date('tanggal_selesai')->nullable();
+            $table->text('deskripsi')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -25,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mata_pelajaran');
+        Schema::dropIfExists('pengalaman_kerja');
     }
 };

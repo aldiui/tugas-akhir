@@ -2,20 +2,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AdminRoleRequest;
-use App\Services\RoleService;
+use App\Models\Role;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminRoleController extends Controller
 {
-    protected $roleService;
-
-    public function __construct(RoleService $roleService)
-    {
-        $this->roleService = $roleService;
-    }
-
     /**
      * Ambil semua data role
      */
@@ -26,7 +19,26 @@ class AdminRoleController extends Controller
         $orderBy = $request->input('order_by', 'created_at');
         $sortBy  = $request->input('sort_by', 'asc');
 
-        $role = $this->roleService->list($perPage, $search, $orderBy, $sortBy);
+        $query = Role::query();
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nama', 'REGEXP', $search)
+                    ->orWhere('tipe', 'REGEXP', $search);
+            });
+        }
+
+        if (in_array($orderBy, ['id', 'nama', 'tipe', 'created_at', 'updated_at'])) {
+            $sortBy = strtolower($sortBy) === 'desc' ? 'desc' : 'asc';
+            $query->orderBy($orderBy, $sortBy);
+        } else {
+            $query->orderBy('created_at', 'asc');
+        }
+
+        if (! in_array($perPage, [10, 25, 50, 100])) {
+            $perPage = 10;
+        }
+
+        $role = $query->paginate($perPage)->withPath('');
 
         return $this->successResponse($role, 'Data role berhasil diambil');
     }
@@ -34,9 +46,26 @@ class AdminRoleController extends Controller
     /**
      * Tambah data role baru
      */
-    public function store(AdminRoleRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
-        $role = $this->roleService->create($request->validated());
+        $request->validate([
+            'nama'          => 'required|string|max:255|unique:role,nama',
+            'tipe'          => 'required|string|in:CPMI,Admin,Pengajar',
+            'permissions'   => 'required|array|min:1',
+            'permissions.*' => 'required|string|exists:permission,id',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $role = Role::create([
+                'nama' => $request->input('nama'),
+                'tipe' => $request->input('tipe'),
+            ]);
+            $role->permissions()->sync($request->input('permissions'));
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+        }
 
         return $this->successResponse($role, 'Data role berhasil ditambahkan', 201);
     }
@@ -46,17 +75,35 @@ class AdminRoleController extends Controller
      */
     public function show(string $id): JsonResponse
     {
-        $role = $this->roleService->find($id);
-
+        $role = Role::findOrFail($id);
         return $this->successResponse($role, 'Detail role berhasil diambil');
     }
 
     /**
      * Perbarui data role berdasarkan ID
      */
-    public function update(AdminRoleRequest $request, string $id): JsonResponse
+    public function update(Request $request, string $id): JsonResponse
     {
-        $role = $this->roleService->update($id, $request->validated());
+        $request->validate([
+            'nama'          => 'required|string|max:255|unique:role,nama,' . $role->id,
+            'tipe'          => 'required|string|in:CPMI,Admin,Pengajar',
+            'permissions'   => 'required|array|min:1',
+            'permissions.*' => 'required|string|exists:permission,id',
+        ]);
+
+        $role = Role::findOrFail($id);
+
+        DB::beginTransaction();
+        try {
+            $role->update([
+                'nama' => $request->input('nama'),
+                'tipe' => $request->input('tipe'),
+            ]);
+            $role->permissions()->sync($request->input('permissions'));
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+        }
 
         return $this->successResponse($role, 'Data role berhasil diperbarui');
     }
@@ -66,7 +113,15 @@ class AdminRoleController extends Controller
      */
     public function destroy(string $id): JsonResponse
     {
-        $this->roleService->delete($id);
+        $role = Role::findOrFail($id);
+
+        DB::beginTransaction();
+        try {
+            $role->delete();
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+        }
 
         return $this->successResponse(null, 'Data role berhasil dihapus');
     }

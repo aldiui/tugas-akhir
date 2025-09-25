@@ -2,26 +2,35 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginRequest;
-use App\Services\UserService;
+use App\Models\User;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    protected $userService;
-
-    public function __construct(UserService $userService)
-    {
-        $this->userService = $userService;
-    }
-
     /**
      * Login user
      */
-    public function login(LoginRequest $request): JsonResponse
+    public function login(Request $request): JsonResponse
     {
-        $user = $this->userService->login($request->validated());
+        $request->validate([
+            'email'    => 'required|string|email|max:255',
+            'password' => 'required|string|min:8',
+        ]);
+
+        $user = User::where('email', $request->input('email'))->first();
+
+        if (! $user || ! Hash::check($request->input('password'), $user->password)) {
+            throw new AuthenticationException('Kredensial tidak valid');
+        }
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = explode('|', $token)[1];
+        $user  = [
+            'token' => $token,
+        ];
 
         return $this->successResponse($user, 'Login berhasil');
     }
@@ -31,8 +40,7 @@ class AuthController extends Controller
      */
     public function logout(Request $request): JsonResponse
     {
-        $this->userService->logout($request);
-
+        $request->user()->currentAccessToken()->delete();
         return $this->successResponse(null, 'Logout berhasil');
     }
 

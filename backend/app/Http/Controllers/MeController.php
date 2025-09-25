@@ -1,27 +1,42 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Services\UserService;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateProfileRequest;
-use App\Http\Requests\ChangePasswordRequest;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class MeController extends Controller
 {
-    protected $userService;
-
-    public function __construct(UserService $userService)
-    {
-        $this->userService = $userService;
-    }
-
     /**
      * Ubah password user
      */
-    public function changePassword(ChangePasswordRequest $request): JsonResponse
+    public function changePassword(Request $request): JsonResponse
     {
-        $this->userService->changePassword($request);
+        $request->validate([
+            'password_lama'       => 'required|string|min:8|max:255',
+            'password'            => 'required|string|min:8|max:255',
+            'konfirmasi_password' => 'required|string|min:8|max:255|same:password',
+        ]);
+
+        $user = auth()->user();
+
+        if (! Hash::check($request->input('password_lama'), $user->password)) {
+            throw new AuthenticationException('Kredensial tidak valid');
+        }
+
+        DB::beginTransaction();
+        try {
+            $user->update([
+                'password' => Hash::make($request->input('password')),
+            ]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
 
         return $this->successResponse(null, 'Password berhasil diubah');
     }
@@ -31,17 +46,46 @@ class MeController extends Controller
      */
     public function profile(): JsonResponse
     {
-        $user = $this->userService->profile();
+        $user = auth()->user();
 
-        return $this->successResponse($user, 'Profile berhasil diambil');
+        $data = [
+            'user'       => $user->only('nama', 'email', 'nomor_telepon'),
+            'role'       => $user->role ? $user->role->only('nama', 'tipe') : null,
+            'permission' => $user->role
+                ? $user->role->permissions->map(function ($permission) {
+                return $permission->only(['kode', 'nama']);
+            })
+                : [],
+        ];
+
+        return $this->successResponse($data, 'Profile berhasil diambil');
     }
 
     /**
      * Update user profile
      */
-    public function updateProfile(UpdateProfileRequest $request): JsonResponse
+    public function updateProfile(Request $request): JsonResponse
     {
-        $user = $this->userService->updateProfile($request);
+        $request->validate([
+            'nama'          => 'required|string|max:255',
+            'email'         => 'required|string|email|max:255',
+            'nomor_telepon' => 'nullable|string|max:20',
+        ]);
+
+        $user = $request->user();
+
+        DB::beginTransaction();
+        try {
+            $user->update([
+                'nama'          => $request->input('nama'),
+                'email'         => $request->input('email'),
+                'nomor_telepon' => $request->input('nomor_telepon'),
+            ]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
 
         return $this->successResponse($user, 'Profile berhasil diupdate');
     }
