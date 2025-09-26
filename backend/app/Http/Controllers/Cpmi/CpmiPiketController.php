@@ -11,16 +11,57 @@ use Illuminate\Support\Facades\DB;
 class CpmiPiketController extends Controller
 {
     /**
+     * Ambil semua data piket
+     */
+    public function index(Request $request): JsonResponse
+    {
+        $perPage = $request->input('limit', 10);
+        $search  = $request->input('search');
+        $orderBy = $request->input('order_by', 'created_at');
+        $sortBy  = $request->input('sort_by', 'asc');
+
+        $cpmi = $request->user();
+
+        if (! $cpmi || $cpmi->role->tipe !== 'CPMI') {
+            return $this->errorResponse('Akses ditolak. Hanya CPMI yang dapat melakukan aksi ini.', 403);
+        }
+
+        $query = Piket::query();
+        $query->where('cpmi_id', $cpmi->id);
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('tanggal', 'REGEXP', $search)
+                    ->orWhere('jam_masuk', 'REGEXP', $search)
+                    ->orWhere('jam_keluar', 'REGEXP', $search)
+                    ->orWhere('kegiatan', 'REGEXP', $search);
+            });
+        }
+
+        if (in_array($orderBy, ['id', 'tanggal', 'jam_masuk', 'jam_keluar', 'created_at', 'updated_at'])) {
+            $sortBy = strtolower($sortBy) === 'desc' ? 'desc' : 'asc';
+            $query->orderBy($orderBy, $sortBy);
+        } else {
+            $query->orderBy('created_at', 'asc');
+        }
+
+        if (! in_array($perPage, [10, 25, 50, 100])) {
+            $perPage = 10;
+        }
+
+        $piket = $query->paginate($perPage)->withPath('');
+
+        return $this->successResponse($piket, 'Data piket berhasil diambil');
+    }
+
+    /**
      * Tambah data piket baru
      */
     public function store(Request $request): JsonResponse
     {
         $request->validate([
-            'jam_mulai'       => 'required|date_format:H:i',
-            'jam_selesai'     => 'required|date_format:H:i|after:jam_mulai',
-            'kegiatan'        => 'required|string',
-            'foto_kegiatan'   => 'nullable|array',
-            'foto_kegiatan.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'jam_masuk'   => 'required|date_format:H:i',
+            'jam_keluar' => 'required|date_format:H:i|after:jam_masuk',
+            'kegiatan'    => 'required|string',
         ]);
 
         $cpmi = $request->user();
@@ -44,8 +85,8 @@ class CpmiPiketController extends Controller
             $piket = Piket::create([
                 'user_id'     => $user->id,
                 'tanggal'     => $tanggal,
-                'jam_mulai'   => $request->input('jam_mulai'),
-                'jam_selesai' => $request->input('jam_selesai'),
+                'jam_masuk'   => $request->input('jam_masuk'),
+                'jam_keluar' => $request->input('jam_keluar'),
                 'kegiatan'    => $request->input('kegiatan'),
             ]);
             DB::commit();

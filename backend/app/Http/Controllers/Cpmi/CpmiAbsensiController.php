@@ -12,6 +12,52 @@ use Illuminate\Http\Request;
 class CpmiAbsensiController extends Controller
 {
     /**
+     * Ambil semua data absensi
+     */
+    public function index(Request $request): JsonResponse
+    {
+        $perPage = $request->input('limit', 10);
+        $search  = $request->input('search');
+        $orderBy = $request->input('order_by', 'created_at');
+        $sortBy  = $request->input('sort_by', 'asc');
+
+        $cpmi = $request->user();
+
+        if (! $cpmi || $cpmi->role->tipe !== 'CPMI') {
+            return $this->errorResponse('Akses ditolak. Hanya CPMI yang dapat melakukan aksi ini.', 403);
+        }
+
+        $query = Absensi::query();
+        $query->where('cpmi_id', $cpmi->id);
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('tanggal', 'REGEXP', $search)
+                    ->orWhere('jam_masuk', 'REGEXP', $search)
+                    ->orWhere('jam_keluar', 'REGEXP', $search)
+                    ->orWhere('status_masuk', 'REGEXP', $search)
+                    ->orWhere('status_keluar', 'REGEXP', $search)
+                    ->orWhere('alasan_masuk', 'REGEXP', $search)
+                    ->orWhere('alasan_keluar', 'REGEXP', $search);
+            });
+        }
+
+        if (in_array($orderBy, ['id', 'tanggal', 'jam_masuk', 'jam_keluar', 'status_masuk', 'status_keluar', 'alasan_masuk', 'alasan_keluar', 'created_at', 'updated_at'])) {
+            $sortBy = strtolower($sortBy) === 'desc' ? 'desc' : 'asc';
+            $query->orderBy($orderBy, $sortBy);
+        } else {
+            $query->orderBy('created_at', 'asc');
+        }
+
+        if (! in_array($perPage, [10, 25, 50, 100])) {
+            $perPage = 10;
+        }
+
+        $absensi = $query->paginate($perPage)->withPath('');
+
+        return $this->successResponse($absensi, 'Data absensi berhasil diambil');
+    }
+
+    /**
      * Tambah data absensi baru
      */
     public function store(Request $request): JsonResponse

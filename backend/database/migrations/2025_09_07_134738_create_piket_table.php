@@ -15,8 +15,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('cpmi_id')->nullable();
             $table->date('tanggal')->nullable();
-            $table->time('jam_mulai')->nullable();
-            $table->time('jam_selesai')->nullable();
+            $table->time('jam_masuk')->nullable();
+            $table->time('jam_keluar')->nullable();
             $table->longText('kegiatan')->nullable();
             $table->json('foto_kegiatan')->nullable();
             $table->timestamps();

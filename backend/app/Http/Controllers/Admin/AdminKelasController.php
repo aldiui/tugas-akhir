@@ -25,7 +25,7 @@ class AdminKelasController extends Controller
                 $q->where('nama', 'REGEXP', $search);
             });
         }
-        
+
         if (in_array($orderBy, ['id', 'nama', 'created_at', 'updated_at'])) {
             $sortBy = strtolower($sortBy) === 'desc' ? 'desc' : 'asc';
             $query->orderBy($orderBy, $sortBy);

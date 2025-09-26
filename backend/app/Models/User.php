@@ -6,6 +6,7 @@ use App\Models\Kelas;
 use App\Models\Piket;
 use App\Models\Lokasi;
 use App\Models\Absensi;
+use App\Models\PengalamanKerja;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -63,5 +64,10 @@ class User extends Authenticatable
     public function pikets()
     {
         return $this->hasMany(Piket::class, 'cpmi_id', 'id');
+    }
+
+    public function pengalamanKerjas()
+    {
+        return $this->hasMany(PengalamanKerja::class, 'cpmi_id', 'id');
     }
 }

@@ -1,17 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MeController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Cpmi\CpmiPiketController;
+use App\Http\Controllers\Admin\AdminKelasController;
+use App\Http\Controllers\Admin\AdminLokasiController;
+use App\Http\Controllers\Admin\AdminMataPelajaranController;
+use App\Http\Controllers\Admin\AdminNegaraController;
+use App\Http\Controllers\Admin\AdminNotifikasiController;
+use App\Http\Controllers\Admin\AdminPermissionController;
 use App\Http\Controllers\Admin\AdminRoleController;
 use App\Http\Controllers\Admin\AdminUserController;
-use App\Http\Controllers\Admin\AdminKelasController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Cpmi\CpmiAbsensiController;
-use App\Http\Controllers\Admin\AdminLokasiController;
-use App\Http\Controllers\Admin\AdminNegaraController;
-use App\Http\Controllers\Admin\AdminPermissionController;
-use App\Http\Controllers\Admin\AdminMataPelajaranController;
+use App\Http\Controllers\Cpmi\CpmiJadwalPelajaranController;
+use App\Http\Controllers\Cpmi\CpmiPengalamanKerjaController;
+use App\Http\Controllers\Cpmi\CpmiPiketController;
+use App\Http\Controllers\MeController;
+use App\Http\Controllers\Pengajar\PengajarJadwalPelajaranController;
+use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -59,10 +63,35 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/kelas', [AdminKelasController::class, 'store'])->middleware('permission:KLS_CREATE');
         Route::put('/kelas/{id}', [AdminKelasController::class, 'update'])->middleware('permission:KLS_UPDATE');
         Route::delete('/kelas/{id}', [AdminKelasController::class, 'destroy'])->middleware('permission:KLS_DELETE');
+
+        Route::get('/notifikasi', [AdminNotifikasiController::class, 'index'])->middleware('permission:NOT_READ');
+        Route::get('/notifikasi/{id}', [AdminNotifikasiController::class, 'show'])->middleware('permission:NOT_READ');
+        Route::post('/notifikasi', [AdminNotifikasiController::class, 'store'])->middleware('permission:NOT_CREATE');
+        Route::put('/notifikasi/{id}', [AdminNotifikasiController::class, 'update'])->middleware('permission:NOT_UPDATE');
+        Route::delete('/notifikasi/{id}', [AdminNotifikasiController::class, 'destroy'])->middleware('permission:NOT_DELETE');
     });
 
     Route::prefix('cpmi')->group(function () {
+        Route::get('/absensi', [CpmiAbsensiController::class, 'index']);
         Route::post('/absensi', [CpmiAbsensiController::class, 'store']);
+
+        Route::get('/piket', [CpmiPiketController::class, 'index']);
         Route::post('/piket', [CpmiPiketController::class, 'store']);
+
+        Route::get('/jadwal-pelajaran', [CpmiJadwalPelajaranController::class, 'index']);
+
+        Route::get('/pengalaman-kerja', [CpmiPengalamanKerjaController::class, 'index']);
+        Route::get('/pengalaman-kerja/{id}', [CpmiPengalamanKerjaController::class, 'show']);
+        Route::post('/pengalaman-kerja', [CpmiPengalamanKerjaController::class, 'store']);
+        Route::put('/pengalaman-kerja/{id}', [CpmiPengalamanKerjaController::class, 'update']);
+        Route::delete('/pengalaman-kerja/{id}', [CpmiPengalamanKerjaController::class, 'destroy']);
+    });
+
+    Route::prefix('pengajar')->group(function () {
+        Route::get('/jadwal-pelajaran', [PengajarJadwalPelajaranController::class, 'index']);
+        Route::get('/jadwal-pelajaran/{id}', [PengajarJadwalPelajaranController::class, 'show']);
+        Route::post('/jadwal-pelajaran', [PengajarJadwalPelajaranController::class, 'store']);
+        Route::put('/jadwal-pelajaran/{id}', [PengajarJadwalPelajaranController::class, 'update']);
+        Route::delete('/jadwal-pelajaran/{id}', [PengajarJadwalPelajaranController::class, 'destroy']);
     });
 });
