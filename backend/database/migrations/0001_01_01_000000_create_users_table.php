@@ -37,8 +37,10 @@ return new class extends Migration
             $table->uuid('role_id');
             $table->uuid('lokasi_id')->nullable();
             $table->uuid('kelas_id')->nullable();
+            $table->uuid('negara_id')->nullable();
             $table->string('nama');
             $table->string('email')->unique();
+            $table->string('nik')->nullable();
             $table->string('nomor_telepon')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -49,7 +51,7 @@ return new class extends Migration
             $table->string('alamat')->nullable();
             $table->enum('status', ['Pendaftaran', 'Aktif', 'Tidak Aktif', 'Sudah Terbang', 'Pengajar', 'Admin'])->default('Pendaftaran');
             $table->string('foto')->nullable();
-            $table->json('keahlians')->nullable();
+            $table->json('keahlian')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
