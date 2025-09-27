@@ -14,10 +14,14 @@ use App\Http\Controllers\Cpmi\CpmiJadwalPelajaranController;
 use App\Http\Controllers\Cpmi\CpmiPengalamanKerjaController;
 use App\Http\Controllers\Cpmi\CpmiPiketController;
 use App\Http\Controllers\MeController;
+use App\Http\Controllers\OtherController;
 use App\Http\Controllers\Pengajar\PengajarJadwalPelajaranController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/registrasi', [AuthController::class, 'registrasi']);
+Route::get('/lokasi', [OtherController::class, 'getLokasi']);
+Route::get('/negara', [OtherController::class, 'getNegara']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);

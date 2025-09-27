@@ -49,7 +49,7 @@ class MeController extends Controller
         $user = auth()->user();
 
         $data = [
-            'user'       => $user->only('nama', 'email', 'nomor_telepon'),
+            'user'       => $user,
             'role'       => $user->role ? $user->role->only('nama', 'tipe') : null,
             'permission' => $user->role
                 ? $user->role->permissions->map(function ($permission) {
