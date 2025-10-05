@@ -1,35 +1,44 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminKelasController;
 use App\Http\Controllers\Admin\AdminLokasiController;
 use App\Http\Controllers\Admin\AdminMataPelajaranController;
+use App\Http\Controllers\Admin\AdminMeController;
 use App\Http\Controllers\Admin\AdminNegaraController;
 use App\Http\Controllers\Admin\AdminNotifikasiController;
 use App\Http\Controllers\Admin\AdminPermissionController;
 use App\Http\Controllers\Admin\AdminRoleController;
 use App\Http\Controllers\Admin\AdminUserController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Cpmi\CpmiAbsensiController;
+use App\Http\Controllers\Cpmi\CpmiAuthController;
 use App\Http\Controllers\Cpmi\CpmiJadwalPelajaranController;
+use App\Http\Controllers\Cpmi\CpmiMeController;
+use App\Http\Controllers\Cpmi\CpmiOtherController;
 use App\Http\Controllers\Cpmi\CpmiPengalamanKerjaController;
 use App\Http\Controllers\Cpmi\CpmiPiketController;
-use App\Http\Controllers\MeController;
-use App\Http\Controllers\OtherController;
+use App\Http\Controllers\Pengajar\PengajarAuthController;
 use App\Http\Controllers\Pengajar\PengajarJadwalPelajaranController;
+use App\Http\Controllers\Pengajar\PengajarMeController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/registrasi', [AuthController::class, 'registrasi']);
-Route::get('/lokasi', [OtherController::class, 'getLokasi']);
-Route::get('/negara', [OtherController::class, 'getNegara']);
+Route::prefix('cpmi')->group(function () {
+    Route::post('/login', [CpmiAuthController::class, 'login']);
+    Route::post('/registrasi', [CpmiAuthController::class, 'registrasi']);
+    Route::get('/lokasi', [CpmiOtherController::class, 'getLokasi']);
+    Route::get('/negara', [CpmiOtherController::class, 'getNegara']);
+});
+
+Route::post('/admin/login', [AdminAuthController::class, 'login']);
+Route::post('/pengajar/login', [PengajarAuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::put('/change-password', [MeController::class, 'changePassword']);
-    Route::get('/profile', [MeController::class, 'profile']);
-    Route::put('/update-profile', [MeController::class, 'updateProfile']);
+    Route::prefix('admin')->middleware('roleType:ADMIN')->group(function () {
+        Route::put('/change-password', [AdminMeController::class, 'changePassword']);
+        Route::get('/profile', [AdminMeController::class, 'profile']);
+        Route::put('/update-profile', [AdminMeController::class, 'updateProfile']);
 
-    Route::prefix('admin')->group(function () {
+        Route::post('/logout', [AdminAuthController::class, 'logout']);
         Route::get('/permission', [AdminPermissionController::class, 'index'])->middleware('permission:PERM_READ');
 
         Route::get('/role', [AdminRoleController::class, 'index'])->middleware('permission:ROL_READ');
@@ -75,7 +84,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/notifikasi/{id}', [AdminNotifikasiController::class, 'destroy'])->middleware('permission:NOT_DELETE');
     });
 
-    Route::prefix('cpmi')->group(function () {
+    Route::prefix('cpmi')->middleware('roleType:CPMI')->group(function () {
+        Route::put('/change-password', [CpmiMeController::class, 'changePassword']);
+        Route::get('/profile', [CpmiMeController::class, 'profile']);
+        Route::put('/update-profile', [CpmiMeController::class, 'updateProfile']);
+
+        Route::post('/logout', [CpmiAuthController::class, 'logout']);
+
         Route::get('/absensi', [CpmiAbsensiController::class, 'index']);
         Route::post('/absensi', [CpmiAbsensiController::class, 'store']);
 
@@ -91,7 +106,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/pengalaman-kerja/{id}', [CpmiPengalamanKerjaController::class, 'destroy']);
     });
 
-    Route::prefix('pengajar')->group(function () {
+    Route::prefix('pengajar')->middleware('roleType:PENGAJAR')->group(function () {
+        Route::put('/change-password', [PengajarMeController::class, 'changePassword']);
+        Route::get('/profile', [PengajarMeController::class, 'profile']);
+        Route::put('/update-profile', [PengajarMeController::class, 'updateProfile']);
+
+        Route::post('/logout', [PengajarAuthController::class, 'logout']);
+
         Route::get('/jadwal-pelajaran', [PengajarJadwalPelajaranController::class, 'index']);
         Route::get('/jadwal-pelajaran/{id}', [PengajarJadwalPelajaranController::class, 'show']);
         Route::post('/jadwal-pelajaran', [PengajarJadwalPelajaranController::class, 'store']);

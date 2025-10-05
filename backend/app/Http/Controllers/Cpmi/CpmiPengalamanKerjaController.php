@@ -20,11 +20,6 @@ class CpmiPengalamanKerjaController extends Controller
         $sortBy  = $request->input('sort_by', 'asc');
 
         $cpmi = $request->user();
-
-        if (! $cpmi || $cpmi->role->tipe !== 'CPMI') {
-            return $this->errorResponse('Akses ditolak. Hanya CPMI yang dapat melakukan aksi ini.', 403);
-        }
-
         $query = PengalamanKerja::query();
         $query->where('cpmi_id', $cpmi->id);
         if ($search) {
@@ -67,11 +62,6 @@ class CpmiPengalamanKerjaController extends Controller
         ]);
 
         $cpmi = $request->user();
-
-        if (! $cpmi || $cpmi->role->tipe !== 'CPMI') {
-            return $this->errorResponse('Akses ditolak. Hanya CPMI yang dapat melakukan aksi ini.', 403);
-        }
-
         DB::beginTransaction();
         try {
             $pengalamanKerja = PengalamanKerja::create([
@@ -96,11 +86,6 @@ class CpmiPengalamanKerjaController extends Controller
     public function show(string $id): JsonResponse
     {
         $cpmi = auth()->user();
-
-        if (! $cpmi || $cpmi->role->tipe !== 'CPMI') {
-            return $this->errorResponse('Akses ditolak. Hanya CPMI yang dapat melakukan aksi ini.', 403);
-        }
-
         $pengalamanKerja = PengalamanKerja::where('id', $id)
             ->where('cpmi_id', $cpmi->id)
             ->firstOrFail();
@@ -122,11 +107,6 @@ class CpmiPengalamanKerjaController extends Controller
         ]);
 
         $cpmi = auth()->user();
-
-        if (! $cpmi || $cpmi->role->tipe !== 'CPMI') {
-            return $this->errorResponse('Akses ditolak. Hanya CPMI yang dapat melakukan aksi ini.', 403);
-        }
-
         $pengalamanKerja = PengalamanKerja::where('id', $id)
             ->where('cpmi_id', $cpmi->id)
             ->firstOrFail();
@@ -154,11 +134,6 @@ class CpmiPengalamanKerjaController extends Controller
     public function destroy(string $id): JsonResponse
     {
         $cpmi = auth()->user();
-
-        if (! $cpmi || $cpmi->role->tipe !== 'CPMI') {
-            return $this->errorResponse('Akses ditolak. Hanya CPMI yang dapat melakukan aksi ini.', 403);
-        }
-
         $pengalamanKerja = PengalamanKerja::where('id', $id)
             ->where('cpmi_id', $cpmi->id)
             ->firstOrFail();

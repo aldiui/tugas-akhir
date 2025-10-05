@@ -1,11 +1,11 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cpmi;
 
 use App\Http\Controllers\Controller;
 use App\Models\Lokasi;
 use App\Models\Negara;
 
-class OtherController extends Controller
+class CpmiOtherController extends Controller
 {
     /**
      * Ambil semua data lokasi

@@ -14,12 +14,7 @@ class CpmiJadwalPelajaranController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $cpmi = $request->user();
-
-        if (! $cpmi || $cpmi->role->tipe !== 'CPMI') {
-            return $this->errorResponse('Akses ditolak. Hanya CPMI yang dapat melakukan aksi ini.', 403);
-        }
-
+        $cpmi  = $request->user();
         $kelas = Kelas::with('pengajar')->find($cpmi->kelas_id);
         if (! $kelas) {
             return $this->errorResponse('Kelas tidak ditemukan', 404);

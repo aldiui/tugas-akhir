@@ -21,11 +21,6 @@ class CpmiPiketController extends Controller
         $sortBy  = $request->input('sort_by', 'asc');
 
         $cpmi = $request->user();
-
-        if (! $cpmi || $cpmi->role->tipe !== 'CPMI') {
-            return $this->errorResponse('Akses ditolak. Hanya CPMI yang dapat melakukan aksi ini.', 403);
-        }
-
         $query = Piket::query();
         $query->where('cpmi_id', $cpmi->id);
         if ($search) {
@@ -65,11 +60,6 @@ class CpmiPiketController extends Controller
         ]);
 
         $cpmi = $request->user();
-
-        if (! $cpmi || $cpmi->role->tipe !== 'CPMI') {
-            return $this->errorResponse('Akses ditolak. Hanya CPMI yang dapat melakukan aksi ini.', 403);
-        }
-
         $tanggal = Carbon::now()->locale('id')->format('Y-m-d');
 
         $checkPiket = Piket::where('user_id', $user->id)

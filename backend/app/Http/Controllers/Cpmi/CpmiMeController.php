@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cpmi;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\AuthenticationException;
@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class MeController extends Controller
+class CpmiMeController extends Controller
 {
     /**
      * Ubah password user

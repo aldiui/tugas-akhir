@@ -8,6 +8,7 @@ use App\Models\Lokasi;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CpmiAbsensiController extends Controller
 {
@@ -21,12 +22,7 @@ class CpmiAbsensiController extends Controller
         $orderBy = $request->input('order_by', 'created_at');
         $sortBy  = $request->input('sort_by', 'asc');
 
-        $cpmi = $request->user();
-
-        if (! $cpmi || $cpmi->role->tipe !== 'CPMI') {
-            return $this->errorResponse('Akses ditolak. Hanya CPMI yang dapat melakukan aksi ini.', 403);
-        }
-
+        $cpmi  = $request->user();
         $query = Absensi::query();
         $query->where('cpmi_id', $cpmi->id);
         if ($search) {
@@ -67,12 +63,7 @@ class CpmiAbsensiController extends Controller
             'alasan' => 'nullable|string',
         ]);
 
-        $cpmi = $request->user();
-
-        if (! $cpmi || $cpmi->role->tipe !== 'CPMI') {
-            return $this->errorResponse('Akses ditolak. Hanya CPMI yang dapat melakukan aksi ini.', 403);
-        }
-
+        $cpmi   = $request->user();
         $lokasi = Lokasi::find($cpmi->lokasi_id);
 
         $tanggal = Carbon::now()->locale('id')->format('Y-m-d');
@@ -123,35 +114,42 @@ class CpmiAbsensiController extends Controller
             return $this->errorResponse("Anda terlambat melakukan absensi masuk selama {$lamaTelat}. Silakan berikan alasan untuk melanjutkan absensi.", 400);
         }
 
-        if (! $absensi) {
-            $absensi = Absensi::create([
-                'cpmi_id'         => $cpmi->id,
-                'tanggal'         => $tanggal,
-                'jam_masuk'       => $jam,
-                'status_masuk'    => $status === 'terlambat' ? 'Terlambat' : 'Hadir',
-                'latitude_masuk'  => $latitude,
-                'longitude_masuk' => $longitude,
-                'alasan_masuk'    => $request->input('alasan') ?? null,
-            ]);
+        DB::beginTransaction();
+        try {
+            if (! $absensi) {
+                $absensi = Absensi::create([
+                    'cpmi_id'         => $cpmi->id,
+                    'tanggal'         => $tanggal,
+                    'jam_masuk'       => $jam,
+                    'status_masuk'    => $status === 'terlambat' ? 'Terlambat' : 'Hadir',
+                    'latitude_masuk'  => $latitude,
+                    'longitude_masuk' => $longitude,
+                    'alasan_masuk'    => $request->input('alasan') ?? null,
+                ]);
 
-            $message = $status === 'terlambat'
-                ? 'Anda terlambat melakukan absensi masuk. Terima kasih telah memberikan alasan.'
-                : 'Absensi masuk berhasil. Terima kasih telah melakukan absensi.';
+                $message = $status === 'terlambat'
+                    ? 'Anda terlambat melakukan absensi masuk. Terima kasih telah memberikan alasan.'
+                    : 'Absensi masuk berhasil. Terima kasih telah melakukan absensi.';
 
-            return $this->successResponse($absensi, $message, 201);
-        } else if ($isKeluar && ! $absensi->jam_keluar) {
-            $absensi->update([
-                'jam_keluar'       => $jam,
-                'status_keluar'    => 'Hadir',
-                'latitude_keluar'  => $latitude,
-                'longitude_keluar' => $longitude,
-                'alasan_keluar'    => $request->input('alasan') ?? null,
-            ]);
+                return $this->successResponse($absensi, $message, 201);
+            } else if ($isKeluar && ! $absensi->jam_keluar) {
+                $absensi->update([
+                    'jam_keluar'       => $jam,
+                    'status_keluar'    => 'Hadir',
+                    'latitude_keluar'  => $latitude,
+                    'longitude_keluar' => $longitude,
+                    'alasan_keluar'    => $request->input('alasan') ?? null,
+                ]);
 
-            $message = 'Absensi pulang berhasil. Semangat terus!';
+                $message = 'Absensi pulang berhasil. Semangat terus!';
 
-            return $this->successResponse($absensi, $message, 200);
+                return $this->successResponse($absensi, $message, 200);
+            }
+            DB::commit();
+            return $this->errorResponse('Anda sudah melakukan absensi masuk dan pulang hari ini.', 400);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
         }
-        return $this->errorResponse('Anda sudah melakukan absensi masuk dan pulang hari ini.', 400);
     }
 }

@@ -76,10 +76,10 @@ class RoleSeeder extends Seeder
             ['kode' => 'MPL_DELETE', 'nama' => 'Menghapus Mata Pelajaran'],
 
             // JADWAL PELAJARAN
-            ['kode' => 'JPL_CREATE', 'nama' => 'Membuat Jadwal Pelajaran'],
-            ['kode' => 'JPL_READ', 'nama' => 'Melihat Jadwal Pelajaran'],
-            ['kode' => 'JPL_UPDATE', 'nama' => 'Mengupdate Jadwal Pelajaran'],
-            ['kode' => 'JPL_DELETE', 'nama' => 'Menghapus Jadwal Pelajaran'],
+            ['kode' => 'NOT_CREATE', 'nama' => 'Membuat Notifikasi'],
+            ['kode' => 'NOT_READ', 'nama' => 'Melihat Notifikasi'],
+            ['kode' => 'NOT_UPDATE', 'nama' => 'Mengupdate Notifikasi'],
+            ['kode' => 'NOT_DELETE', 'nama' => 'Menghapus Notifikasi'],
         ];
 
         foreach ($dataPermission as $permission) {

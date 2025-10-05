@@ -1,10 +1,11 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Notifikasi;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class AdminNotifikasiController extends Controller
 {
@@ -124,7 +125,7 @@ class AdminNotifikasiController extends Controller
         } catch (\Throwable $e) {
             DB::rollBack();
         }
-        
+
         return $this->successResponse(null, 'Data notifikasi berhasil dihapus');
     }
 }

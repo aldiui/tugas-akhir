@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cpmi;
 
 use App\Http\Controllers\Controller;
 use App\Models\Role;
@@ -10,10 +10,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class AuthController extends Controller
+class CpmiAuthController extends Controller
 {
     /**
-     * Register user
+     * Register user cpmi
      */
     public function registrasi(Request $request): JsonResponse
     {
@@ -56,7 +56,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Login user
+     * Login user cpmi
      */
     public function login(Request $request): JsonResponse
     {
@@ -71,6 +71,11 @@ class AuthController extends Controller
             throw new AuthenticationException('Kredensial tidak valid');
         }
 
+        $role = $user->role()->first();
+        if ($role->type !== 'CPMI') {
+            throw new AuthenticationException('Akses ditolak');
+        }
+
         $token = $user->createToken('auth_token')->plainTextToken;
         $token = explode('|', $token)[1];
 
@@ -78,11 +83,21 @@ class AuthController extends Controller
     }
 
     /**
-     * Logout user
+     * Logout user cpmi
      */
     public function logout(Request $request): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
+        $user = $request->user();
+        if (! $user) {
+            throw new AuthenticationException('User tidak ditemukan');
+        }
+
+        $role = $user->rople()->first();
+        if ($role->type !== 'CPMI') {
+            throw new AuthenticationException('Akses ditolak');
+        }
+
+        $user->currentAccessToken()->delete();
         return $this->successResponse(null, 'Logout berhasil');
     }
 }

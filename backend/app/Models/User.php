@@ -33,7 +33,6 @@ class User extends Authenticatable
         'tanggal_lahir',
         'jenis_kelamin',
         'pendidikan_terakhir',
-        'pengalaman_kerja',
         'alamat',
         'status',
         'foto',
