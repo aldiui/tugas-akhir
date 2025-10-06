@@ -24,18 +24,10 @@ use App\Http\Controllers\Pengajar\PengajarJadwalPelajaranController;
 use App\Http\Controllers\Pengajar\PengajarMeController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('cpmi')->group(function () {
-    Route::post('/login', [CpmiAuthController::class, 'login']);
-    Route::post('/registrasi', [CpmiAuthController::class, 'registrasi']);
-    Route::get('/lokasi', [CpmiOtherController::class, 'getLokasi']);
-    Route::get('/negara', [CpmiOtherController::class, 'getNegara']);
-});
+Route::prefix('admin')->group(function () {
+    Route::post('/login', [AdminAuthController::class, 'login']);
 
-Route::post('/admin/login', [AdminAuthController::class, 'login']);
-Route::post('/pengajar/login', [PengajarAuthController::class, 'login']);
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::prefix('admin')->middleware('roleType:ADMIN')->group(function () {
+    Route::middleware(['auth:sanctum', 'roleType:ADMIN'])->group(function () {
         Route::put('/change-password', [AdminMeController::class, 'changePassword']);
         Route::get('/profile', [AdminMeController::class, 'profile']);
         Route::put('/update-profile', [AdminMeController::class, 'updateProfile']);
@@ -97,8 +89,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/jenis-pekerjaan/{id}', [AdminJenisPekerjaanController::class, 'update'])->middleware('permission:JPK_UPDATE');
         Route::delete('/jenis-pekerjaan/{id}', [AdminJenisPekerjaanController::class, 'destroy'])->middleware('permission:JPK_DELETE');
     });
+});
 
-    Route::prefix('cpmi')->middleware('roleType:CPMI')->group(function () {
+Route::prefix('cpmi')->group(function () {
+    Route::post('/login', [CpmiAuthController::class, 'login']);
+    Route::post('/registrasi', [CpmiAuthController::class, 'registrasi']);
+    Route::get('/lokasi', [CpmiOtherController::class, 'getLokasi']);
+    Route::get('/negara', [CpmiOtherController::class, 'getNegara']);
+
+    Route::middleware(['auth:sanctum', 'roleType:CPMI'])->group(function () {
         Route::put('/change-password', [CpmiMeController::class, 'changePassword']);
         Route::get('/profile', [CpmiMeController::class, 'profile']);
         Route::put('/update-profile', [CpmiMeController::class, 'updateProfile']);
@@ -119,8 +118,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/pengalaman-kerja/{id}', [CpmiPengalamanKerjaController::class, 'update']);
         Route::delete('/pengalaman-kerja/{id}', [CpmiPengalamanKerjaController::class, 'destroy']);
     });
+});
 
-    Route::prefix('pengajar')->middleware('roleType:PENGAJAR')->group(function () {
+Route::prefix('pengajar')->middleware('roleType:PENGAJAR')->group(function () {
+    Route::post('/login', [PengajarAuthController::class, 'login']);
+
+    Route::middleware(['auth:sanctum', 'roleType:PENGAJAR'])->group(function () {
         Route::put('/change-password', [PengajarMeController::class, 'changePassword']);
         Route::get('/profile', [PengajarMeController::class, 'profile']);
         Route::put('/update-profile', [PengajarMeController::class, 'updateProfile']);
