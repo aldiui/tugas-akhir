@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminIzinController;
 use App\Http\Controllers\Admin\AdminJenisPekerjaanController;
 use App\Http\Controllers\Admin\AdminKelasController;
 use App\Http\Controllers\Admin\AdminLokasiController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\Admin\AdminSektorController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Cpmi\CpmiAbsensiController;
 use App\Http\Controllers\Cpmi\CpmiAuthController;
+use App\Http\Controllers\Cpmi\CpmiIzinController;
 use App\Http\Controllers\Cpmi\CpmiJadwalPelajaranController;
 use App\Http\Controllers\Cpmi\CpmiMeController;
 use App\Http\Controllers\Cpmi\CpmiOtherController;
@@ -88,6 +90,11 @@ Route::prefix('admin')->group(function () {
         Route::post('/jenis-pekerjaan', [AdminJenisPekerjaanController::class, 'store'])->middleware('permission:JPK_CREATE');
         Route::put('/jenis-pekerjaan/{id}', [AdminJenisPekerjaanController::class, 'update'])->middleware('permission:JPK_UPDATE');
         Route::delete('/jenis-pekerjaan/{id}', [AdminJenisPekerjaanController::class, 'destroy'])->middleware('permission:JPK_DELETE');
+
+        Route::get('/izin', [AdminIzinController::class, 'index'])->middleware('permission:IZN_READ');
+        Route::get('/izin/{id}', [AdminIzinController::class, 'show'])->middleware('permission:IZN_READ');
+        Route::put('/izin{id}', [AdminIzinController::class, 'update'])->middleware('permission:IZN_UPDATE');
+        Route::delete('/izin{id}', [AdminIzinController::class, 'destroy'])->middleware('permission:IZN_DELETE');
     });
 });
 
@@ -108,7 +115,12 @@ Route::prefix('cpmi')->group(function () {
         Route::post('/absensi', [CpmiAbsensiController::class, 'store']);
 
         Route::get('/piket', [CpmiPiketController::class, 'index']);
+        Route::get('/piket/{id}', [CpmiPiketController::class, 'show']);
         Route::post('/piket', [CpmiPiketController::class, 'store']);
+
+        Route::get('/izin', [CpmiIzinController::class, 'index']);
+        Route::get('/izin/{id}', [CpmiIzinController::class, 'show']);
+        Route::post('/izin', [CpmiIzinController::class, 'store']);
 
         Route::get('/jadwal-pelajaran', [CpmiJadwalPelajaranController::class, 'index']);
 

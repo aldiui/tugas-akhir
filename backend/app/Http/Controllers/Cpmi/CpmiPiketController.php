@@ -86,4 +86,17 @@ class CpmiPiketController extends Controller
 
         return $this->successResponse($piket, 'Data piket berhasil ditambahkan', 201);
     }
+
+    /**
+     * Ambil detail piket berdasarkan ID
+     */
+    public function show(string $id): JsonResponse
+    {
+        $cpmi  = auth()->user();
+        $piket = Piket::where('id', $id)
+            ->where('cpmi_id', $cpmi->id)
+            ->firstOrFail();
+
+        return $this->successResponse($piket, 'Detail piket berhasil diambil');
+    }
 }
