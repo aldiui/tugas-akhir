@@ -120,7 +120,7 @@ Route::prefix('cpmi')->group(function () {
     });
 });
 
-Route::prefix('pengajar')->middleware('roleType:PENGAJAR')->group(function () {
+Route::prefix('pengajar')->middleware('roleType:Pengajar')->group(function () {
     Route::post('/login', [PengajarAuthController::class, 'login']);
 
     Route::middleware(['auth:sanctum', 'roleType:Pengajar'])->group(function () {
