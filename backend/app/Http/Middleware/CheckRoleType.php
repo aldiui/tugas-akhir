@@ -20,15 +20,13 @@ class CheckRoleType
         $role = $user->role;
         if (! $role) {
             throw new AuthorizationException('User tidak memiliki role');
-        }
+        };
 
-        $roleType = strtoupper($roleType);
-
-        if (! in_array($roleType, ['CPMI', 'PENGAJAR', 'ADMIN'])) {
+        if (! in_array($roleType, ['CPMI', 'Pengajar', 'Admin'])) {
             throw new AuthorizationException('Role type tidak valid');
         }
 
-        if ($role->type !== $roleType) {
+        if ($role->tipe !== $roleType) {
             throw new AuthorizationException('Tidak memiliki izin');
         }
 

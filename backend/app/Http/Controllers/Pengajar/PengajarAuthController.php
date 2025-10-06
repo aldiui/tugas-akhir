@@ -27,7 +27,7 @@ class PengajarAuthController extends Controller
         }
 
         $role = $user->role()->first();
-        if ($role->type !== 'Pengajar') {
+        if ($role->tipe !== 'Pengajar') {
             throw new AuthenticationException('Akses ditolak');
         }
 
@@ -48,7 +48,7 @@ class PengajarAuthController extends Controller
         }
 
         $role = $user->role()->first();
-        if ($role->type !== 'Pengajar') {
+        if ($role->tipe !== 'Pengajar') {
             throw new AuthenticationException('Akses ditolak');
         }
 

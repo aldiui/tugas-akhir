@@ -78,7 +78,7 @@ class CpmiAuthController extends Controller
         }
 
         $role = $user->role()->first();
-        if ($role->type !== 'CPMI') {
+        if ($role->tipe !== 'CPMI') {
             throw new AuthenticationException('Akses ditolak');
         }
 
@@ -99,7 +99,7 @@ class CpmiAuthController extends Controller
         }
 
         $role = $user->rople()->first();
-        if ($role->type !== 'CPMI') {
+        if ($role->tipe !== 'CPMI') {
             throw new AuthenticationException('Akses ditolak');
         }
 

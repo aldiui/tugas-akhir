@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('admin')->group(function () {
     Route::post('/login', [AdminAuthController::class, 'login']);
 
-    Route::middleware(['auth:sanctum', 'roleType:ADMIN'])->group(function () {
+    Route::middleware(['auth:sanctum', 'roleType:Admin'])->group(function () {
         Route::put('/change-password', [AdminMeController::class, 'changePassword']);
         Route::get('/profile', [AdminMeController::class, 'profile']);
         Route::put('/update-profile', [AdminMeController::class, 'updateProfile']);
@@ -123,7 +123,7 @@ Route::prefix('cpmi')->group(function () {
 Route::prefix('pengajar')->middleware('roleType:PENGAJAR')->group(function () {
     Route::post('/login', [PengajarAuthController::class, 'login']);
 
-    Route::middleware(['auth:sanctum', 'roleType:PENGAJAR'])->group(function () {
+    Route::middleware(['auth:sanctum', 'roleType:Pengajar'])->group(function () {
         Route::put('/change-password', [PengajarMeController::class, 'changePassword']);
         Route::get('/profile', [PengajarMeController::class, 'profile']);
         Route::put('/update-profile', [PengajarMeController::class, 'updateProfile']);

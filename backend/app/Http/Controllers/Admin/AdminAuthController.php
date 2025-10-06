@@ -27,7 +27,7 @@ class AdminAuthController extends Controller
         }
 
         $role = $user->role()->first();
-        if ($role->type !== 'Admin') {
+        if ($role->tipe !== 'Admin') {
             throw new AuthenticationException('Akses ditolak');
         }
 
@@ -48,7 +48,7 @@ class AdminAuthController extends Controller
         }
 
         $role = $user->role()->first();
-        if ($role->type !== 'Admin') {
+        if ($role->tipe !== 'Admin') {
             throw new AuthenticationException('Akses ditolak');
         }
 
