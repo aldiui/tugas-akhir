@@ -54,9 +54,10 @@ class CpmiPiketController extends Controller
     public function store(Request $request): JsonResponse
     {
         $request->validate([
-            'jam_masuk'  => 'required|date_format:H:i',
-            'jam_keluar' => 'required|date_format:H:i|after:jam_masuk',
-            'kegiatan'   => 'required|string',
+            'jam_masuk'     => 'required|date_format:H:i',
+            'jam_keluar'    => 'required|date_format:H:i|after:jam_masuk',
+            'kegiatan'      => 'required|string',
+            'foto_kegiatan' => 'nullable|array',
         ]);
 
         $cpmi    = $request->user();
@@ -73,11 +74,12 @@ class CpmiPiketController extends Controller
         DB::beginTransaction();
         try {
             $piket = Piket::create([
-                'user_id'    => $user->id,
-                'tanggal'    => $tanggal,
-                'jam_masuk'  => $request->input('jam_masuk'),
-                'jam_keluar' => $request->input('jam_keluar'),
-                'kegiatan'   => $request->input('kegiatan'),
+                'user_id'       => $user->id,
+                'tanggal'       => $tanggal,
+                'jam_masuk'     => $request->input('jam_masuk'),
+                'jam_keluar'    => $request->input('jam_keluar'),
+                'kegiatan'      => $request->input('kegiatan'),
+                'foto_kegiatan' => $request->input('foto_kegiatan'),
             ]);
             DB::commit();
         } catch (\Exception $e) {
