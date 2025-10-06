@@ -12,20 +12,8 @@ class CpmiData extends Model
 {
     use HasFactory, HasUuids, SoftDeletes;
 
-    protected $table    = 'cpmi_data';
-    protected $fillable = [
-        'cpmi_id',
-        'kelas_id',
-        'negara_id',
-        'jenis_pekerjaan_id',
-        'nik',
-        'nomor_pmi',
-        'tanggal_lahir',
-        'jenis_kelamin',
-        'pendidikan_terakhir',
-        'status',
-        'keahlian',
-    ];
+    protected $table   = 'cpmi_data';
+    protected $guarded = [];
 
     protected $casts = [
         'keahlian' => 'array',

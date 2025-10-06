@@ -1,30 +1,32 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminAuthController;
-use App\Http\Controllers\Admin\AdminIzinController;
-use App\Http\Controllers\Admin\AdminJenisPekerjaanController;
-use App\Http\Controllers\Admin\AdminKelasController;
-use App\Http\Controllers\Admin\AdminLokasiController;
-use App\Http\Controllers\Admin\AdminMataPelajaranController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Cpmi\CpmiMeController;
 use App\Http\Controllers\Admin\AdminMeController;
-use App\Http\Controllers\Admin\AdminNegaraController;
-use App\Http\Controllers\Admin\AdminNotifikasiController;
-use App\Http\Controllers\Admin\AdminPermissionController;
-use App\Http\Controllers\Admin\AdminRoleController;
-use App\Http\Controllers\Admin\AdminSektorController;
-use App\Http\Controllers\Admin\AdminUserController;
-use App\Http\Controllers\Cpmi\CpmiAbsensiController;
 use App\Http\Controllers\Cpmi\CpmiAuthController;
 use App\Http\Controllers\Cpmi\CpmiIzinController;
-use App\Http\Controllers\Cpmi\CpmiJadwalPelajaranController;
-use App\Http\Controllers\Cpmi\CpmiMeController;
 use App\Http\Controllers\Cpmi\CpmiOtherController;
-use App\Http\Controllers\Cpmi\CpmiPengalamanKerjaController;
 use App\Http\Controllers\Cpmi\CpmiPiketController;
-use App\Http\Controllers\Pengajar\PengajarAuthController;
-use App\Http\Controllers\Pengajar\PengajarJadwalPelajaranController;
+use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminCpmiController;
+use App\Http\Controllers\Admin\AdminIzinController;
+use App\Http\Controllers\Admin\AdminRoleController;
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AdminKelasController;
+use App\Http\Controllers\Cpmi\CpmiAbsensiController;
+use App\Http\Controllers\Admin\AdminLokasiController;
+use App\Http\Controllers\Admin\AdminNegaraController;
+use App\Http\Controllers\Admin\AdminSektorController;
+use App\Http\Controllers\Admin\AdminKeahlianController;
 use App\Http\Controllers\Pengajar\PengajarMeController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AdminNotifikasiController;
+use App\Http\Controllers\Admin\AdminPermissionController;
+use App\Http\Controllers\Pengajar\PengajarAuthController;
+use App\Http\Controllers\Admin\AdminMataPelajaranController;
+use App\Http\Controllers\Cpmi\CpmiJadwalPelajaranController;
+use App\Http\Controllers\Cpmi\CpmiPengalamanKerjaController;
+use App\Http\Controllers\Admin\AdminJenisPekerjaanController;
+use App\Http\Controllers\Pengajar\PengajarJadwalPelajaranController;
 
 Route::prefix('admin')->group(function () {
     Route::post('/login', [AdminAuthController::class, 'login']);
@@ -95,6 +97,12 @@ Route::prefix('admin')->group(function () {
         Route::get('/izin/{id}', [AdminIzinController::class, 'show'])->middleware('permission:IZN_READ');
         Route::put('/izin{id}', [AdminIzinController::class, 'update'])->middleware('permission:IZN_UPDATE');
         Route::delete('/izin{id}', [AdminIzinController::class, 'destroy'])->middleware('permission:IZN_DELETE');
+
+        Route::get('/cpmi', [AdminCpmiController::class, 'index'])->middleware('permission:USR_READ');
+        Route::get('/cpmi/{id}', [AdminCpmiController::class, 'show'])->middleware('permission:USR_READ');
+        Route::post('/cpmi', [AdminCpmiController::class, 'store'])->middleware('permission:USR_CREATE');
+        Route::put('/cpmi/{id}', [AdminCpmiController::class, 'update'])->middleware('permission:USR_UPDATE');
+        Route::delete('/cpmi/{id}', [AdminCpmiController::class, 'destroy'])->middleware('permission:USR_DELETE');
     });
 });
 

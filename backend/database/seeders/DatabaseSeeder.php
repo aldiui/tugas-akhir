@@ -1,14 +1,15 @@
 <?php
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use Database\Seeders\RoleSeeder;
-use Database\Seeders\UserSeeder;
-use Database\Seeders\LokasiSeeder;
-use Database\Seeders\NegaraSeeder;
-use Database\Seeders\SektorSeeder;
-use Database\Seeders\MataPelajaranSeeder;
 use Database\Seeders\JenisPekerjaanSeeder;
+use Database\Seeders\KeahlianSeeder;
+use Database\Seeders\LokasiSeeder;
+use Database\Seeders\MataPelajaranSeeder;
+use Database\Seeders\NegaraSeeder;
+use Database\Seeders\RoleSeeder;
+use Database\Seeders\SektorSeeder;
+use Database\Seeders\UserSeeder;
+use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {

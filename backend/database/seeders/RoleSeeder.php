@@ -98,6 +98,12 @@ class RoleSeeder extends Seeder
             ['kode' => 'IZN_READ', 'nama' => 'Melihat Izin'],
             ['kode' => 'IZN_UPDATE', 'nama' => 'Mengupdate Izin'],
             ['kode' => 'IZN_DELETE', 'nama' => 'Menghapus Izin'],
+
+            // Keahlian
+            ['kode' => 'KHL_CREATE', 'nama' => 'Membuat Keahlian'],
+            ['kode' => 'KHL_READ', 'nama' => 'Melihat Keahlian'],
+            ['kode' => 'KHL_UPDATE', 'nama' => 'Mengupdate Keahlian'],
+            ['kode' => 'KHL_DELETE', 'nama' => 'Menghapus Keahlian'],
         ];
 
         foreach ($dataPermission as $permission) {
