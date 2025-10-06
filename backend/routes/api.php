@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminJenisPekerjaanController;
 use App\Http\Controllers\Admin\AdminKelasController;
 use App\Http\Controllers\Admin\AdminLokasiController;
 use App\Http\Controllers\Admin\AdminMataPelajaranController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\Admin\AdminNegaraController;
 use App\Http\Controllers\Admin\AdminNotifikasiController;
 use App\Http\Controllers\Admin\AdminPermissionController;
 use App\Http\Controllers\Admin\AdminRoleController;
+use App\Http\Controllers\Admin\AdminSektorController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Cpmi\CpmiAbsensiController;
 use App\Http\Controllers\Cpmi\CpmiAuthController;
@@ -82,6 +84,18 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/notifikasi', [AdminNotifikasiController::class, 'store'])->middleware('permission:NOT_CREATE');
         Route::put('/notifikasi/{id}', [AdminNotifikasiController::class, 'update'])->middleware('permission:NOT_UPDATE');
         Route::delete('/notifikasi/{id}', [AdminNotifikasiController::class, 'destroy'])->middleware('permission:NOT_DELETE');
+
+        Route::get('/sektor', [AdminSektorController::class, 'index'])->middleware('permission:SKT_READ');
+        Route::get('/sektor/{id}', [AdminSektorController::class, 'show'])->middleware('permission:SKT_READ');
+        Route::post('/sektor', [AdminSektorController::class, 'store'])->middleware('permission:SKT_CREATE');
+        Route::put('/sektor/{id}', [AdminSektorController::class, 'update'])->middleware('permission:SKT_UPDATE');
+        Route::delete('/sektor/{id}', [AdminSektorController::class, 'destroy'])->middleware('permission:SKT_DELETE');
+
+        Route::get('/jenis-pekerjaan', [AdminJenisPekerjaanController::class, 'index'])->middleware('permission:JPK_READ');
+        Route::get('/jenis-pekerjaan/{id}', [AdminJenisPekerjaanController::class, 'show'])->middleware('permission:JPK_READ');
+        Route::post('/jenis-pekerjaan', [AdminJenisPekerjaanController::class, 'store'])->middleware('permission:JPK_CREATE');
+        Route::put('/jenis-pekerjaan/{id}', [AdminJenisPekerjaanController::class, 'update'])->middleware('permission:JPK_UPDATE');
+        Route::delete('/jenis-pekerjaan/{id}', [AdminJenisPekerjaanController::class, 'destroy'])->middleware('permission:JPK_DELETE');
     });
 
     Route::prefix('cpmi')->middleware('roleType:CPMI')->group(function () {

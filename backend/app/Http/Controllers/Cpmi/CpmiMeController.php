@@ -50,6 +50,7 @@ class CpmiMeController extends Controller
 
         $data = [
             'user'       => $user,
+            'cpmiData'   => $user->cpmiData,
             'role'       => $user->role ? $user->role->only('nama', 'tipe') : null,
             'permission' => $user->role
                 ? $user->role->permissions->map(function ($permission) {

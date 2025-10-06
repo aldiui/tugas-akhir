@@ -80,6 +80,18 @@ class RoleSeeder extends Seeder
             ['kode' => 'NOT_READ', 'nama' => 'Melihat Notifikasi'],
             ['kode' => 'NOT_UPDATE', 'nama' => 'Mengupdate Notifikasi'],
             ['kode' => 'NOT_DELETE', 'nama' => 'Menghapus Notifikasi'],
+
+            // Sektor
+            ['kode' => 'SKT_CREATE', 'nama' => 'Membuat Sektor'],
+            ['kode' => 'SKT_READ', 'nama' => 'Melihat Sektor'],
+            ['kode' => 'SKT_UPDATE', 'nama' => 'Mengupdate Sektor'],
+            ['kode' => 'SKT_DELETE', 'nama' => 'Menghapus Sektor'],
+
+            // Jenis Pekerjaan
+            ['kode' => 'JPK_CREATE', 'nama' => 'Membuat Jenis Pekerjaan'],
+            ['kode' => 'JPK_READ', 'nama' => 'Melihat Jenis Pekerjaan'],
+            ['kode' => 'JPK_UPDATE', 'nama' => 'Mengupdate Jenis Pekerjaan'],
+            ['kode' => 'JPK_DELETE', 'nama' => 'Menghapus Jenis Pekerjaan'],
         ];
 
         foreach ($dataPermission as $permission) {

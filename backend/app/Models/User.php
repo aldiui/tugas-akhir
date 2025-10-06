@@ -1,19 +1,20 @@
 <?php
 namespace App\Models;
 
-use App\Models\Absensi;
+use App\Models\Role;
 use App\Models\Kelas;
+use App\Models\Piket;
 use App\Models\Lokasi;
 use App\Models\Negara;
+use App\Models\Absensi;
+use App\Models\CpmiData;
 use App\Models\PengalamanKerja;
-use App\Models\Piket;
-use App\Models\Role;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -22,21 +23,13 @@ class User extends Authenticatable
     protected $fillable = [
         'role_id',
         'lokasi_id',
-        'kelas_id',
-        'negara_id',
         'nama',
         'email',
-        'nik',
         'nomor_telepon',
         'email_verified_at',
         'password',
-        'tanggal_lahir',
-        'jenis_kelamin',
-        'pendidikan_terakhir',
         'alamat',
-        'status',
         'foto',
-        'keahlian',
     ];
 
     protected $hidden = [
@@ -49,7 +42,6 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password'          => 'hashed',
-            'keahlian'          => 'array',
         ];
     }
 
@@ -62,15 +54,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Lokasi::class);
     }
-
-    public function kelas()
+    public function cpmiData()
     {
-        return $this->belongsTo(Kelas::class);
-    }
-
-    public function negara()
-    {
-        return $this->belongsTo(Negara::class);
+        return $this->hasOne(CpmiData::class, 'cpmi_id', 'id');
     }
 
     public function absensis()

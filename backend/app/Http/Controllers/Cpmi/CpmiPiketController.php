@@ -20,7 +20,7 @@ class CpmiPiketController extends Controller
         $orderBy = $request->input('order_by', 'created_at');
         $sortBy  = $request->input('sort_by', 'asc');
 
-        $cpmi = $request->user();
+        $cpmi  = $request->user();
         $query = Piket::query();
         $query->where('cpmi_id', $cpmi->id);
         if ($search) {
@@ -54,12 +54,12 @@ class CpmiPiketController extends Controller
     public function store(Request $request): JsonResponse
     {
         $request->validate([
-            'jam_masuk'   => 'required|date_format:H:i',
+            'jam_masuk'  => 'required|date_format:H:i',
             'jam_keluar' => 'required|date_format:H:i|after:jam_masuk',
-            'kegiatan'    => 'required|string',
+            'kegiatan'   => 'required|string',
         ]);
 
-        $cpmi = $request->user();
+        $cpmi    = $request->user();
         $tanggal = Carbon::now()->locale('id')->format('Y-m-d');
 
         $checkPiket = Piket::where('user_id', $user->id)
@@ -73,11 +73,11 @@ class CpmiPiketController extends Controller
         DB::beginTransaction();
         try {
             $piket = Piket::create([
-                'user_id'     => $user->id,
-                'tanggal'     => $tanggal,
-                'jam_masuk'   => $request->input('jam_masuk'),
+                'user_id'    => $user->id,
+                'tanggal'    => $tanggal,
+                'jam_masuk'  => $request->input('jam_masuk'),
                 'jam_keluar' => $request->input('jam_keluar'),
-                'kegiatan'    => $request->input('kegiatan'),
+                'kegiatan'   => $request->input('kegiatan'),
             ]);
             DB::commit();
         } catch (\Exception $e) {

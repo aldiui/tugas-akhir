@@ -34,18 +34,24 @@ class CpmiAuthController extends Controller
 
         DB::beginTransaction();
         try {
-            User::create([
+            $cpmi = User::create([
                 'nama'          => $request->input('nama'),
                 'email'         => $request->input('email'),
                 'nomor_telepon' => $request->input('telepon'),
-                'jenis_kelamin' => $request->input('jenis_kelamin'),
                 'alamat'        => $request->input('alamat'),
-                'nik'           => $request->input('nik'),
                 'lokasi_id'     => $request->input('lokasi_id'),
-                'negara_id'     => $request->input('negara_id'),
                 'password'      => Hash::make($request->input('password')),
                 'role_id'       => $roleCpmi->id,
             ]);
+
+            $cpmi->cpmiData()->create([
+                'nik'           => $request->input('nik'),
+                'tanggal_lahir' => null,
+                'jenis_kelamin' => $request->input('jenis_kelamin'),
+                'status'        => 'Pendaftaran',
+                'negara_id'     => $request->input('negara_id'),
+            ]);
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();

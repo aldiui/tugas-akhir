@@ -1,12 +1,14 @@
 <?php
 namespace Database\Seeders;
 
-use Database\Seeders\LokasiSeeder;
-use Database\Seeders\NegaraSeeder;
+use Illuminate\Database\Seeder;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\UserSeeder;
+use Database\Seeders\LokasiSeeder;
+use Database\Seeders\NegaraSeeder;
+use Database\Seeders\SektorSeeder;
 use Database\Seeders\MataPelajaranSeeder;
-use Illuminate\Database\Seeder;
+use Database\Seeders\JenisPekerjaanSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,5 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(NegaraSeeder::class);
         $this->call(LokasiSeeder::class);
         $this->call(MataPelajaranSeeder::class);
+        $this->call(SektorSeeder::class);
+        $this->call(JenisPekerjaanSeeder::class);
     }
 }

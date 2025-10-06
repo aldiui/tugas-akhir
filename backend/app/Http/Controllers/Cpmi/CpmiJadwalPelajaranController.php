@@ -14,8 +14,13 @@ class CpmiJadwalPelajaranController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $cpmi  = $request->user();
-        $kelas = Kelas::with('pengajar')->find($cpmi->kelas_id);
+        $cpmi     = $request->user();
+        $cpmiData = $cpmi->cpmiData;
+        if (! $cpmiData) {
+            return $this->errorResponse('Data CPMI tidak ditemukan', 404);
+        }
+
+        $kelas = Kelas::with('pengajar')->find($cpmiData->kelas_id);
         if (! $kelas) {
             return $this->errorResponse('Kelas tidak ditemukan', 404);
         }

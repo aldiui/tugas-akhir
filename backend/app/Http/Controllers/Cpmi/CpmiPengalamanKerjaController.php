@@ -19,7 +19,7 @@ class CpmiPengalamanKerjaController extends Controller
         $orderBy = $request->input('order_by', 'created_at');
         $sortBy  = $request->input('sort_by', 'asc');
 
-        $cpmi = $request->user();
+        $cpmi  = $request->user();
         $query = PengalamanKerja::query();
         $query->where('cpmi_id', $cpmi->id);
         if ($search) {
@@ -85,7 +85,7 @@ class CpmiPengalamanKerjaController extends Controller
      */
     public function show(string $id): JsonResponse
     {
-        $cpmi = auth()->user();
+        $cpmi            = auth()->user();
         $pengalamanKerja = PengalamanKerja::where('id', $id)
             ->where('cpmi_id', $cpmi->id)
             ->firstOrFail();
@@ -106,7 +106,7 @@ class CpmiPengalamanKerjaController extends Controller
             'deskripsi'       => 'required|string',
         ]);
 
-        $cpmi = auth()->user();
+        $cpmi            = auth()->user();
         $pengalamanKerja = PengalamanKerja::where('id', $id)
             ->where('cpmi_id', $cpmi->id)
             ->firstOrFail();
@@ -133,7 +133,7 @@ class CpmiPengalamanKerjaController extends Controller
      */
     public function destroy(string $id): JsonResponse
     {
-        $cpmi = auth()->user();
+        $cpmi            = auth()->user();
         $pengalamanKerja = PengalamanKerja::where('id', $id)
             ->where('cpmi_id', $cpmi->id)
             ->firstOrFail();

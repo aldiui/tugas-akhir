@@ -1,12 +1,11 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Role;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminUserController extends Controller
 {
@@ -20,7 +19,7 @@ class AdminUserController extends Controller
         $orderBy = $request->input('order_by', 'created_at');
         $sortBy  = $request->input('sort_by', 'asc');
 
-        $query = Role::query();
+        $query = User::query();
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('nama', 'REGEXP', $search)
@@ -52,6 +51,7 @@ class AdminUserController extends Controller
         $request->validate([
             'nama'                => 'required|string|max:255',
             'role_id'             => 'required|uuid|exists:role,id',
+            'lokasi_id'           => 'nullable|exists:lokasi,id',
             'email'               => 'required|string|email|max:255|unique:users,email',
             'password'            => 'required|string|min:8|max:255',
             'konfirmasi_password' => 'required|string|min:8|max:255|same:password',
@@ -60,10 +60,11 @@ class AdminUserController extends Controller
         DB::beginTransaction();
         try {
             $user = User::create([
-                'nama'     => $request->input('nama'),
-                'role_id'  => $request->input('role_id'),
-                'email'    => $request->input('email'),
-                'password' => $request->input('password'),
+                'nama'      => $request->input('nama'),
+                'role_id'   => $request->input('role_id'),
+                'lokasi_id' => $request->input('lokasi_id'),
+                'email'     => $request->input('email'),
+                'password'  => $request->input('password'),
             ]);
             DB::commit();
         } catch (\Throwable $e) {
@@ -90,6 +91,7 @@ class AdminUserController extends Controller
         $request->validate([
             'nama'                => 'required|string|max:255',
             'role_id'             => 'required|uuid|exists:role,id',
+            'lokasi_id'           => 'nullable|exists:lokasi,id',
             'email'               => 'required|string|email|max:255|unique:users,email,' . $id,
             'password'            => 'nullable|string|min:8|max:255',
             'konfirmasi_password' => 'nullable|string|min:8|max:255|same:password',
@@ -100,10 +102,11 @@ class AdminUserController extends Controller
         DB::beginTransaction();
         try {
             $user->update([
-                'nama'     => $request->input('nama'),
-                'role_id'  => $request->input('role_id'),
-                'email'    => $request->input('email'),
-                'password' => $request->input('password') ? bcrypt($request->input('password')) : $user->password,
+                'nama'      => $request->input('nama'),
+                'role_id'   => $request->input('role_id'),
+                'lokasi_id' => $request->input('lokasi_id'),
+                'email'     => $request->input('email'),
+                'password'  => $request->input('password') ? bcrypt($request->input('password')) : $user->password,
             ]);
             DB::commit();
         } catch (\Throwable $e) {
@@ -112,7 +115,6 @@ class AdminUserController extends Controller
 
         return $this->successResponse(null, 'Data user berhasil dihapus');
     }
-
 
     /**
      * Hapus data user berdasarkan ID
