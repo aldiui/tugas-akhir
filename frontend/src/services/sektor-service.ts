@@ -1,22 +1,23 @@
 import api from "@/lib/api"
-import { ApiResponse } from "@/types/api"
+import { ApiResponse, PaginationData } from "@/types/api"
+import { Sektor } from "@/types/sektor"
 
 export const adminSektorCreate = async (body: unknown) => {
-    return api.post<ApiResponse<unknown>>('/api/bahana-admin/sektor', body)
+    return api.post<ApiResponse<Sektor>>('/api/lpk-admin/sektor', body)
 }
 
 export const adminSektorUpdate = async (id: string, body: unknown) => {
-    return api.put<ApiResponse<unknown>>(`/api/bahana-admin/sektor/${id}`, body)
+    return api.put<ApiResponse<Sektor>>(`/api/lpk-admin/sektor/${id}`, body)
 }
 
 export const adminSektorDelete = async (id: string) => {
-    return api.delete<ApiResponse<unknown>>(`/api/bahana-admin/sektor/${id}`)
+    return api.delete<ApiResponse<1 | 0>>(`/api/lpk-admin/sektor/${id}`)
 }
 
 export const adminSektorGetAll = async (params: unknown) => {
-    return api.get<ApiResponse<unknown>>('/api/bahana-admin/sektor', { params })
+    return api.get<ApiResponse<PaginationData<Sektor[]>>>('/api/lpk-admin/sektor', { params })
 }
 
 export const adminSektorGetById = async (id: string) => {
-    return api.get<ApiResponse<unknown>>(`/api/bahana-admin/sektor/${id}`)
+    return api.get<ApiResponse<Sektor>>(`/api/lpk-admin/sektor/${id}`)
 }

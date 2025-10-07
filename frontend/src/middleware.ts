@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const proxies = {
-    '/api/bahana-cpmi/:path*': `${process.env.NEXT_PUBLIC_BASE_URL}/api/cpmi/:path*`,
-    '/api/bahana-admin/:path*': `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/:path*`,
-    '/api/bahana-pengajar/:path*': `${process.env.NEXT_PUBLIC_BASE_URL}/api/pengajar/:path*`,
+    '/api/lpk-cpmi/:path*': `${process.env.NEXT_PUBLIC_BASE_URL}/api/cpmi/:path*`,
+    '/api/lpk-admin/:path*': `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/:path*`,
+    '/api/lpk-pengajar/:path*': `${process.env.NEXT_PUBLIC_BASE_URL}/api/pengajar/:path*`,
 }
 
 export async function middleware(request: NextRequest) {
@@ -13,11 +13,11 @@ export async function middleware(request: NextRequest) {
     
     const requestHeaders = new Headers(request.headers);
     
-    if (request.nextUrl.pathname.startsWith('/api/bahana-cpmi')) {
+    if (request.nextUrl.pathname.startsWith('/api/lpk-cpmi')) {
         requestHeaders.set('Authorization', `Bearer ${tokenCpmi}`);
-    } else if (request.nextUrl.pathname.startsWith('/api/bahana-admin')) {
+    } else if (request.nextUrl.pathname.startsWith('/api/lpk-admin')) {
         requestHeaders.set('Authorization', `Bearer ${tokenAdmin}`);
-    } else if (request.nextUrl.pathname.startsWith('/api/bahana-pengajar')) {
+    } else if (request.nextUrl.pathname.startsWith('/api/lpk-pengajar')) {
         requestHeaders.set('Authorization', `Bearer ${tokenPengajar}`);
     }
 
@@ -50,5 +50,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/api/bahana-cpmi/:path*', '/api/bahana-admin/:path*', '/api/bahana-pengajar/:path*'],
+    matcher: ['/api/lpk-cpmi/:path*', '/api/lpk-admin/:path*', '/api/lpk-pengajar/:path*'],
 };

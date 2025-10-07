@@ -2,21 +2,21 @@ import api from "@/lib/api"
 import { ApiResponse } from "@/types/api"
 
 export const adminUserCreate = async (body: unknown) => {
-    return api.post<ApiResponse<unknown>>('/api/bahana-admin/user', body)
+    return api.post<ApiResponse<unknown>>('/api/lpk-admin/user', body)
 }
 
 export const adminUserUpdate = async (id: string, body: unknown) => {
-    return api.put<ApiResponse<unknown>>(`/api/bahana-admin/user/${id}`, body)
+    return api.put<ApiResponse<unknown>>(`/api/lpk-admin/user/${id}`, body)
 }
 
 export const adminUserDelete = async (id: string) => {
-    return api.delete<ApiResponse<unknown>>(`/api/bahana-admin/user/${id}`)
+    return api.delete<ApiResponse<1 | 0>>(`/api/lpk-admin/user/${id}`)
 }
 
 export const adminUserGetAll = async (params: unknown) => {
-    return api.get<ApiResponse<unknown>>('/api/bahana-admin/user', { params })
+    return api.get<ApiResponse<unknown>>('/api/lpk-admin/user', { params })
 }
 
 export const adminUserGetById = async (id: string) => {
-    return api.get<ApiResponse<unknown>>(`/api/bahana-admin/user/${id}`)
+    return api.get<ApiResponse<unknown>>(`/api/lpk-admin/user/${id}`)
 }

@@ -1,20 +1,21 @@
 import api from "@/lib/api"
-import { ApiResponse } from "@/types/api"
+import { ApiResponse, PaginationData } from "@/types/api"
+import { Negara } from "@/types/negara"
 
 export const adminNegaraCreate = async (body: unknown) => {
-    return api.post<ApiResponse<unknown>>('/api/bahana-admin/negara', body)
+    return api.post<ApiResponse<Negara>>('/api/lpk-admin/negara', body)
 }
 export const adminNegaraUpdate = async (id: string, body: unknown) => {
-    return api.put<ApiResponse<unknown>>(`/api/bahana-admin/negara/${id}`, body)
+    return api.put<ApiResponse<Negara>>(`/api/lpk-admin/negara/${id}`, body)
 }
 
 export const adminNegaraDelete = async (id: string) => {
-    return api.delete<ApiResponse<unknown>>(`/api/bahana-admin/negara/${id}`)
+    return api.delete<ApiResponse<1 | 0>>(`/api/lpk-admin/negara/${id}`)
 }
 
 export const adminNegaraGetAll = async (params: unknown) => {
-    return api.get<ApiResponse<unknown>>('/api/bahana-admin/negara', { params })
+    return api.get<ApiResponse<PaginationData<Negara[]>>>('/api/lpk-admin/negara', { params })
 }
 export const adminNegaraGetById = async (id: string) => {
-    return api.get<ApiResponse<unknown>>(`/api/bahana-admin/negara/${id}`)
+    return api.get<ApiResponse<Negara>>(`/api/lpk-admin/negara/${id}`)
 }
