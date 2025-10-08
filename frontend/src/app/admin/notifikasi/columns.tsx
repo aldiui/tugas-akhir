@@ -2,11 +2,13 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
-import { Eye, Pencil, Trash2 } from "lucide-react"
+import { Pencil } from "lucide-react"
 import Link from "next/link"
 import { Notifikasi } from "@/types/notifikasi"
 import useAppStore from "@/store/app-store"
 import { TableSortableHeader } from "@/components/table-sortable-header"
+import { TableDelete } from "@/components/table-delete"
+import { adminNotifikasiDelete } from "@/services/notifikasi-service"
 
 export const columns: ColumnDef<Notifikasi>[] = [
     {
@@ -18,6 +20,8 @@ export const columns: ColumnDef<Notifikasi>[] = [
 			const { start } = useAppStore();
 			return <div className="font-medium">{start + row.index}</div>;
 		},
+        size: 60,
+        maxSize: 60,
     },
     {
         accessorKey: "judul",
@@ -69,28 +73,19 @@ export const columns: ColumnDef<Notifikasi>[] = [
                         asChild
                     >
                         <Link href={`/admin/notifikasi/${notifikasi.id}`}>
-                            <Eye className="h-4 w-4" />
-                        </Link>
-                    </Button>
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
-                        asChild
-                    >
-                        <Link href={`/admin/notifikasi/${notifikasi.id}/edit`}>
                             <Pencil className="h-4 w-4" />
                         </Link>
                     </Button>
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
-                    >
-                        <Trash2 className="h-4 w-4" />
-                    </Button>
+                    <TableDelete
+                        id={notifikasi.id}
+                        itemName={notifikasi.judul}
+                        queryKey={['list-notifikasi']}
+                        deleteFn={adminNotifikasiDelete}
+                    />
                 </div>
             )
         },
+        size: 60,
+        maxSize: 60,
     },
 ]

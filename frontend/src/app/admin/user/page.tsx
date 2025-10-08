@@ -35,7 +35,7 @@ export default function Page() {
                 sort_by: sort?.type,
                 order_by: sort?.column,
             }),
-        queryKey: ['list-lokasi', page, limit, search, sort],
+        queryKey: ['list-user', page, limit, search, sort],
     })
 
     useEffect(() => {

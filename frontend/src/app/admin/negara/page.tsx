@@ -75,7 +75,7 @@ export default function Page() {
                             >
                                 <Link href="/admin/negara/create">
                                     <Plus className="mr-2 h-4 w-4" />
-                                    Tambah Negara
+                                    Tambah
                                 </Link>
                             </Button>
                         </div>

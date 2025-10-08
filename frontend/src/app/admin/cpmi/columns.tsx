@@ -2,11 +2,13 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
-import { Eye, Pencil, Trash2 } from "lucide-react"
+import { Pencil } from "lucide-react"
 import Link from "next/link"
 import { CPMI } from "@/types/user"
 import useAppStore from "@/store/app-store"
 import { TableSortableHeader } from "@/components/table-sortable-header"
+import { adminCpmiDelete } from "@/services/user-service"
+import { TableDelete } from "@/components/table-delete"
 
 export const columns: ColumnDef<CPMI>[] = [
     {
@@ -18,6 +20,8 @@ export const columns: ColumnDef<CPMI>[] = [
 			const { start } = useAppStore();
 			return <div className="font-medium">{start + row.index}</div>;
 		},
+        size: 60,
+        maxSize: 60,
     },
     {
         accessorKey: "nama",
@@ -68,29 +72,20 @@ export const columns: ColumnDef<CPMI>[] = [
                         className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
                         asChild
                     >
-                        <Link href={`/admin/user/${user.id}`}>
-                            <Eye className="h-4 w-4" />
-                        </Link>
-                    </Button>
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
-                        asChild
-                    >
-                        <Link href={`/admin/user/${user.id}/edit`}>
+                        <Link href={`/admin/cpmi/${user.id}`}>
                             <Pencil className="h-4 w-4" />
                         </Link>
                     </Button>
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
-                    >
-                        <Trash2 className="h-4 w-4" />
-                    </Button>
+                    <TableDelete
+                        id={user.id}
+                        itemName={user.nama}
+                        queryKey={['list-cpmi']}
+                        deleteFn={adminCpmiDelete}
+                    />
                 </div>
             )
         },
+        size: 60,
+        maxSize: 60,
     },
 ]

@@ -50,8 +50,6 @@ export default function Page() {
         setPage(newPage)
     }, [])
 
-    console.log("masuk sini cuy")
-
     return (
         <div className="w-full h-full p-6 space-y-4">
             <Breadcrumb>
@@ -77,7 +75,7 @@ export default function Page() {
                             >
                                 <Link href="/admin/mata-pelajaran/create">
                                     <Plus className="mr-2 h-4 w-4" />
-                                    Tambah Mata Pelajaran
+                                    Tambah
                                 </Link>
                             </Button>
                         </div>

@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Permission;
 use App\Models\RolePermission;
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +18,10 @@ class Role extends Model
         'nama',
         'tipe',
     ];
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 
     public function rolePermission()
     {

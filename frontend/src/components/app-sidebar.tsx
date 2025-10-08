@@ -22,8 +22,7 @@ import {
     Bell, 
     MapPin, 
     UserCheck,
-    CalendarCheck,
-    FileText
+    FileText,
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
@@ -54,6 +53,7 @@ const items = [
         items: [
             { title: "CPMI", url: "/admin/cpmi", icon: UserCheck },   
             // { title: "Absensi", url: "/admin/absensi", icon: CalendarCheck },   
+            // { title: "Piket", url: "/admin/piket", icon: Clock },   
             { title: "Izin", url: "/admin/izin", icon: FileText },   
             { title: "Notifikasi", url: "/admin/notifikasi", icon: Bell },   
         ]

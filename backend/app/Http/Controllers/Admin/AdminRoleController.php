@@ -115,6 +115,10 @@ class AdminRoleController extends Controller
     {
         $role = Role::findOrFail($id);
 
+        if ($role->users()->count() > 0) {
+            return $this->errorResponse('Role tidak dapat dihapus karena sedang digunakan oleh user', 400);
+        }
+
         DB::beginTransaction();
         try {
             $role->delete();
