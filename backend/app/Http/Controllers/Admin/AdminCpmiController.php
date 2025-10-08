@@ -19,15 +19,29 @@ class AdminCpmiController extends Controller
         $orderBy = $request->input('order_by', 'created_at');
         $sortBy  = $request->input('sort_by', 'asc');
 
-        $query = User::query();
+        $query = User::select(
+            'users.id as id',
+            'users.nama as nama',
+            'users.email as email',
+            'role.nama as role',
+            'lokasi.nama as lokasi',
+            'users.lokasi_id as lokasi_id',
+            'users.created_at as created_at',
+            'users.updated_at as updated_at',
+        )->join('role', 'users.role_id', '=', 'role.id')
+            ->leftJoin('lokasi', 'users.lokasi_id', '=', 'lokasi.id')
+            ->where('role.tipe', 'CPMI');
+
         if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->where('nama', 'REGEXP', $search)
-                    ->orWhere('email', 'REGEXP', $search);
+                $q->where('users.nama', 'REGEXP', $search)
+                    ->orWhere('users.email', 'REGEXP', $search)
+                    ->orWhere('role.nama', 'REGEXP', $search)
+                    ->orWhere('lokasi.nama', 'REGEXP', $search);
             });
         }
 
-        if (in_array($orderBy, ['id', 'nama', 'email', 'created_at', 'updated_at'])) {
+        if (in_array($orderBy, ['id', 'nama', 'role', 'email', 'lokasi', 'created_at', 'updated_at'])) {
             $sortBy = strtolower($sortBy) === 'desc' ? 'desc' : 'asc';
             $query->orderBy($orderBy, $sortBy);
         } else {

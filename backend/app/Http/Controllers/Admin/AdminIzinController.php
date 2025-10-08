@@ -18,17 +18,28 @@ class AdminIzinController extends Controller
         $orderBy = $request->input('order_by', 'created_at');
         $sortBy  = $request->input('sort_by', 'asc');
 
-        $query = Izin::query();
+        $query = Izin::select(
+            'izin.id as id',
+            'izin.tanggal_mulai as tanggal_mulai',
+            'izin.tanggal_selesai as tanggal_selesai',
+            'users.nama as cpmi',
+            'izin.keterangan as keterangan',
+            'izin.status as status',
+            'izin.created_at as created_at',
+            'izin.updated_at as updated_at',
+        )->join('users', 'izin.user_id', '=', 'users.id');
+
         if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->where('tanggal_mulai', 'REGEXP', $search)
-                    ->orWhere('tanggal_selesai', 'REGEXP', $search)
-                    ->orWhere('keterangan', 'REGEXP', $search)
-                    ->orWhere('status', 'REGEXP', $search);
+                $q->where('izin.tanggal_mulai', 'REGEXP', $search)
+                    ->orWhere('izin.tanggal_selesai', 'REGEXP', $search)
+                    ->orWhere('users.nama', 'REGEXP', $search)
+                    ->orWhere('izin.keterangan', 'REGEXP', $search)
+                    ->orWhere('izin.status', 'REGEXP', $search);
             });
         }
 
-        if (in_array($orderBy, ['id', 'tanggal_mulai', 'tanggal_selesai', 'keterangan', 'status', 'created_at', 'updated_at'])) {
+        if (in_array($orderBy, ['id', 'tanggal_mulai', 'tanggal_selesai', 'cpmi', 'keterangan', 'status', 'created_at', 'updated_at'])) {
             $sortBy = strtolower($sortBy) === 'desc' ? 'desc' : 'asc';
             $query->orderBy($orderBy, $sortBy);
         } else {

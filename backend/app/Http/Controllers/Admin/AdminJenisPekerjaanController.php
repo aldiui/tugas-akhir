@@ -19,15 +19,25 @@ class AdminJenisPekerjaanController extends Controller
         $orderBy = $request->input('order_by', 'created_at');
         $sortBy  = $request->input('sort_by', 'asc');
 
-        $query = JenisPekerjaan::query();
+        $query = JenisPekerjaan::select(
+            'jenis_pekerjaan.id as id',
+            'jenis_pekerjaan.nama as nama',
+            'jenis_pekerjaan.sektor_id as sektor_id',
+            'jenis_pekerjaan.deskripsi as deskripsi',
+            'jenis_pekerjaan.created_at as created_at',
+            'jenis_pekerjaan.updated_at as updated_at',
+            'sektor.nama as sektor'
+        )->join('sektor', 'jenis_pekerjaan.sektor_id', '=', 'sektor.id');
+
         if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->where('nama', 'REGEXP', $search)
-                    ->orWhere('deskripsi', 'REGEXP', $search);
+                $q->where('jenis_pekerjaan.nama', 'REGEXP', $search)
+                    ->orWhere('jenis_pekerjaan.deskripsi', 'REGEXP', $search)
+                    ->orWhere('sektor.nama', 'REGEXP', $search);
             });
         }
 
-        if (in_array($orderBy, ['id', 'nama', 'deskripsi', 'created_at', 'updated_at'])) {
+        if (in_array($orderBy, ['id', 'nama', 'sektor', 'deskripsi', 'created_at', 'updated_at'])) {
             $sortBy = strtolower($sortBy) === 'desc' ? 'desc' : 'asc';
             $query->orderBy($orderBy, $sortBy);
         } else {

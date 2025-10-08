@@ -8,10 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AdminKelasController extends Controller
-{
-    /**
-     * Ambil semua data kelas
-     */
+{/**
+ * Ambil semua data kelas
+ */
     public function index(Request $request): JsonResponse
     {
         $perPage = $request->input('limit', 10);
@@ -19,14 +18,25 @@ class AdminKelasController extends Controller
         $orderBy = $request->input('order_by', 'created_at');
         $sortBy  = $request->input('sort_by', 'asc');
 
-        $query = Kelas::query();
+        $query = Kelas::select(
+            'kelas.id as id',
+            'kelas.nama as nama',
+            'users.nama as pengajar',
+            'lokasi.nama as lokasi',
+            'kelas.created_at as created_at',
+            'kelas.updated_at as updated_at',
+        )->join('users', 'kelas.pengajar_id', '=', 'users.id')
+            ->join('lokasi', 'kelas.lokasi_id', '=', 'lokasi.id');
+
         if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->where('nama', 'REGEXP', $search);
+                $q->where('kelas.nama', 'REGEXP', $search)
+                    ->orWhere('users.nama', 'REGEXP', $search)
+                    ->orWhere('lokasi.nama', 'REGEXP', $search);
             });
         }
 
-        if (in_array($orderBy, ['id', 'nama', 'created_at', 'updated_at'])) {
+        if (in_array($orderBy, ['id', 'nama', 'pengajar', 'lokasi', 'created_at', 'updated_at'])) {
             $sortBy = strtolower($sortBy) === 'desc' ? 'desc' : 'asc';
             $query->orderBy($orderBy, $sortBy);
         } else {
