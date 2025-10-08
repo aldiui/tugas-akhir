@@ -10,18 +10,18 @@ const TableFunction = ({ withSearch = true }: { withSearch?: boolean }) => {
     const { limit, setLimit } = useAppStore()
 
     return (
-        <div className="flex flex-col xl:flex-row gap-4 justify-between">
+        <div className="flex flex-col xl:flex-row gap-4 justify-center xl:justify-between items-center">
             <div className="flex items-center gap-2 text-sm text-gray-700">
                 <span>Tampilkan</span>
                 <Select defaultValue={limit} onValueChange={(value: string) => setLimit(value)}>
-                    <SelectTrigger className="h-9 w-20 rounded-md border-gray-300">
+                    <SelectTrigger className="h-9 w-20 rounded-md border-blue-300 hover:border-blue-500 focus:ring-blue-500">
                         <SelectValue placeholder="10" />
                     </SelectTrigger>
-                    <SelectContent className="border-gray-200 bg-white">
+                    <SelectContent className="border-blue-200 bg-white">
                         <SelectGroup>
                             {perPageOptions.map((option, i) => (
                                 <SelectItem 
-                                    className="hover:bg-gray-100 cursor-pointer" 
+                                    className="hover:bg-blue-50 hover:text-blue-600 cursor-pointer focus:bg-blue-50 focus:text-blue-600" 
                                     value={option.value} 
                                     key={i}
                                 >

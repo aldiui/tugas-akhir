@@ -38,6 +38,10 @@ export async function middleware(request: NextRequest) {
             
             const targetUrl = new URL(targetPathname, baseUrl);
             
+            request.nextUrl.searchParams.forEach((value, key) => {
+                targetUrl.searchParams.set(key, value);
+            });
+            
             return NextResponse.rewrite(targetUrl, {
                 request: {
                     headers: requestHeaders

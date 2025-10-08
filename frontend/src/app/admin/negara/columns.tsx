@@ -4,9 +4,9 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { ArrowUpDown, Eye, Pencil, Trash2 } from "lucide-react"
 import Link from "next/link"
-import { Lokasi } from "@/types/lokasi"
+import { Negara } from "@/types/negara"
 
-export const columns: ColumnDef<Lokasi>[] = [
+export const columns: ColumnDef<Negara>[] = [
     {
         accessorKey: "kode",
         header: ({ column }) => {
@@ -40,7 +40,7 @@ export const columns: ColumnDef<Lokasi>[] = [
         cell: ({ row }) => <div className="font-medium">{row.getValue("nama")}</div>,
     },
     {
-        accessorKey: "longitude",
+        accessorKey: "mata_uang",
         header: ({ column }) => {
             return (
                 <Button
@@ -48,28 +48,12 @@ export const columns: ColumnDef<Lokasi>[] = [
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     className="hover:bg-transparent"
                 >
-                    Longitude
+                    Mata Uang
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             )
         },
-        cell: ({ row }) => <div className="font-medium">{row.getValue("longitude")}</div>,
-    },
-    {
-        accessorKey: "latitude",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    className="hover:bg-transparent"
-                >
-                    Latitude
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
-        cell: ({ row }) => <div className="font-medium">{row.getValue("latitude")}</div>,
+        cell: ({ row }) => <div className="font-medium">{row.getValue("mata_uang")}</div>,
     },
     {
         accessorKey: "created_at",
@@ -98,7 +82,7 @@ export const columns: ColumnDef<Lokasi>[] = [
         id: "actions",
         header: "Aksi",
         cell: ({ row }) => {
-            const lokasi = row.original
+            const negara = row.original
 
             return (
                 <div className="flex items-center gap-2">
@@ -108,7 +92,7 @@ export const columns: ColumnDef<Lokasi>[] = [
                         className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
                         asChild
                     >
-                        <Link href={`/admin/lokasi/${lokasi.id}`}>
+                        <Link href={`/admin/negara/${negara.id}`}>
                             <Eye className="h-4 w-4" />
                         </Link>
                     </Button>
@@ -118,7 +102,7 @@ export const columns: ColumnDef<Lokasi>[] = [
                         className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
                         asChild
                     >
-                        <Link href={`/admin/lokasi/${lokasi.id}/edit`}>
+                        <Link href={`/admin/negara/${negara.id}/edit`}>
                             <Pencil className="h-4 w-4" />
                         </Link>
                     </Button>

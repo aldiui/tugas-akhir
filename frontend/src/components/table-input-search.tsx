@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { Input } from './ui/input'
 import useAppStore from '@/store/app-store'
+import { Search } from 'lucide-react'
 
 interface TableSearchInputProps {
     onSearch?: (query: string) => void
@@ -37,18 +38,21 @@ const TableSearchInput = ({
         <div className="flex items-center gap-2">
             <label 
                 htmlFor="table-search" 
-                className="text-sm font-medium shrink-0"
+                className="text-sm font-medium text-gray-700 shrink-0"
             >
-                Search:
+                Pencarian:
             </label>
-            <Input
-                id="table-search"
-                type="text"
-                placeholder={placeholder}
-                className="h-9 max-w-xs"
-                onChange={(e) => setInputValue(e.target.value)}
-                value={inputValue}
-            />
+            <div className="relative max-w-xs">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                    id="table-search"
+                    type="text"
+                    placeholder={placeholder}
+                    className="h-9 pl-9 border-blue-300 focus:border-blue-500 focus:ring-blue-500 hover:border-blue-400"
+                    onChange={(e) => setInputValue(e.target.value)}
+                    value={inputValue}
+                />
+            </div>
         </div>
     )
 }

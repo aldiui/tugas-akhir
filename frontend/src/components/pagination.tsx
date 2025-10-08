@@ -63,7 +63,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
                     size="sm"
                     className={`min-w-[40px] ${
                         page === currentPage
-                            ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                            ? 'bg-blue-500 hover:bg-blue-600 text-white'
                             : 'bg-white hover:bg-gray-100 text-gray-700'
                     }`}
                     disabled={page === '...'}>

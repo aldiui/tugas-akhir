@@ -4,25 +4,9 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { ArrowUpDown, Eye, Pencil, Trash2 } from "lucide-react"
 import Link from "next/link"
-import { Lokasi } from "@/types/lokasi"
+import { Role } from "@/types/role"
 
-export const columns: ColumnDef<Lokasi>[] = [
-    {
-        accessorKey: "kode",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    className="hover:bg-transparent"
-                >
-                    Kode
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
-        cell: ({ row }) => <div className="font-medium">{row.getValue("kode")}</div>,
-    },
+export const columns: ColumnDef<Role>[] = [
     {
         accessorKey: "nama",
         header: ({ column }) => {
@@ -40,7 +24,7 @@ export const columns: ColumnDef<Lokasi>[] = [
         cell: ({ row }) => <div className="font-medium">{row.getValue("nama")}</div>,
     },
     {
-        accessorKey: "longitude",
+        accessorKey: "tipe",
         header: ({ column }) => {
             return (
                 <Button
@@ -48,28 +32,12 @@ export const columns: ColumnDef<Lokasi>[] = [
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     className="hover:bg-transparent"
                 >
-                    Longitude
+                    Tipe
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             )
         },
-        cell: ({ row }) => <div className="font-medium">{row.getValue("longitude")}</div>,
-    },
-    {
-        accessorKey: "latitude",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    className="hover:bg-transparent"
-                >
-                    Latitude
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
-        cell: ({ row }) => <div className="font-medium">{row.getValue("latitude")}</div>,
+        cell: ({ row }) => <div className="font-medium">{row.getValue("tipe")}</div>,
     },
     {
         accessorKey: "created_at",
@@ -98,7 +66,7 @@ export const columns: ColumnDef<Lokasi>[] = [
         id: "actions",
         header: "Aksi",
         cell: ({ row }) => {
-            const lokasi = row.original
+            const role = row.original
 
             return (
                 <div className="flex items-center gap-2">
@@ -108,7 +76,7 @@ export const columns: ColumnDef<Lokasi>[] = [
                         className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
                         asChild
                     >
-                        <Link href={`/admin/lokasi/${lokasi.id}`}>
+                        <Link href={`/admin/role/${role.id}`}>
                             <Eye className="h-4 w-4" />
                         </Link>
                     </Button>
@@ -118,7 +86,7 @@ export const columns: ColumnDef<Lokasi>[] = [
                         className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
                         asChild
                     >
-                        <Link href={`/admin/lokasi/${lokasi.id}/edit`}>
+                        <Link href={`/admin/role/${role.id}/edit`}>
                             <Pencil className="h-4 w-4" />
                         </Link>
                     </Button>

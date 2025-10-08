@@ -34,13 +34,13 @@ export function DataTable<TData, TValue>({
     return (
         <div className="w-full">
             <Table className="w-full">
-                <TableHeader className="border-b-2 border-gray-200 bg-gray-50">
+                <TableHeader className="border-b-2 border-blue-500 bg-blue-50">
                     {table.getHeaderGroups().map((headerGroup) => (
                         <TableRow key={headerGroup.id}>
                             {headerGroup.headers.map((header) => {
                                 return (
                                     <TableHead 
-                                        className="font-semibold text-black h-12" 
+                                        className="font-semibold text-blue-900 h-12" 
                                         key={header.id}
                                     >
                                         {header.isPlaceholder
@@ -59,8 +59,8 @@ export function DataTable<TData, TValue>({
                     {table.getRowModel().rows?.length ? (
                         table.getRowModel().rows.map((row, index) => (
                             <TableRow
-                                className={`hover:bg-gray-100 border-b border-gray-100 ${
-                                    index % 2 === 1 ? 'bg-gray-50' : 'bg-white'
+                                className={`hover:bg-blue-50 border-b border-blue-200 ${
+                                    index % 2 === 1 ? 'bg-blue-50/50' : 'bg-white'
                                 }`}
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}

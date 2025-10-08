@@ -1,101 +1,120 @@
-// 'use client'
+'use client'
 
-// import { DataTable } from '@/components/data-table'
-// import Pagination from '@/components/pagination'
-// import TableFunction from '@/components/table-function'
-// import { adminLokasiGetAll } from '@/services/lokasi-service'
-// import useAppStore from '@/store/app-store'
-// import { useQuery } from '@tanstack/react-query'
-// import { useCallback, useEffect, useState } from 'react'
-// import { columns } from './columns'
-// import LoadingTable from '@/components/loading-table'
+import { DataTable } from '@/components/data-table'
+import Pagination from '@/components/pagination'
+import TableFunction from '@/components/table-function'
+import { adminLokasiGetAll } from '@/services/lokasi-service'
+import useAppStore from '@/store/app-store'
+import { useQuery } from '@tanstack/react-query'
+import { useCallback, useEffect, useState } from 'react'
+import { columns } from './columns'
+import LoadingTable from '@/components/loading-table'
+import { Button } from '@/components/ui/button'
+import { Plus } from 'lucide-react'
+import Link from 'next/link'
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 
-// export default function Page() {
-//     const { limit, start, setStart, search, sort, setSort } = useAppStore()
-//     const [page, setPage] = useState(1)
+export default function Page() {
+    const { limit, start, setStart, search, sort, setSort } = useAppStore()
+    const [page, setPage] = useState(1)
 
-//     const { data, isLoading, refetch } = useQuery({
-//         queryFn: async () =>
-//             await adminLokasiGetAll({
-//                 page,
-//                 limit,
-//                 search,
-//                 sort_by: sort?.column,
-//                 order_by: sort?.type,
-//             }),
-//         queryKey: ['list-lokasi', page, limit, search, sort],
-//     })
+    const { data, isLoading } = useQuery({
+        queryFn: async () =>
+            await adminLokasiGetAll({
+                page,
+                limit,
+                search,
+                sort_by: sort?.column,
+                order_by: sort?.type,
+            }),
+        queryKey: ['list-lokasi', page, limit, search, sort],
+    })
 
-//     useEffect(() => {
-//         setStart((page - 1) * Number(limit) + 1)
-//     }, [page, limit, setStart])
+    useEffect(() => {
+        setStart((page - 1) * Number(limit) + 1)
+    }, [page, limit, setStart])
 
-//     useEffect(() => {
-//         setPage(1)
-//     }, [limit, search])
+    useEffect(() => {
+        setPage(1)
+    }, [limit, search])
 
-//     useEffect(() => {
-//         if (!sort) {
-//             setSort({ column: 'id', type: 'asc' })
-//         }
-//     }, [sort, setSort])
+    useEffect(() => {
+        if (!sort) {
+            setSort({ column: 'id', type: 'desc' })
+        }
+    }, [sort, setSort])
 
-//     const handlePageChange = useCallback((newPage: number) => {
-//         setPage(newPage)
-//     }, [])
+    const handlePageChange = useCallback((newPage: number) => {
+        setPage(newPage)
+    }, [])
 
-//     const handleRefresh = useCallback(() => {
-//         refetch()
-//     }, [refetch])
-
-//     return (
-//         <div className="w-full h-full p-6">
-//             <div className="mb-6 flex justify-between items-center">
-//                 <h3 className="text-2xl font-bold">Lokasi</h3>
-//                 <button
-//                     onClick={handleRefresh}
-//                     className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-//                     disabled={isLoading}
-//                 >
-//                     {isLoading ? 'Memuat...' : 'Refresh'}
-//                 </button>
-//             </div>
-
-//             <div className="w-full space-y-4">
-//                 <TableFunction />
-
-//                 <div className="w-full overflow-auto rounded-lg border bg-white relative">
-//                     <DataTable data={data?.data.data.data ?? []} columns={columns} />
-//                     {isLoading && <LoadingTable />}
-//                 </div>
-
-//                 {data && !isLoading && (
-//                     <div className="flex flex-col xl:flex-row gap-4 justify-between items-center">
-//                         <div className="text-sm text-gray-600">
-//                             Menampilkan {start} sampai {data.data.data.to} dari {data.data.data.total} data
-//                         </div>
-//                         <Pagination
-//                             currentPage={page}
-//                             totalPages={Math.ceil(
-//                                 (data.data.data.total === 0 ? 1 : data.data.data.total) /
-//                                     data.data.data.per_page
-//                             )}
-//                             onPageChange={handlePageChange}
-//                         />
-//                     </div>
-//                 )}
-//             </div>
-//         </div>
-//     )
-// }
-
-import React from 'react'
-
-export default function page() {
     return (
-        <div className="p-2">
-            <h3 className="text-2xl font-bold">Jenis Pekerjaan</h3>
+        <div className="w-full h-full p-6 space-y-4">
+            <Breadcrumb>
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <BreadcrumbLink href="/admin">Dashboard</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbPage>Lokasi</BreadcrumbPage>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
+            <Card>
+                <CardHeader className="border-b">
+                    <div className="flex justify-between items-center">
+                        <h3 className="text-2xl font-bold text-blue-900">Lokasi</h3>
+                        <div className="flex gap-2">
+                            <Button 
+                                asChild 
+                                size="sm"
+                                className="bg-blue-600 hover:bg-blue-700"
+                            >
+                                <Link href="/admin/lokasi/create">
+                                    <Plus className="mr-2 h-4 w-4" />
+                                    Tambah Lokasi
+                                </Link>
+                            </Button>
+                        </div>
+                    </div>
+                </CardHeader>
+
+                <CardContent className="p-6">
+                    <div className="w-full space-y-4">
+                        <TableFunction />
+
+                        <div className="w-full overflow-auto rounded-lg border border-blue-200 bg-white relative">
+                            <DataTable data={data?.data.data.data ?? []} columns={columns} />
+                            {isLoading && <LoadingTable />}
+                        </div>
+
+                        {data && !isLoading && (
+                            <div className="flex flex-col xl:flex-row gap-4 justify-between items-center pt-4 border-t border-blue-100">
+                                <div className="text-sm text-gray-600">
+                                    Menampilkan {start} sampai {data.data.data.to} dari {data.data.data.total} data
+                                </div>
+                                <Pagination
+                                    currentPage={page}
+                                    totalPages={Math.ceil(
+                                        (data.data.data.total === 0 ? 1 : data.data.data.total) /
+                                            data.data.data.per_page
+                                    )}
+                                    onPageChange={handlePageChange}
+                                />
+                            </div>
+                        )}
+                    </div>
+                </CardContent>
+            </Card>
         </div>
     )
 }
-

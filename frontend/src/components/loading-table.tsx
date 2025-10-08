@@ -2,9 +2,9 @@ import React from 'react'
 
 const LoadingTable = () => {
     return (
-        <div className='absolute inset-0 text-[12px] text-white flex justify-center items-center'>
-            <div className='bg-blue-600 py-[10px] rounded-[5px] px-[20px]'>
-                Processing...
+        <div className="absolute inset-0 bg-white/50 backdrop-blur-sm flex justify-center items-center z-10">
+            <div className="bg-blue-600 text-white text-sm font-medium py-2.5 px-5 rounded-lg shadow-lg">
+                Memproses...
             </div>
         </div>
     )
