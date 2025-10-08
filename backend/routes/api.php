@@ -84,6 +84,17 @@ Route::prefix('admin')->group(function () {
     Route::put('/notifikasi/{id}', [AdminNotifikasiController::class, 'update']);
     Route::delete('/notifikasi/{id}', [AdminNotifikasiController::class, 'destroy']);
 
+    Route::get('/izin', [AdminIzinController::class, 'index']);
+    Route::get('/izin/{id}', [AdminIzinController::class, 'show']);
+    Route::put('/izin/{id}', [AdminIzinController::class, 'update']);
+    Route::delete('/izin/{id}', [AdminIzinController::class, 'destroy']);
+
+    Route::get('/cpmi', [AdminCpmiController::class, 'index']);
+    Route::get('/cpmi/{id}', [AdminCpmiController::class, 'show']);
+    Route::post('/cpmi', [AdminCpmiController::class, 'store']);
+    Route::put('/cpmi/{id}', [AdminCpmiController::class, 'update']);
+    Route::delete('/cpmi/{id}', [AdminCpmiController::class, 'destroy']);
+
     Route::middleware(['auth:sanctum', 'roleType:Admin'])->group(function () {
         Route::put('/change-password', [AdminMeController::class, 'changePassword']);
         Route::get('/profile', [AdminMeController::class, 'profile']);
@@ -146,16 +157,16 @@ Route::prefix('admin')->group(function () {
         // Route::put('/jenis-pekerjaan/{id}', [AdminJenisPekerjaanController::class, 'update'])->middleware('permission:JPK_UPDATE');
         // Route::delete('/jenis-pekerjaan/{id}', [AdminJenisPekerjaanController::class, 'destroy'])->middleware('permission:JPK_DELETE');
 
-        Route::get('/izin', [AdminIzinController::class, 'index'])->middleware('permission:IZN_READ');
-        Route::get('/izin/{id}', [AdminIzinController::class, 'show'])->middleware('permission:IZN_READ');
-        Route::put('/izin{id}', [AdminIzinController::class, 'update'])->middleware('permission:IZN_UPDATE');
-        Route::delete('/izin{id}', [AdminIzinController::class, 'destroy'])->middleware('permission:IZN_DELETE');
+        // Route::get('/izin', [AdminIzinController::class, 'index'])->middleware('permission:IZN_READ');
+        // Route::get('/izin/{id}', [AdminIzinController::class, 'show'])->middleware('permission:IZN_READ');
+        // Route::put('/izin{id}', [AdminIzinController::class, 'update'])->middleware('permission:IZN_UPDATE');
+        // Route::delete('/izin{id}', [AdminIzinController::class, 'destroy'])->middleware('permission:IZN_DELETE');
 
-        Route::get('/cpmi', [AdminCpmiController::class, 'index'])->middleware('permission:USR_READ');
-        Route::get('/cpmi/{id}', [AdminCpmiController::class, 'show'])->middleware('permission:USR_READ');
-        Route::post('/cpmi', [AdminCpmiController::class, 'store'])->middleware('permission:USR_CREATE');
-        Route::put('/cpmi/{id}', [AdminCpmiController::class, 'update'])->middleware('permission:USR_UPDATE');
-        Route::delete('/cpmi/{id}', [AdminCpmiController::class, 'destroy'])->middleware('permission:USR_DELETE');
+        // Route::get('/cpmi', [AdminCpmiController::class, 'index'])->middleware('permission:USR_READ');
+        // Route::get('/cpmi/{id}', [AdminCpmiController::class, 'show'])->middleware('permission:USR_READ');
+        // Route::post('/cpmi', [AdminCpmiController::class, 'store'])->middleware('permission:USR_CREATE');
+        // Route::put('/cpmi/{id}', [AdminCpmiController::class, 'update'])->middleware('permission:USR_UPDATE');
+        // Route::delete('/cpmi/{id}', [AdminCpmiController::class, 'destroy'])->middleware('permission:USR_DELETE');
     });
 });
 
@@ -198,7 +209,7 @@ Route::prefix('pengajar')->middleware('roleType:Pengajar')->group(function () {
 
     Route::middleware(['auth:sanctum', 'roleType:Pengajar'])->group(function () {
         Route::put('/change-password', [PengajarMeController::class, 'changePassword']);
-        Route::get('/profile',[PengajarMeController::class, 'profile']);
+        Route::get('/profile', [PengajarMeController::class, 'profile']);
         Route::put('/update-profile', [PengajarMeController::class, 'updateProfile']);
 
         Route::post('/logout', [PengajarAuthController::class, 'logout']);

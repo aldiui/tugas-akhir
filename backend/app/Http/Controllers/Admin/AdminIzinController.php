@@ -27,7 +27,7 @@ class AdminIzinController extends Controller
             'izin.status as status',
             'izin.created_at as created_at',
             'izin.updated_at as updated_at',
-        )->join('users', 'izin.user_id', '=', 'users.id');
+        )->join('users', 'izin.cpmi_id', '=', 'users.id');
 
         if ($search) {
             $query->where(function ($q) use ($search) {
