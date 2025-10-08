@@ -3,15 +3,12 @@
 import { DataTable } from '@/components/data-table'
 import Pagination from '@/components/pagination'
 import TableFunction from '@/components/table-function'
-import { adminSektorGetAll } from '@/services/sektor-service'
+import { adminIzinGetAll } from '@/services/izin-service'
 import useAppStore from '@/store/app-store'
 import { useQuery } from '@tanstack/react-query'
 import { useCallback, useEffect, useState } from 'react'
 import { columns } from './columns'
 import LoadingTable from '@/components/loading-table'
-import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
-import Link from 'next/link'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -23,19 +20,19 @@ import {
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 
 export default function Page() {
-    const { limit, start, setStart, search, sort } = useAppStore()
+    const { limit, start, setStart, search, sort} = useAppStore()
     const [page, setPage] = useState(1)
 
     const { data, isLoading } = useQuery({
         queryFn: async () =>
-            await adminSektorGetAll({
+            await adminIzinGetAll({
                 page,
                 limit,
                 search,
                 sort_by: sort?.type,
                 order_by: sort?.column,
             }),
-        queryKey: ['list-sektor', page, limit, search, sort],
+        queryKey: ['list-izin', page, limit, search, sort],
     })
 
     useEffect(() => {
@@ -59,26 +56,14 @@ export default function Page() {
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage>Sektor</BreadcrumbPage>
+                        <BreadcrumbPage>Izin</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
             <Card>
                 <CardHeader className="border-b">
                     <div className="flex justify-between items-center">
-                        <h3 className="text-2xl font-bold text-blue-900">Sektor</h3>
-                        <div className="flex gap-2">
-                            <Button 
-                                asChild 
-                                size="sm"
-                                className="bg-blue-600 hover:bg-blue-700"
-                            >
-                                <Link href="/admin/sektor/create">
-                                    <Plus className="mr-2 h-4 w-4" />
-                                    Tambah Sektor
-                                </Link>
-                            </Button>
-                        </div>
+                        <h3 className="text-2xl font-bold text-blue-900">Izin</h3>
                     </div>
                 </CardHeader>
 

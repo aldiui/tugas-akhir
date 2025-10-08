@@ -23,7 +23,7 @@ import {
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 
 export default function Page() {
-    const { limit, start, setStart, search, sort, setSort } = useAppStore()
+    const { limit, start, setStart, search, sort } = useAppStore()
     const [page, setPage] = useState(1)
 
     const { data, isLoading } = useQuery({
@@ -32,8 +32,8 @@ export default function Page() {
                 page,
                 limit,
                 search,
-                sort_by: sort?.column,
-                order_by: sort?.type,
+                sort_by: sort?.type,
+                order_by: sort?.column,
             }),
         queryKey: ['list-mata-pelajaran', page, limit, search, sort],
     })
@@ -46,15 +46,11 @@ export default function Page() {
         setPage(1)
     }, [limit, search])
 
-    useEffect(() => {
-        if (!sort) {
-            setSort({ column: 'id', type: 'desc' })
-        }
-    }, [sort, setSort])
-
     const handlePageChange = useCallback((newPage: number) => {
         setPage(newPage)
     }, [])
+
+    console.log("masuk sini cuy")
 
     return (
         <div className="w-full h-full p-6 space-y-4">

@@ -4,11 +4,11 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { Eye, Pencil, Trash2 } from "lucide-react"
 import Link from "next/link"
-import { Sektor } from "@/types/sektor"
+import { Izin } from "@/types/izin"
 import useAppStore from "@/store/app-store"
 import { TableSortableHeader } from "@/components/table-sortable-header"
 
-export const columns: ColumnDef<Sektor>[] = [
+export const columns: ColumnDef<Izin>[] = [
     {
         accessorKey: "id",
         header: ({ column }) => {
@@ -20,25 +20,25 @@ export const columns: ColumnDef<Sektor>[] = [
 		},
     },
     {
-        accessorKey: "nama",
+        accessorKey: "tanggal_mulai",
         header: ({ column }) => {
-            return <TableSortableHeader column={column} columnName="nama" label="Nama" />
+            return <TableSortableHeader column={column} columnName="tanggal_mulai" label="Tanggal Mulai" />
         },
-        cell: ({ row }) => <div className="font-medium">{row.getValue("nama")}</div>,
+        cell: ({ row }) => <div className="font-medium">{row.getValue("tanggal_mulai")}</div>,
     },
     {
-        accessorKey: "sektor",
+        accessorKey: "tanggal_selesai",
         header: ({ column }) => {
-            return <TableSortableHeader column={column} columnName="sektor" label="Sektor" />
+            return <TableSortableHeader column={column} columnName="tanggal_selesai" label="Tanggal Selesai" />
         },
-        cell: ({ row }) => <div className="font-medium">{row.getValue("sektor")}</div>,
+        cell: ({ row }) => <div className="font-medium">{row.getValue("tanggal_selesai")}</div>,
     },
     {
-        accessorKey: "deskripsi",
-        header: ({ column }) => {
-            return <TableSortableHeader column={column} columnName="deskripsi" label="Deskripsi" />
-        },
-        cell: ({ row }) => <div className="font-medium">{row.getValue("deskripsi")}</div>,
+        accessorKey: "cpmi",
+        header: ({ column }) => (
+            <TableSortableHeader column={column} columnName="cpmi" label="CPMI" />
+        ),
+        cell: ({ row }) => <div className="font-medium">{row.getValue("cpmi")}</div>,
     },
     {
         accessorKey: "created_at",
@@ -58,7 +58,7 @@ export const columns: ColumnDef<Sektor>[] = [
         id: "actions",
         header: "Aksi",
         cell: ({ row }) => {
-            const jenisPekerjaan = row.original
+            const izin = row.original
 
             return (
                 <div className="flex items-center gap-2">
@@ -68,7 +68,7 @@ export const columns: ColumnDef<Sektor>[] = [
                         className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
                         asChild
                     >
-                        <Link href={`/admin/jenis-pekerjaan/${jenisPekerjaan.id}`}>
+                        <Link href={`/admin/izin/${izin.id}`}>
                             <Eye className="h-4 w-4" />
                         </Link>
                     </Button>
@@ -78,7 +78,7 @@ export const columns: ColumnDef<Sektor>[] = [
                         className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
                         asChild
                     >
-                        <Link href={`/admin/jenis-pekerjaan/${jenisPekerjaan.id}/edit`}>
+                        <Link href={`/admin/izin/${izin.id}/edit`}>
                             <Pencil className="h-4 w-4" />
                         </Link>
                     </Button>

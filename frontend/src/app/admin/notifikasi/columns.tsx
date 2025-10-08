@@ -4,11 +4,11 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { Eye, Pencil, Trash2 } from "lucide-react"
 import Link from "next/link"
-import { Sektor } from "@/types/sektor"
+import { Notifikasi } from "@/types/notifikasi"
 import useAppStore from "@/store/app-store"
 import { TableSortableHeader } from "@/components/table-sortable-header"
 
-export const columns: ColumnDef<Sektor>[] = [
+export const columns: ColumnDef<Notifikasi>[] = [
     {
         accessorKey: "id",
         header: ({ column }) => {
@@ -20,25 +20,25 @@ export const columns: ColumnDef<Sektor>[] = [
 		},
     },
     {
-        accessorKey: "nama",
+        accessorKey: "judul",
         header: ({ column }) => {
-            return <TableSortableHeader column={column} columnName="nama" label="Nama" />
+            return <TableSortableHeader column={column} columnName="judul" label="Judul" />
         },
-        cell: ({ row }) => <div className="font-medium">{row.getValue("nama")}</div>,
+        cell: ({ row }) => <div className="font-medium">{row.getValue("judul")}</div>,
     },
     {
-        accessorKey: "sektor",
+        accessorKey: "status",
         header: ({ column }) => {
-            return <TableSortableHeader column={column} columnName="sektor" label="Sektor" />
+            return <TableSortableHeader column={column} columnName="status" label="Status" />
         },
-        cell: ({ row }) => <div className="font-medium">{row.getValue("sektor")}</div>,
+        cell: ({ row }) => <div className="font-medium">{row.getValue("status")}</div>,
     },
     {
-        accessorKey: "deskripsi",
+        accessorKey: "target",
         header: ({ column }) => {
-            return <TableSortableHeader column={column} columnName="deskripsi" label="Deskripsi" />
+            return <TableSortableHeader column={column} columnName="target" label="Target" />
         },
-        cell: ({ row }) => <div className="font-medium">{row.getValue("deskripsi")}</div>,
+        cell: ({ row }) => <div className="font-medium">{row.getValue("target")}</div>,
     },
     {
         accessorKey: "created_at",
@@ -58,7 +58,7 @@ export const columns: ColumnDef<Sektor>[] = [
         id: "actions",
         header: "Aksi",
         cell: ({ row }) => {
-            const jenisPekerjaan = row.original
+            const notifikasi = row.original
 
             return (
                 <div className="flex items-center gap-2">
@@ -68,7 +68,7 @@ export const columns: ColumnDef<Sektor>[] = [
                         className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
                         asChild
                     >
-                        <Link href={`/admin/jenis-pekerjaan/${jenisPekerjaan.id}`}>
+                        <Link href={`/admin/notifikasi/${notifikasi.id}`}>
                             <Eye className="h-4 w-4" />
                         </Link>
                     </Button>
@@ -78,7 +78,7 @@ export const columns: ColumnDef<Sektor>[] = [
                         className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
                         asChild
                     >
-                        <Link href={`/admin/jenis-pekerjaan/${jenisPekerjaan.id}/edit`}>
+                        <Link href={`/admin/notifikasi/${notifikasi.id}/edit`}>
                             <Pencil className="h-4 w-4" />
                         </Link>
                     </Button>

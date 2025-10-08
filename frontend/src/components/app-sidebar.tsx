@@ -20,7 +20,10 @@ import {
     BookOpen, 
     Globe, 
     Bell, 
-    MapPin 
+    MapPin, 
+    UserCheck,
+    CalendarCheck,
+    FileText
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
@@ -42,19 +45,17 @@ const items = [
             { title: "Jenis Pekerjaan", url: "/admin/jenis-pekerjaan", icon: Briefcase },
             { title: "Negara", url: "/admin/negara", icon: Globe },
             { title: "Lokasi", url: "/admin/lokasi", icon: MapPin },
-        ]
-    },
-    {
-        group: "Pengajaran",
-        items: [
             { title: "Kelas", url: "/admin/kelas", icon: GraduationCap },
             { title: "Mata Pelajaran", url: "/admin/mata-pelajaran", icon: BookOpen },
         ]
     },
     {
-        group: "Lainnya",
+        group: "Data CPMI",
         items: [
-            { title: "Notifikasi", url: "/admin/notifikasi", icon: Bell },
+            { title: "CPMI", url: "/admin/cpmi", icon: UserCheck },   
+            // { title: "Absensi", url: "/admin/absensi", icon: CalendarCheck },   
+            { title: "Izin", url: "/admin/izin", icon: FileText },   
+            { title: "Notifikasi", url: "/admin/notifikasi", icon: Bell },   
         ]
     },
 ]
@@ -85,7 +86,7 @@ export function AppSidebar() {
                     <SidebarGroup key={group.group}>
                         <SidebarGroupLabel 
                             data-sidebar="group-label" 
-                            className="py-2"
+                            className="py-2 capitalize"
                         >
                             {group.group}
                         </SidebarGroupLabel>

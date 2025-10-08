@@ -4,11 +4,11 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { Eye, Pencil, Trash2 } from "lucide-react"
 import Link from "next/link"
-import { Sektor } from "@/types/sektor"
+import { Kelas } from "@/types/kelas"
 import useAppStore from "@/store/app-store"
 import { TableSortableHeader } from "@/components/table-sortable-header"
 
-export const columns: ColumnDef<Sektor>[] = [
+export const columns: ColumnDef<Kelas>[] = [
     {
         accessorKey: "id",
         header: ({ column }) => {
@@ -27,27 +27,27 @@ export const columns: ColumnDef<Sektor>[] = [
         cell: ({ row }) => <div className="font-medium">{row.getValue("nama")}</div>,
     },
     {
-        accessorKey: "sektor",
-        header: ({ column }) => {
-            return <TableSortableHeader column={column} columnName="sektor" label="Sektor" />
-        },
-        cell: ({ row }) => <div className="font-medium">{row.getValue("sektor")}</div>,
+        accessorKey: "pengajar",
+        header: ({ column }) => (
+            <TableSortableHeader column={column} columnName="pengajar" label="Pengajar" />
+        ),
+        cell: ({ row }) => <div className="font-medium">{row.getValue("pengajar")}</div>,
     },
     {
-        accessorKey: "deskripsi",
+        accessorKey: "lokasi",
         header: ({ column }) => {
-            return <TableSortableHeader column={column} columnName="deskripsi" label="Deskripsi" />
+            return <TableSortableHeader column={column} columnName="lokasi" label="Lokasi" />
         },
-        cell: ({ row }) => <div className="font-medium">{row.getValue("deskripsi")}</div>,
+        cell: ({ row }) => <div className="font-medium">{row.getValue("lokasi")}</div>,
     },
     {
         accessorKey: "created_at",
-        header: ({ column }) => {
-            return <TableSortableHeader column={column} columnName="created_at" label="Dibuat Pada" />
-        },
+        header: ({ column }) => (
+            <TableSortableHeader column={column} columnName="created_at" label="Dibuat Pada" />
+        ),
         cell: ({ row }) => {
             const date = new Date(row.getValue("created_at"))
-            return <div>{date.toLocaleDateString("id-ID", { 
+            return <div className="font-medium">{date.toLocaleDateString("id-ID", { 
                 day: "2-digit", 
                 month: "long", 
                 year: "numeric" 
@@ -58,7 +58,7 @@ export const columns: ColumnDef<Sektor>[] = [
         id: "actions",
         header: "Aksi",
         cell: ({ row }) => {
-            const jenisPekerjaan = row.original
+            const kelas = row.original
 
             return (
                 <div className="flex items-center gap-2">
@@ -68,7 +68,7 @@ export const columns: ColumnDef<Sektor>[] = [
                         className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
                         asChild
                     >
-                        <Link href={`/admin/jenis-pekerjaan/${jenisPekerjaan.id}`}>
+                        <Link href={`/admin/kelas/${kelas.id}`}>
                             <Eye className="h-4 w-4" />
                         </Link>
                     </Button>
@@ -78,7 +78,7 @@ export const columns: ColumnDef<Sektor>[] = [
                         className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
                         asChild
                     >
-                        <Link href={`/admin/jenis-pekerjaan/${jenisPekerjaan.id}/edit`}>
+                        <Link href={`/admin/kelas/${kelas.id}/edit`}>
                             <Pencil className="h-4 w-4" />
                         </Link>
                     </Button>

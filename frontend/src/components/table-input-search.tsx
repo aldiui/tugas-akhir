@@ -36,12 +36,6 @@ const TableSearchInput = ({
 
     return (
         <div className="flex items-center gap-2">
-            <label 
-                htmlFor="table-search" 
-                className="text-sm font-medium text-gray-700 shrink-0"
-            >
-                Pencarian:
-            </label>
             <div className="relative max-w-xs">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input

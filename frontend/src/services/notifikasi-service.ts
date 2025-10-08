@@ -1,12 +1,13 @@
 import api from "@/lib/api"
-import { ApiResponse } from "@/types/api"
+import { ApiResponse, PaginationData } from "@/types/api"
+import { Notifikasi } from "@/types/notifikasi"
 
 export const adminNotifikasiCreate = async (body: unknown) => {
-    return api.post<ApiResponse<unknown>>('/api/lpk-admin/notifikasi', body)
+    return api.post<ApiResponse<Notifikasi>>('/api/lpk-admin/notifikasi', body)
 }
 
 export const adminNotifikasiUpdate = async (id: string, body: unknown) => {
-    return api.put<ApiResponse<unknown>>(`/api/lpk-admin/notifikasi/${id}`, body)
+    return api.put<ApiResponse<Notifikasi>>(`/api/lpk-admin/notifikasi/${id}`, body)
 }
 
 export const adminNotifikasiDelete = async (id: string) => {
@@ -14,9 +15,9 @@ export const adminNotifikasiDelete = async (id: string) => {
 }
 
 export const adminNotifikasiGetAll = async (params: unknown) => {
-    return api.get<ApiResponse<unknown>>('/api/lpk-admin/notifikasi', { params })
+    return api.get<ApiResponse<PaginationData<Notifikasi[]>>>('/api/lpk-admin/notifikasi', { params })
 }
 
 export const adminNotifikasiGetById = async      (id: string) => {
-    return api.get<ApiResponse<unknown>>(`/api/lpk-admin/notifikasi/${id}`)
+    return api.get<ApiResponse<Notifikasi>>(`/api/lpk-admin/notifikasi/${id}`)
 }

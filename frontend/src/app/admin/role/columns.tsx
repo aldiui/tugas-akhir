@@ -2,56 +2,41 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
-import { ArrowUpDown, Eye, Pencil, Trash2 } from "lucide-react"
+import { Eye, Pencil, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { Role } from "@/types/role"
+import useAppStore from "@/store/app-store"
+import { TableSortableHeader } from "@/components/table-sortable-header"
 
 export const columns: ColumnDef<Role>[] = [
     {
+        accessorKey: "id",
+        header: ({ column }) => {
+            return <TableSortableHeader column={column} columnName="id" label="No" />
+        },
+        cell: function Cell({ row }) {
+			const { start } = useAppStore();
+			return <div className="font-medium">{start + row.index}</div>;
+		},
+    },
+    {
         accessorKey: "nama",
         header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    className="hover:bg-transparent"
-                >
-                    Nama
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
+            return <TableSortableHeader column={column} columnName="nama" label="Nama" />
         },
         cell: ({ row }) => <div className="font-medium">{row.getValue("nama")}</div>,
     },
     {
         accessorKey: "tipe",
         header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    className="hover:bg-transparent"
-                >
-                    Tipe
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
+            return <TableSortableHeader column={column} columnName="tipe" label="Tipe" />
         },
         cell: ({ row }) => <div className="font-medium">{row.getValue("tipe")}</div>,
     },
     {
         accessorKey: "created_at",
         header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    className="hover:bg-transparent"
-                >
-                    Dibuat Pada
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
+            return <TableSortableHeader column={column} columnName="created_at" label="Dibuat Pada" />
         },
         cell: ({ row }) => {
             const date = new Date(row.getValue("created_at"))
