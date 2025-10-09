@@ -109,6 +109,10 @@ class AdminSektorController extends Controller
     {
         $sektor = Sektor::findOrFail($id);
 
+        if ($sektor->jenisPekerjaan()->count() > 0) {
+            return $this->errorResponse('Sektor tidak dapat dihapus karena sedang digunakan', 400);
+        }
+
         DB::beginTransaction();
         try {
             $sektor->delete();

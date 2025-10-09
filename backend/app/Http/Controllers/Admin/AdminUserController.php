@@ -67,6 +67,8 @@ class AdminUserController extends Controller
             'role_id'             => 'required|uuid|exists:role,id',
             'lokasi_id'           => 'nullable|exists:lokasi,id',
             'email'               => 'required|string|email|max:255|unique:users,email',
+            'nomor_telepon'       => 'nullable|string|max:20',
+            'alamat'              => 'nullable|string|max:255',
             'password'            => 'required|string|min:8|max:255',
             'konfirmasi_password' => 'required|string|min:8|max:255|same:password',
         ]);
@@ -74,11 +76,13 @@ class AdminUserController extends Controller
         DB::beginTransaction();
         try {
             $user = User::create([
-                'nama'      => $request->input('nama'),
-                'role_id'   => $request->input('role_id'),
-                'lokasi_id' => $request->input('lokasi_id'),
-                'email'     => $request->input('email'),
-                'password'  => $request->input('password'),
+                'nama'          => $request->input('nama'),
+                'role_id'       => $request->input('role_id'),
+                'lokasi_id'     => $request->input('lokasi_id'),
+                'email'         => $request->input('email'),
+                'nomor_telepon' => $request->input('nomor_telepon'),
+                'alamat'        => $request->input('alamat'),
+                'password'      => $request->input('password'),
             ]);
             DB::commit();
         } catch (\Throwable $e) {
@@ -107,6 +111,8 @@ class AdminUserController extends Controller
             'role_id'             => 'required|uuid|exists:role,id',
             'lokasi_id'           => 'nullable|exists:lokasi,id',
             'email'               => 'required|string|email|max:255|unique:users,email,' . $id,
+            'nomor_telepon'       => 'nullable|string|max:20',
+            'alamat'              => 'nullable|string|max:255',
             'password'            => 'nullable|string|min:8|max:255',
             'konfirmasi_password' => 'nullable|string|min:8|max:255|same:password',
         ]);
@@ -116,11 +122,13 @@ class AdminUserController extends Controller
         DB::beginTransaction();
         try {
             $user->update([
-                'nama'      => $request->input('nama'),
-                'role_id'   => $request->input('role_id'),
-                'lokasi_id' => $request->input('lokasi_id'),
-                'email'     => $request->input('email'),
-                'password'  => $request->input('password') ? bcrypt($request->input('password')) : $user->password,
+                'nama'          => $request->input('nama'),
+                'role_id'       => $request->input('role_id'),
+                'lokasi_id'     => $request->input('lokasi_id'),
+                'email'         => $request->input('email'),
+                'nomor_telepon' => $request->input('nomor_telepon'),
+                'alamat'        => $request->input('alamat'),
+                'password'      => $request->input('password') ? bcrypt($request->input('password')) : $user->password,
             ]);
             DB::commit();
         } catch (\Throwable $e) {
