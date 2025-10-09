@@ -16,13 +16,9 @@ import {
     Users, 
     Shield, 
     Briefcase, 
-    GraduationCap, 
     BookOpen, 
     Globe, 
-    Bell, 
     MapPin, 
-    UserCheck,
-    FileText,
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
@@ -32,20 +28,20 @@ const items = [
     {
         group: "Dashboard",
         items: [
-            { title: "Dashboard", url: "/admin", icon: Home },
+            { title: "Dashboard", url: "/", icon: Home },
         ]
     },
     {
         group: "Data Master",
         items: [
-            { title: "User", url: "/admin/user", icon: Users },
-            { title: "Role", url: "/admin/role", icon: Shield },
-            { title: "Sektor", url: "/admin/sektor", icon: Briefcase },
-            { title: "Jenis Pekerjaan", url: "/admin/jenis-pekerjaan", icon: Briefcase },
-            { title: "Negara", url: "/admin/negara", icon: Globe },
-            { title: "Lokasi", url: "/admin/lokasi", icon: MapPin },
-            { title: "Mata Pelajaran", url: "/admin/mata-pelajaran", icon: BookOpen },
-            // { title: "Kelas", url: "/admin/kelas", icon: GraduationCap },
+            { title: "User", url: "/user", icon: Users },
+            { title: "Role", url: "/role", icon: Shield },
+            { title: "Sektor", url: "/sektor", icon: Briefcase },
+            { title: "Jenis Pekerjaan", url: "/jenis-pekerjaan", icon: Briefcase },
+            { title: "Negara", url: "/negara", icon: Globe },
+            { title: "Lokasi", url: "/lokasi", icon: MapPin },
+            { title: "Mata Pelajaran", url: "/mata-pelajaran", icon: BookOpen },
+            // { title: "Kelas", url: "//kelas", icon: GraduationCap },
         ]
     },
     // {
