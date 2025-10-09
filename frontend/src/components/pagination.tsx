@@ -52,7 +52,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
                 variant="outline"
                 size="sm"
             >
-                {'<'} Sebelumnya
+                {'<<'} 
             </Button>
 
             {pageNumbers.map((page, index) => (
@@ -60,10 +60,11 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
                     key={index}
                     onClick={() => typeof page === 'number' && onPageChange(page)}
                     variant={page === currentPage ? "default" : "outline"}
+
                     size="sm"
                     className={`min-w-[40px] ${
                         page === currentPage
-                            ? 'bg-blue-500 hover:bg-blue-600 text-white'
+                            ? 'bg-blue-500 hover:bg-blue-600 text-white'    
                             : 'bg-white hover:bg-gray-100 text-gray-700'
                     }`}
                     disabled={page === '...'}>
@@ -77,7 +78,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
                 variant="outline"
                 size="sm"
             >
-                Selanjutnya {'>'}
+                {'>>'} 
             </Button>
         </div>
     )

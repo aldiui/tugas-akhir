@@ -13,36 +13,76 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { createSektorSchema } from '@/validation/sektor-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import z from "zod"
 import toast from "react-hot-toast"
-import { useMutation } from '@tanstack/react-query'
-import { adminSektorCreate } from '@/services/sektor-service'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { adminJenisPekerjaanGetById, adminJenisPekerjaanUpdate } from '@/services/jenis-pekerjaan-service'
 import { useRouter } from 'next/navigation'
 import { AxiosError } from 'axios'
 import Link from 'next/link'
+import { use, useEffect } from 'react'
+import LoadingTable from '@/components/loading-table'
 import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { updateJenisPekerjaanSchema } from "@/validation/jenis-pekerjaan-schema"
+import { adminSektorGetAll } from "@/services/sektor-service"
 
-export default function Page() {
+export default function Page({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = use(params)
     const router = useRouter()
+    
+    const { data, isLoading } = useQuery({
+        queryFn: async () => await adminJenisPekerjaanGetById(String(id)),
+        queryKey: ['detail-jenis-pekerjaan', id],
+    })
 
-    const form = useForm<z.infer<typeof createSektorSchema>>({
-        resolver: zodResolver(createSektorSchema),
+    const form = useForm<z.infer<typeof updateJenisPekerjaanSchema>>({
+        resolver: zodResolver(updateJenisPekerjaanSchema),
         defaultValues: {
             nama: '',
             deskripsi : '',
+            sektor_id: '',
         }
     })
 
+    const sektor = useQuery({
+        queryFn: async () =>
+            await adminSektorGetAll({
+                page: 1,
+                limit: '100',
+            }),
+        queryKey: ['list-sektor-all'],
+    })
+    
+    
+    const sektorOptions =
+    sektor.data != null
+    ? sektor.data.data.data.data.map(v => ({
+            label: v.nama,
+            value: String(v.id),
+        }))
+    : []
+
+    useEffect(() => {
+        if (data?.data.data) {
+            form.reset({
+                nama: data.data.data.nama,
+                sektor_id: data.data.data.sektor_id,
+                deskripsi : data.data.data.deskripsi,
+            })
+        }
+    }, [data, form])
+
     const mutation = useMutation({
-        mutationFn: (data: z.infer<typeof createSektorSchema>) => adminSektorCreate(data),
+        mutationFn: (formData: z.infer<typeof updateJenisPekerjaanSchema>) => 
+            adminJenisPekerjaanUpdate(String(id), formData),
         onSuccess: (data) => {
-            if (data?.status === 201) {
-                toast.success(data.data.message || 'Sektor berhasil ditambahkan')
-                router.push('/admin/sektor')
+            if (data.status === 200) {
+                toast.success(data.data.message || 'Jenis pekerjaan berhasil diperbarui')
+                router.push('/admin/jenis-pekerjaan')
             } else {
-                toast.error(data.data.message || 'Gagal menambahkan sektor')
+                toast.error(data.data.message || 'Gagal memperbarui jenis pekerjaan')
             }
         },
         onError: (error) => {
@@ -51,7 +91,7 @@ export default function Page() {
 
                 if (errors) {
                     Object.keys(errors).forEach(key => {
-                        return form.setError(key as "nama" | "deskripsi", {
+                        form.setError(key as "nama" | "deskripsi", {
                             type: 'manual',
                             message: errors[key][0],
                         })
@@ -64,8 +104,20 @@ export default function Page() {
         },
     })
 
-    const onSubmit: SubmitHandler<z.infer<typeof createSektorSchema>> = (data) => {
-        mutation.mutate(data)
+    const onSubmit: SubmitHandler<z.infer<typeof updateJenisPekerjaanSchema>> = (formData) => {
+        mutation.mutate(formData)
+    }
+
+    if (isLoading) {
+        return (
+            <div className="w-full h-full p-6 space-y-4">
+                <Card>
+                    <CardContent className="p-6 relative min-h-[400px]">
+                        <LoadingTable />
+                    </CardContent>
+                </Card>
+            </div>
+        )
     }
 
     return (
@@ -81,7 +133,7 @@ export default function Page() {
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage>Tambah</BreadcrumbPage>
+                        <BreadcrumbPage>Edit</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
@@ -89,7 +141,7 @@ export default function Page() {
             <Card>
                 <CardHeader className="border-b">
                     <div className="flex justify-between items-center">
-                        <h3 className="text-2xl font-bold text-blue-900">Tambah Sektor</h3>
+                        <h3 className="text-2xl font-bold text-blue-900">Edit Sektor</h3>
                     </div>
                 </CardHeader>
 
@@ -103,7 +155,7 @@ export default function Page() {
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>
-                                                Nama <span className="text-red-600">*</span>
+                                                Kode <span className="text-red-600">*</span>
                                             </FormLabel>
                                             <FormControl>
                                                 <Input 
@@ -119,6 +171,37 @@ export default function Page() {
 
                                 <FormField
                                     control={form.control}
+                                    name="sektor_id"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>
+                                                Sektor <span className="text-red-600">*</span>
+                                            </FormLabel>
+                                            <Select 
+                                                onValueChange={field.onChange} 
+                                                value={field.value}
+                                                key={field.value}
+                                            >
+                                                <FormControl>
+                                                    <SelectTrigger className="border-blue-300 focus:border-blue-500 focus:ring-blue-500 w-full">
+                                                        <SelectValue placeholder="Pilih sektor" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    {sektorOptions.map((option) => (
+                                                        <SelectItem key={option.value} value={option.value}>
+                                                            {option.label}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage className="text-sm" />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
                                     name="deskripsi"
                                     render={({ field }) => (
                                         <FormItem>
@@ -126,7 +209,7 @@ export default function Page() {
                                                 Deskripsi <span className="text-red-600">*</span>
                                             </FormLabel>
                                             <FormControl>
-                                                <Textarea  
+                                                <Textarea
                                                     placeholder="Masukkan deskripsi" 
                                                     {...field} 
                                                     className="border-blue-300 focus:border-blue-500 focus:ring-blue-500 min-h-[120px]"
@@ -146,9 +229,9 @@ export default function Page() {
                                     disabled={mutation.isPending}
                                     className="bg-blue-600 hover:bg-blue-700"
                                 >
-                                    {mutation.isPending ? 'Menyimpan...' : 'Simpan'}
+                                    {mutation.isPending ? 'Menyimpan...' : 'Perbarui'}
                                 </Button>
-                                <Link href="/admin/sektor">
+                                <Link href="/admin/jenis-pekerjaan">
                                     <Button 
                                         type="button" 
                                         variant="outline" 

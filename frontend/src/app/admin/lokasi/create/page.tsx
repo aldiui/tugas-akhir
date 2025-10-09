@@ -1,12 +1,12 @@
 'use client'
 
 import {
-Breadcrumb,
-BreadcrumbItem,
-BreadcrumbLink,
-BreadcrumbList,
-BreadcrumbPage,
-BreadcrumbSeparator,
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -31,13 +31,13 @@ const form = useForm<z.infer<typeof createLokasiSchema>>({
     defaultValues: {
         kode: '',
         nama: '',
-        latitude: 0,
-        longitude: 0,
+        latitude: parseFloat('0').toString(),
+        longitude: parseFloat('0').toString(),
         jam_masuk_mulai: '',
         jam_masuk_selesai: '',
         jam_keluar_mulai: '',
         jam_keluar_selesai: '',
-        radius: 0,
+        radius: parseFloat('0').toString(),
         alamat: '',
         telepon: '',
     }
@@ -198,6 +198,7 @@ return (
                                         <FormControl>
                                             <Input 
                                                 type="time"
+                                                step="1"
                                                 {...field} 
                                                 className="border-blue-300 focus:border-blue-500 focus:ring-blue-500"
                                             />
@@ -218,6 +219,7 @@ return (
                                         <FormControl>
                                             <Input 
                                                 type="time"
+                                                step="1"
                                                 {...field} 
                                                 className="border-blue-300 focus:border-blue-500 focus:ring-blue-500"
                                             />
@@ -238,6 +240,7 @@ return (
                                         <FormControl>
                                             <Input 
                                                 type="time"
+                                                step="1"
                                                 {...field} 
                                                 className="border-blue-300 focus:border-blue-500 focus:ring-blue-500"
                                             />
@@ -258,6 +261,7 @@ return (
                                         <FormControl>
                                             <Input 
                                                 type="time"
+                                                step="1"
                                                 {...field} 
                                                 className="border-blue-300 focus:border-blue-500 focus:ring-blue-500"
                                             />

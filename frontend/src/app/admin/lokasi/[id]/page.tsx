@@ -40,13 +40,13 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         defaultValues: {
             kode: '',
             nama: '',
-            latitude: 0,
-            longitude: 0,
+            latitude: parseFloat('0').toString(),
+            longitude: parseFloat('0').toString(),
             jam_masuk_mulai: '',
             jam_masuk_selesai: '',
             jam_keluar_mulai: '',
             jam_keluar_selesai: '',
-            radius: 0,
+            radius: parseFloat('0').toString(),
             alamat: '',
             telepon: '',
         }
@@ -57,13 +57,13 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             form.reset({
                 kode: data.data.data.kode,
                 nama: data.data.data.nama,
-                latitude: data.data.data.latitude,
-                longitude: data.data.data.longitude,
+                latitude: String(data.data.data.latitude),
+                longitude: String(data.data.data.longitude),
                 jam_masuk_mulai: data.data.data.jam_masuk_mulai,
                 jam_masuk_selesai: data.data.data.jam_masuk_selesai,
                 jam_keluar_mulai: data.data.data.jam_keluar_mulai,
                 jam_keluar_selesai: data.data.data.jam_keluar_selesai,
-                radius: data.data.data.radius,
+                radius: String(data.data.data.radius),
                 alamat: data.data.data.alamat,
                 telepon: data.data.data.telepon,
             })
@@ -238,6 +238,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                                             <FormControl>
                                                 <Input 
                                                     type="time"
+                                                    step="1"
                                                     {...field} 
                                                     className="border-blue-300 focus:border-blue-500 focus:ring-blue-500"
                                                 />
@@ -258,6 +259,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                                             <FormControl>
                                                 <Input 
                                                     type="time"
+                                                    step="1"
                                                     {...field} 
                                                     className="border-blue-300 focus:border-blue-500 focus:ring-blue-500"
                                                 />
@@ -278,6 +280,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                                             <FormControl>
                                                 <Input 
                                                     type="time"
+                                                    step="1"
                                                     {...field} 
                                                     className="border-blue-300 focus:border-blue-500 focus:ring-blue-500"
                                                 />
@@ -298,6 +301,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                                             <FormControl>
                                                 <Input 
                                                     type="time"
+                                                    step="1"
                                                     {...field} 
                                                     className="border-blue-300 focus:border-blue-500 focus:ring-blue-500"
                                                 />

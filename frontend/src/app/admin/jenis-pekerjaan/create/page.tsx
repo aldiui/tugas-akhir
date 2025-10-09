@@ -13,36 +13,57 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { createSektorSchema } from '@/validation/sektor-schema'
+import { createJenisPekerjaanSchema } from '@/validation/jenis-pekerjaan-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import z from "zod"
 import toast from "react-hot-toast"
-import { useMutation } from '@tanstack/react-query'
-import { adminSektorCreate } from '@/services/sektor-service'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { adminJenisPekerjaanCreate } from '@/services/jenis-pekerjaan-service'
 import { useRouter } from 'next/navigation'
 import { AxiosError } from 'axios'
 import Link from 'next/link'
 import { Textarea } from "@/components/ui/textarea"
+import { adminSektorGetAll } from "@/services/sektor-service"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export default function Page() {
     const router = useRouter()
 
-    const form = useForm<z.infer<typeof createSektorSchema>>({
-        resolver: zodResolver(createSektorSchema),
+    const form = useForm<z.infer<typeof createJenisPekerjaanSchema>>({
+        resolver: zodResolver(createJenisPekerjaanSchema),
         defaultValues: {
             nama: '',
+            sektor_id: '',
             deskripsi : '',
         }
     })
 
+    const sektor = useQuery({
+        queryFn: async () =>
+            await adminSektorGetAll({
+                page: 1,
+                limit: '100',
+            }),
+        queryKey: ['list-sektor-all'],
+    })
+
+
+    const sektorOptions =
+    sektor.data != null
+    ? sektor.data.data.data.data.map(v => ({
+            label: v.nama,
+            value: String(v.id),
+        }))
+    : []
+
     const mutation = useMutation({
-        mutationFn: (data: z.infer<typeof createSektorSchema>) => adminSektorCreate(data),
+        mutationFn: (data: z.infer<typeof createJenisPekerjaanSchema>) => adminJenisPekerjaanCreate(data),
         onSuccess: (data) => {
             if (data?.status === 201) {
-                toast.success(data.data.message || 'Sektor berhasil ditambahkan')
-                router.push('/admin/sektor')
+                toast.success(data.data.message || 'Jenis pekerjaan berhasil ditambahkan')
+                router.push('/admin/jenis-pekerjaan')
             } else {
-                toast.error(data.data.message || 'Gagal menambahkan sektor')
+                toast.error(data.data.message || 'Gagal menambahkan jenis pekerjaan')
             }
         },
         onError: (error) => {
@@ -51,7 +72,7 @@ export default function Page() {
 
                 if (errors) {
                     Object.keys(errors).forEach(key => {
-                        return form.setError(key as "nama" | "deskripsi", {
+                        return form.setError(key as "nama" | "sektor_id" | "deskripsi", {
                             type: 'manual',
                             message: errors[key][0],
                         })
@@ -64,7 +85,7 @@ export default function Page() {
         },
     })
 
-    const onSubmit: SubmitHandler<z.infer<typeof createSektorSchema>> = (data) => {
+    const onSubmit: SubmitHandler<z.infer<typeof createJenisPekerjaanSchema>> = (data) => {
         mutation.mutate(data)
     }
 
@@ -77,7 +98,7 @@ export default function Page() {
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbLink href="/admin/sektor">Sektor</BreadcrumbLink>
+                        <BreadcrumbLink href="/admin/jenis-pekerjaan">Jenis Pekerjaan</BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
@@ -89,7 +110,7 @@ export default function Page() {
             <Card>
                 <CardHeader className="border-b">
                     <div className="flex justify-between items-center">
-                        <h3 className="text-2xl font-bold text-blue-900">Tambah Sektor</h3>
+                        <h3 className="text-2xl font-bold text-blue-900">Tambah Jenis Pekerjaan</h3>
                     </div>
                 </CardHeader>
 
@@ -112,6 +133,36 @@ export default function Page() {
                                                     className="border-blue-300 focus:border-blue-500 focus:ring-blue-500"
                                                 />
                                             </FormControl>
+                                            <FormMessage className="text-sm" />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="sektor_id"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>
+                                                Sektor <span className="text-red-600">*</span>
+                                            </FormLabel>
+                                            <Select 
+                                                onValueChange={field.onChange} 
+                                                defaultValue={field.value}
+                                            >
+                                                <FormControl>
+                                                    <SelectTrigger className="border-blue-300 focus:border-blue-500 focus:ring-blue-500 w-full">
+                                                        <SelectValue placeholder="Pilih sektor" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    {sektorOptions.map((option) => (
+                                                        <SelectItem key={option.value} value={option.value}>
+                                                            {option.label}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
                                             <FormMessage className="text-sm" />
                                         </FormItem>
                                     )}
@@ -148,7 +199,7 @@ export default function Page() {
                                 >
                                     {mutation.isPending ? 'Menyimpan...' : 'Simpan'}
                                 </Button>
-                                <Link href="/admin/sektor">
+                                <Link href="/admin/jenis-pekerjaan">
                                     <Button 
                                         type="button" 
                                         variant="outline" 

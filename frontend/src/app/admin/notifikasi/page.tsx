@@ -75,7 +75,7 @@ export default function Page() {
                             >
                                 <Link href="/admin/kelas/create">
                                     <Plus className="mr-2 h-4 w-4" />
-                                    Tambah Notifikasi
+                                    Tambah
                                 </Link>
                             </Button>
                         </div>

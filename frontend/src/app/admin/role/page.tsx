@@ -75,7 +75,7 @@ export default function Page() {
                             >
                                 <Link href="/admin/role/create">
                                     <Plus className="mr-2 h-4 w-4" />
-                                    Tambah Role
+                                    Tambah
                                 </Link>
                             </Button>
                         </div>
