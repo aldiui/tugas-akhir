@@ -11,7 +11,7 @@ class AdminPermissionController extends Controller
      */
     public function index()
     {
-        $permission = Permission::all();
+        $permission = Permission::select('id', 'kode', 'nama')->get();
         return $this->successResponse($permission, 'Data permission berhasil diambil');
     }
 }

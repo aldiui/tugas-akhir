@@ -76,6 +76,7 @@ class AdminRoleController extends Controller
     public function show(string $id): JsonResponse
     {
         $role = Role::findOrFail($id);
+        $role->permissions = $role->permissions()->pluck('permission.id')->toArray();
         return $this->successResponse($role, 'Detail role berhasil diambil');
     }
 
@@ -85,7 +86,7 @@ class AdminRoleController extends Controller
     public function update(Request $request, string $id): JsonResponse
     {
         $request->validate([
-            'nama'          => 'required|string|max:255|unique:role,nama,' . $role->id,
+            'nama'          => 'required|string|max:255|unique:role,nama,' . $id,
             'tipe'          => 'required|string|in:CPMI,Admin,Pengajar',
             'permissions'   => 'required|array|min:1',
             'permissions.*' => 'required|string|exists:permission,id',
@@ -116,12 +117,14 @@ class AdminRoleController extends Controller
         $role = Role::findOrFail($id);
 
         if ($role->users()->count() > 0) {
-            return $this->errorResponse('Role tidak dapat dihapus karena sedang digunakan oleh user', 400);
+            return $this->errorResponse('Role tidak dapat dihapus karena sedang digunakan', 400);
         }
 
         DB::beginTransaction();
         try {
+            $role->permissions()->detach();
             $role->delete();
+
             DB::commit();
         } catch (\Throwable $e) {
             DB::rollBack();

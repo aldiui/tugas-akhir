@@ -44,20 +44,20 @@ const items = [
             { title: "Jenis Pekerjaan", url: "/admin/jenis-pekerjaan", icon: Briefcase },
             { title: "Negara", url: "/admin/negara", icon: Globe },
             { title: "Lokasi", url: "/admin/lokasi", icon: MapPin },
-            { title: "Kelas", url: "/admin/kelas", icon: GraduationCap },
             { title: "Mata Pelajaran", url: "/admin/mata-pelajaran", icon: BookOpen },
+            // { title: "Kelas", url: "/admin/kelas", icon: GraduationCap },
         ]
     },
-    {
-        group: "Data CPMI",
-        items: [
-            { title: "CPMI", url: "/admin/cpmi", icon: UserCheck },   
-            // { title: "Absensi", url: "/admin/absensi", icon: CalendarCheck },   
-            // { title: "Piket", url: "/admin/piket", icon: Clock },   
-            { title: "Izin", url: "/admin/izin", icon: FileText },   
-            { title: "Notifikasi", url: "/admin/notifikasi", icon: Bell },   
-        ]
-    },
+    // {
+    //     group: "Data CPMI",
+    //     items: [
+    //         { title: "CPMI", url: "/admin/cpmi", icon: UserCheck },   
+    //         { title: "Absensi", url: "/admin/absensi", icon: CalendarCheck },   
+    //         { title: "Piket", url: "/admin/piket", icon: Clock },   
+    //         { title: "Izin", url: "/admin/izin", icon: FileText },   
+    //         { title: "Notifikasi", url: "/admin/notifikasi", icon: Bell },   
+    //     ]
+    // },
 ]
 
 export function AppSidebar() {
