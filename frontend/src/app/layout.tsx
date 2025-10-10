@@ -1,25 +1,23 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { Toaster } from 'react-hot-toast'
-import Providers from "./provider";
-import { AppSidebar } from "@/components/app-sidebar"
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import { Toaster } from 'react-hot-toast';
+import './globals.css';
+import Providers from './provider';
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: "Bahana Mobile",
+  title: 'Bahana Mobile',
   icons: {
-      icon: 'favicon.png',
+    icon: 'favicon.png',
   },
 };
 
@@ -35,18 +33,8 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Toaster position="top-right" reverseOrder={false} />
-        <Providers>
-            <SidebarProvider>
-            <AppSidebar />
-                <main className="w-full">
-                    <div className="sticky top-0 z-1 p-4">
-                        <SidebarTrigger className="hover:bg-blue-50" />
-                    </div>
-                    <div className="w-full">{children}</div>
-                </main>
-            </SidebarProvider>
-      </Providers>
-    </body>
-  </html>
-);
+        <Providers>{children}</Providers>
+      </body>
+    </html>
+  );
 }

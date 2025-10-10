@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -50,47 +50,51 @@
   --card-foreground: oklch(0.15 0.02 264);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.15 0.02 264);
-  
+
   /* Primary - Vibrant Blue */
   --primary: oklch(0.55 0.24 252); /* blue-600 vibrant */
   --primary-foreground: oklch(1 0 0);
-  
+
   /* Secondary - Light Blue */
   --secondary: oklch(0.95 0.02 252); /* blue-50 */
   --secondary-foreground: oklch(0.35 0.18 252); /* blue-800 */
-  
+
   /* Muted - Cool Gray */
   --muted: oklch(0.96 0.01 264);
   --muted-foreground: oklch(0.5 0.02 264);
-  
+
   /* Accent - Cyan Blue */
   --accent: oklch(0.88 0.08 220); /* cyan-100 */
   --accent-foreground: oklch(0.25 0.12 220); /* cyan-900 */
-  
+
   /* Destructive - Vibrant Red */
   --destructive: oklch(0.58 0.25 25); /* red-600 */
   --destructive-foreground: oklch(1 0 0);
-  
+
   --border: oklch(0.92 0.01 264);
   --input: oklch(0.92 0.01 264);
   --ring: oklch(0.55 0.24 252);
-  
+
   /* Charts - Vibrant Colors */
   --chart-1: oklch(0.65 0.24 252); /* blue */
-  --chart-2: oklch(0.62 0.20 175); /* green */
+  --chart-2: oklch(0.62 0.2 175); /* green */
   --chart-3: oklch(0.68 0.22 310); /* purple */
-  --chart-4: oklch(0.75 0.20 85); /* yellow */
+  --chart-4: oklch(0.75 0.2 85); /* yellow */
   --chart-5: oklch(0.63 0.22 20); /* orange */
-  
+
   /* Sidebar - Deep Blue Gradient Theme */
-  --sidebar: linear-gradient(180deg, oklch(0.45 0.26 264) 0%, oklch(0.35 0.22 264) 100%); /* Deep blue gradient */
+  --sidebar: linear-gradient(
+    180deg,
+    oklch(0.45 0.26 264) 0%,
+    oklch(0.35 0.22 264) 100%
+  ); /* Deep blue gradient */
   --sidebar-foreground: oklch(0.98 0.01 264); /* Almost white with blue tint */
-  --sidebar-primary: oklch(0.30 0.20 264); /* Darker blue */
+  --sidebar-primary: oklch(0.3 0.2 264); /* Darker blue */
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.60 0.26 252); /* Bright blue accent */
+  --sidebar-accent: oklch(0.6 0.26 252); /* Bright blue accent */
   --sidebar-accent-foreground: oklch(1 0 0);
   --sidebar-border: oklch(0.55 0.18 264 / 0.3); /* Semi-transparent blue */
-  --sidebar-ring: oklch(0.60 0.26 252);
+  --sidebar-ring: oklch(0.6 0.26 252);
 }
 
 .dark {
@@ -100,44 +104,44 @@
   --card-foreground: oklch(0.95 0.01 264);
   --popover: oklch(0.18 0.02 264);
   --popover-foreground: oklch(0.95 0.01 264);
-  
+
   /* Primary - Bright Blue */
   --primary: oklch(0.65 0.26 252); /* Brighter in dark mode */
   --primary-foreground: oklch(0.12 0.01 264);
-  
+
   /* Secondary - Dark Blue */
   --secondary: oklch(0.25 0.08 252);
-  --secondary-foreground: oklch(0.90 0.02 252);
-  
+  --secondary-foreground: oklch(0.9 0.02 252);
+
   /* Muted */
   --muted: oklch(0.22 0.02 264);
   --muted-foreground: oklch(0.65 0.02 264);
-  
+
   /* Accent - Cyan */
   --accent: oklch(0.35 0.12 220);
   --accent-foreground: oklch(0.95 0.01 220);
-  
+
   /* Destructive - Bright Red */
   --destructive: oklch(0.65 0.25 25);
   --destructive-foreground: oklch(0.12 0.01 264);
-  
+
   --border: oklch(0.25 0.02 264);
   --input: oklch(0.25 0.02 264);
   --ring: oklch(0.65 0.26 252);
-  
+
   /* Charts - Vibrant Dark Mode */
-  --chart-1: oklch(0.60 0.26 252); /* blue */
+  --chart-1: oklch(0.6 0.26 252); /* blue */
   --chart-2: oklch(0.65 0.22 160); /* green */
-  --chart-3: oklch(0.70 0.24 310); /* purple */
+  --chart-3: oklch(0.7 0.24 310); /* purple */
   --chart-4: oklch(0.75 0.22 85); /* yellow */
   --chart-5: oklch(0.68 0.24 30); /* orange */
-  
+
   /* Sidebar - Lighter in Dark Mode */
-  --sidebar: linear-gradient(180deg, oklch(0.25 0.08 264) 0%, oklch(0.20 0.06 264) 100%);
+  --sidebar: linear-gradient(180deg, oklch(0.25 0.08 264) 0%, oklch(0.2 0.06 264) 100%);
   --sidebar-foreground: oklch(0.95 0.01 264);
-  --sidebar-primary: oklch(0.30 0.10 264);
+  --sidebar-primary: oklch(0.3 0.1 264);
   --sidebar-primary-foreground: oklch(0.95 0.01 264);
-  --sidebar-accent: oklch(0.45 0.20 252);
+  --sidebar-accent: oklch(0.45 0.2 252);
   --sidebar-accent-foreground: oklch(1 0 0);
   --sidebar-border: oklch(0.35 0.08 264 / 0.3);
   --sidebar-ring: oklch(0.55 0.24 252);
@@ -155,39 +159,39 @@
 
 /* Sidebar Custom Styles with Gradient & Hover Effects */
 @layer components {
-  [data-sidebar="sidebar"] {
+  [data-sidebar='sidebar'] {
     background: linear-gradient(180deg, oklch(0.45 0.26 264) 0%, oklch(0.35 0.22 264) 100%);
     @apply text-sidebar-foreground shadow-xl;
   }
 
-  [data-sidebar="sidebar"] [data-sidebar="header"] {
+  [data-sidebar='sidebar'] [data-sidebar='header'] {
     @apply bg-sidebar-primary/50 border-sidebar-border backdrop-blur-sm;
   }
 
-  [data-sidebar="sidebar"] [data-sidebar="group-label"] {
+  [data-sidebar='sidebar'] [data-sidebar='group-label'] {
     @apply text-sidebar-foreground/80 font-bold text-[10px] uppercase tracking-wider;
   }
 
-  [data-sidebar="sidebar"] [data-sidebar="menu-button"] {
+  [data-sidebar='sidebar'] [data-sidebar='menu-button'] {
     @apply text-sidebar-foreground/90 hover:bg-white/10 hover:text-white transition-all duration-200 rounded-lg;
   }
 
-  [data-sidebar="sidebar"] [data-sidebar="menu-button"][data-active="true"] {
+  [data-sidebar='sidebar'] [data-sidebar='menu-button'][data-active='true'] {
     @apply bg-sidebar-accent text-white font-semibold shadow-lg shadow-sidebar-accent/30;
   }
 
-  [data-sidebar="sidebar"] [data-sidebar="menu-button"]:hover {
+  [data-sidebar='sidebar'] [data-sidebar='menu-button']:hover {
     @apply bg-white/15 scale-[1.02] transform;
   }
-  
+
   /* Add hover glow effect */
-  [data-sidebar="sidebar"] [data-sidebar="menu-button"][data-active="true"]::before {
+  [data-sidebar='sidebar'] [data-sidebar='menu-button'][data-active='true']::before {
     content: '';
     @apply absolute inset-0 rounded-lg opacity-0 transition-opacity;
-    background: radial-gradient(circle at center, oklch(0.70 0.28 252 / 0.3) 0%, transparent 70%);
+    background: radial-gradient(circle at center, oklch(0.7 0.28 252 / 0.3) 0%, transparent 70%);
   }
-  
-  [data-sidebar="sidebar"] [data-sidebar="menu-button"][data-active="true"]:hover::before {
+
+  [data-sidebar='sidebar'] [data-sidebar='menu-button'][data-active='true']:hover::before {
     @apply opacity-100;
   }
 }

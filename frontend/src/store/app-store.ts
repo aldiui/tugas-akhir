@@ -1,39 +1,29 @@
-import { create } from 'zustand'
+import { create } from 'zustand';
 
-type Sort = {
-    column: string
-    type: 'asc' | 'desc'
+interface AppStore {
+  limit: string;
+  setLimit: (limit: string) => void;
+  search: string;
+  setSearch: (search: string) => void;
+  page: number;
+  setPage: (page: number) => void;
+  start: number;
+  setStart: (start: number) => void;
+  sort: { column: string; type: 'asc' | 'desc' } | null;
+  setSort: (sort: { column: string; type: 'asc' | 'desc' } | null) => void;
 }
 
-type IAppStore = {
-    sort: Sort | null
-    setSort: (sort: Sort | null) => void
-    isOpenSidebar: boolean
-    setIsOpenSidebar: (isOpenSidebar: boolean) => void
-    sidebar: string
-    setSidebar: (sidebar: string) => void
-    limit: string
-    setLimit: (limit: string) => void
-    search: string
-    setSearch: (limit: string) => void
-    start: number
-    setStart: (limit: number) => void
-}
+const useAppStore = create<AppStore>((set) => ({
+  limit: '10', // Default value sebagai string
+  setLimit: (limit) => set({ limit }),
+  search: '',
+  setSearch: (search) => set({ search }),
+  page: 1,
+  setPage: (page) => set({ page }),
+  start: 1,
+  setStart: (start) => set({ start }),
+  sort: null,
+  setSort: (sort) => set({ sort }),
+}));
 
-const useAppStore = create<IAppStore>(set => ({
-    sort: null,
-    setSort: sort => set({ sort: sort }),
-    isOpenSidebar: false,
-    setIsOpenSidebar: isOpenSidebar => set({ isOpenSidebar: isOpenSidebar }),
-    sidebar: '',
-    setSidebar: sidebar => set({ sidebar: sidebar }),
-    limit: '10',
-    setLimit: limit => set({ limit: limit }),
-    search: '',
-    setSearch: search => set({ search: search }),
-    start: 1,
-    setStart: start => set({ start: start }),
-
-}))
-
-export default useAppStore
+export default useAppStore;

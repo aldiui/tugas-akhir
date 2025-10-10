@@ -1,87 +1,87 @@
-"use client"
+'use client';
 
-import React from 'react'
-import { Button } from './ui/button'
+import React from 'react';
+import { Button } from './ui/button';
 
 interface PaginationProps {
-    currentPage: number
-    totalPages: number
-    onPageChange: (page: number) => void
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
 }
 
 const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
-    const generatePageNumbers = (): (number | string)[] => {
-        const pages: (number | string)[] = []
-        const showPages = 5 
+  const generatePageNumbers = (): (number | string)[] => {
+    const pages: (number | string)[] = [];
+    const showPages = 5;
 
-        if (totalPages <= showPages) {
-            for (let i = 1; i <= totalPages; i++) {
-                pages.push(i)
-            }
-        } else {
-            const startPage = Math.max(2, currentPage - 1)
-            const endPage = Math.min(totalPages - 1, currentPage + 1)
+    if (totalPages <= showPages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      const startPage = Math.max(2, currentPage - 1);
+      const endPage = Math.min(totalPages - 1, currentPage + 1);
 
-            pages.push(1)
+      pages.push(1);
 
-            if (startPage > 2) {
-                pages.push('...')
-            }
+      if (startPage > 2) {
+        pages.push('...');
+      }
 
-            for (let i = startPage; i <= endPage; i++) {
-                pages.push(i)
-            }
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
 
-            if (endPage < totalPages - 1) {
-                pages.push('...')
-            }
+      if (endPage < totalPages - 1) {
+        pages.push('...');
+      }
 
-            pages.push(totalPages)
-        }
-
-        return pages
+      pages.push(totalPages);
     }
 
-    const pageNumbers = generatePageNumbers()
+    return pages;
+  };
 
-    return (
-        <div className="flex justify-center items-center space-x-2 max-w-screen flex-wrap gap-y-1 order-last lg:order-none">
-            <Button 
-                disabled={currentPage === 1} 
-                onClick={() => onPageChange(currentPage - 1)}
-                variant="outline"
-                size="sm"
-            >
-                {'<<'} 
-            </Button>
+  const pageNumbers = generatePageNumbers();
 
-            {pageNumbers.map((page, index) => (
-                <Button
-                    key={index}
-                    onClick={() => typeof page === 'number' && onPageChange(page)}
-                    variant={page === currentPage ? "default" : "outline"}
+  return (
+    <div className="flex justify-center items-center space-x-2 max-w-screen flex-wrap gap-y-1 order-last lg:order-none">
+      <Button
+        disabled={currentPage === 1}
+        onClick={() => onPageChange(currentPage - 1)}
+        variant="outline"
+        size="sm"
+      >
+        {'<<'}
+      </Button>
 
-                    size="sm"
-                    className={`min-w-[40px] ${
-                        page === currentPage
-                            ? 'bg-blue-500 hover:bg-blue-600 text-white'    
-                            : 'bg-white hover:bg-gray-100 text-gray-700'
-                    }`}
-                    disabled={page === '...'}>
-                    {page}
-                </Button>
-            ))}
+      {pageNumbers.map((page, index) => (
+        <Button
+          key={index}
+          onClick={() => typeof page === 'number' && onPageChange(page)}
+          variant={page === currentPage ? 'default' : 'outline'}
+          size="sm"
+          className={`min-w-[40px] ${
+            page === currentPage
+              ? 'bg-blue-500 hover:bg-blue-600 text-white'
+              : 'bg-white hover:bg-gray-100 text-gray-700'
+          }`}
+          disabled={page === '...'}
+        >
+          {page}
+        </Button>
+      ))}
 
-            <Button 
-                disabled={currentPage === totalPages} 
-                onClick={() => onPageChange(currentPage + 1)}
-                variant="outline"
-                size="sm"
-            >
-                {'>>'} 
-            </Button>
-        </div>
-    )
-}
+      <Button
+        disabled={currentPage === totalPages}
+        onClick={() => onPageChange(currentPage + 1)}
+        variant="outline"
+        size="sm"
+      >
+        {'>>'}
+      </Button>
+    </div>
+  );
+};
 
-export default Pagination
+export default Pagination;

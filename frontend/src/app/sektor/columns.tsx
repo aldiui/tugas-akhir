@@ -1,84 +1,88 @@
-"use client"
+'use client';
 
-import { ColumnDef } from "@tanstack/react-table"
-import { Button } from "@/components/ui/button"
-import { Pencil } from "lucide-react"
-import Link from "next/link"
-import { Sektor } from "@/types/sektor"
-import useAppStore from "@/store/app-store"
-import { TableSortableHeader } from "@/components/table-sortable-header"
-import { TableDelete } from "@/components/table-delete"
-import { adminSektorDelete } from "@/services/sektor-service"
+import { TableDelete } from '@/components/table-delete';
+import { TableSortableHeader } from '@/components/table-sortable-header';
+import { Button } from '@/components/ui/button';
+import { adminSektorDelete } from '@/services/sektor-service';
+import useAppStore from '@/store/app-store';
+import { Sektor } from '@/types/sektor';
+import { ColumnDef } from '@tanstack/react-table';
+import { Pencil } from 'lucide-react';
+import Link from 'next/link';
 
 export const columns: ColumnDef<Sektor>[] = [
-    {
-        accessorKey: "id",
-        header: ({ column }) => {
-            return <TableSortableHeader column={column} columnName="id" label="No" />
-        },
-        cell: function Cell({ row }) {
-			const { start } = useAppStore();
-			return <div className="font-medium">{start + row.index}</div>;
-		},
-        size: 60,
-        maxSize: 60,
+  {
+    accessorKey: 'id',
+    header: ({ column }) => {
+      return <TableSortableHeader column={column} columnName="id" label="No" />;
     },
-    {
-        accessorKey: "nama",
-        header: ({ column }) => {
-            return <TableSortableHeader column={column} columnName="nama" label="Nama" />
-        },
-        cell: ({ row }) => <div className="font-medium">{row.getValue("nama")}</div>,
+    cell: function Cell({ row }) {
+      const { start } = useAppStore();
+      return <div className="font-medium">{start + row.index}</div>;
     },
-    {
-        accessorKey: "deskripsi",
-        header: ({ column }) => {
-            return <TableSortableHeader column={column} columnName="deskripsi" label="Deskripsi" />
-        },
-        cell: ({ row }) => <div className="font-medium">{row.getValue("deskripsi")}</div>,
+    size: 60,
+    maxSize: 60,
+  },
+  {
+    accessorKey: 'nama',
+    header: ({ column }) => {
+      return <TableSortableHeader column={column} columnName="nama" label="Nama" />;
     },
-    {
-        accessorKey: "created_at",
-        header: ({ column }) => {
-            return <TableSortableHeader column={column} columnName="created_at" label="Dibuat Pada" />
-        },
-        cell: ({ row }) => {
-            const date = new Date(row.getValue("created_at"))
-            return <div>{date.toLocaleDateString("id-ID", { 
-                day: "2-digit", 
-                month: "long", 
-                year: "numeric" 
-            })}</div>
-        },
+    cell: ({ row }) => <div className="font-medium">{row.getValue('nama')}</div>,
+  },
+  {
+    accessorKey: 'deskripsi',
+    header: ({ column }) => {
+      return <TableSortableHeader column={column} columnName="deskripsi" label="Deskripsi" />;
     },
-    {
-        id: "actions",
-        header: "Aksi",
-        cell: ({ row }) => {
-            const sektor = row.original
+    cell: ({ row }) => <div className="font-medium">{row.getValue('deskripsi')}</div>,
+  },
+  {
+    accessorKey: 'created_at',
+    header: ({ column }) => {
+      return <TableSortableHeader column={column} columnName="created_at" label="Dibuat Pada" />;
+    },
+    cell: ({ row }) => {
+      const date = new Date(row.getValue('created_at'));
+      return (
+        <div>
+          {date.toLocaleDateString('id-ID', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric',
+          })}
+        </div>
+      );
+    },
+  },
+  {
+    id: 'actions',
+    header: 'Aksi',
+    cell: ({ row }) => {
+      const sektor = row.original;
 
-            return (
-                <div className="flex items-center gap-2">
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
-                        asChild
-                    >
-                        <Link href={`/admin/sektor/${sektor.id}`}>
-                            <Pencil className="h-4 w-4" />
-                        </Link>
-                    </Button>
-                    <TableDelete
-                        id={sektor.id}
-                        itemName={sektor.nama}
-                        queryKey={['list-sektor']}
-                        deleteFn={adminSektorDelete}
-                    />
-                </div>
-            )
-        },
-        size: 60,
-        maxSize: 60,
+      return (
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
+            asChild
+          >
+            <Link href={`/admin/sektor/${sektor.id}`}>
+              <Pencil className="h-4 w-4" />
+            </Link>
+          </Button>
+          <TableDelete
+            id={sektor.id}
+            itemName={sektor.nama}
+            queryKey={['list-sektor']}
+            deleteFn={adminSektorDelete}
+          />
+        </div>
+      );
     },
-]
+    size: 60,
+    maxSize: 60,
+  },
+];

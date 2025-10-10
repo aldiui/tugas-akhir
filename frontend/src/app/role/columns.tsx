@@ -1,84 +1,88 @@
-"use client"
+'use client';
 
-import { ColumnDef } from "@tanstack/react-table"
-import { Button } from "@/components/ui/button"
-import { Pencil } from "lucide-react"
-import Link from "next/link"
-import { Role } from "@/types/role"
-import useAppStore from "@/store/app-store"
-import { TableSortableHeader } from "@/components/table-sortable-header"
-import { adminRoleDelete } from "@/services/role-service"
-import { TableDelete } from "@/components/table-delete"
+import { TableDelete } from '@/components/table-delete';
+import { TableSortableHeader } from '@/components/table-sortable-header';
+import { Button } from '@/components/ui/button';
+import { adminRoleDelete } from '@/services/role-service';
+import useAppStore from '@/store/app-store';
+import { Role } from '@/types/role';
+import { ColumnDef } from '@tanstack/react-table';
+import { Pencil } from 'lucide-react';
+import Link from 'next/link';
 
 export const columns: ColumnDef<Role>[] = [
-    {
-        accessorKey: "id",
-        header: ({ column }) => {
-            return <TableSortableHeader column={column} columnName="id" label="No" />
-        },
-        cell: function Cell({ row }) {
-			const { start } = useAppStore();
-			return <div className="font-medium">{start + row.index}</div>;
-		},
-        size: 60,
-        maxSize: 60,
+  {
+    accessorKey: 'id',
+    header: ({ column }) => {
+      return <TableSortableHeader column={column} columnName="id" label="No" />;
     },
-    {
-        accessorKey: "nama",
-        header: ({ column }) => {
-            return <TableSortableHeader column={column} columnName="nama" label="Nama" />
-        },
-        cell: ({ row }) => <div className="font-medium">{row.getValue("nama")}</div>,
+    cell: function Cell({ row }) {
+      const { start } = useAppStore();
+      return <div className="font-medium">{start + row.index}</div>;
     },
-    {
-        accessorKey: "tipe",
-        header: ({ column }) => {
-            return <TableSortableHeader column={column} columnName="tipe" label="Tipe" />
-        },
-        cell: ({ row }) => <div className="font-medium">{row.getValue("tipe")}</div>,
+    size: 60,
+    maxSize: 60,
+  },
+  {
+    accessorKey: 'nama',
+    header: ({ column }) => {
+      return <TableSortableHeader column={column} columnName="nama" label="Nama" />;
     },
-    {
-        accessorKey: "created_at",
-        header: ({ column }) => {
-            return <TableSortableHeader column={column} columnName="created_at" label="Dibuat Pada" />
-        },
-        cell: ({ row }) => {
-            const date = new Date(row.getValue("created_at"))
-            return <div>{date.toLocaleDateString("id-ID", { 
-                day: "2-digit", 
-                month: "long", 
-                year: "numeric" 
-            })}</div>
-        },
+    cell: ({ row }) => <div className="font-medium">{row.getValue('nama')}</div>,
+  },
+  {
+    accessorKey: 'tipe',
+    header: ({ column }) => {
+      return <TableSortableHeader column={column} columnName="tipe" label="Tipe" />;
     },
-    {
-        id: "actions",
-        header: "Aksi",
-        cell: ({ row }) => {
-            const role = row.original
+    cell: ({ row }) => <div className="font-medium">{row.getValue('tipe')}</div>,
+  },
+  {
+    accessorKey: 'created_at',
+    header: ({ column }) => {
+      return <TableSortableHeader column={column} columnName="created_at" label="Dibuat Pada" />;
+    },
+    cell: ({ row }) => {
+      const date = new Date(row.getValue('created_at'));
+      return (
+        <div>
+          {date.toLocaleDateString('id-ID', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric',
+          })}
+        </div>
+      );
+    },
+  },
+  {
+    id: 'actions',
+    header: 'Aksi',
+    cell: ({ row }) => {
+      const role = row.original;
 
-            return (
-                <div className="flex items-center gap-2">
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
-                        asChild
-                    >
-                        <Link href={`/admin/role/${role.id}`}>
-                            <Pencil className="h-4 w-4" />
-                        </Link>
-                    </Button>
-                    <TableDelete
-                        id={role.id}
-                        itemName={role.nama}
-                        queryKey={['list-role']}
-                        deleteFn={adminRoleDelete}
-                    />
-                </div>
-            )
-        },
-        size: 60,
-        maxSize: 60,
+      return (
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
+            asChild
+          >
+            <Link href={`/admin/role/${role.id}`}>
+              <Pencil className="h-4 w-4" />
+            </Link>
+          </Button>
+          <TableDelete
+            id={role.id}
+            itemName={role.nama}
+            queryKey={['list-role']}
+            deleteFn={adminRoleDelete}
+          />
+        </div>
+      );
     },
-]
+    size: 60,
+    maxSize: 60,
+  },
+];
