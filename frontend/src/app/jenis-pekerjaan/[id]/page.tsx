@@ -147,7 +147,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <Link href="/sektor">Sektor</Link>
+              <Link href="/jenis-pekerjaan">Jenis Pekerjaan</Link>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
