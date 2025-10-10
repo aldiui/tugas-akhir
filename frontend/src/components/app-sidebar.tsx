@@ -63,7 +63,7 @@ export function AppSidebar() {
         <Sidebar data-sidebar="sidebar">
             <SidebarHeader data-sidebar="header" className="border-b">
                 <Link 
-                    href="/admin" 
+                    href="/" 
                     className="flex items-center justify-center rounded-lg transition-colors"
                 >
                     <Image 
