@@ -3,6 +3,7 @@
 import { TableDelete } from '@/components/table-delete';
 import { TableSortableHeader } from '@/components/table-sortable-header';
 import { Button } from '@/components/ui/button';
+import { usePermissions } from '@/hooks/use-permissions';
 import { adminMataPelajaranDelete } from '@/services/mata-pelajaran-service';
 import useAppStore from '@/store/app-store';
 import { MataPelajaran } from '@/types/mata-pelajaran';
@@ -60,6 +61,7 @@ export const columns: ColumnDef<MataPelajaran>[] = [
     header: 'Aksi',
     cell: ({ row }) => {
       const mataPelajaran = row.original;
+      const { canDelete } = usePermissions('MPL');
 
       return (
         <div className="flex items-center gap-2">
@@ -73,12 +75,14 @@ export const columns: ColumnDef<MataPelajaran>[] = [
               <Pencil className="h-4 w-4" />
             </Link>
           </Button>
-          <TableDelete
-            id={mataPelajaran.id}
-            itemName={mataPelajaran.nama}
-            queryKey={['list-mata-pelajaran']}
-            deleteFn={adminMataPelajaranDelete}
-          />
+          {canDelete && (
+            <TableDelete
+              id={mataPelajaran.id}
+              itemName={mataPelajaran.nama}
+              queryKey={['list-mata-pelajaran']}
+              deleteFn={adminMataPelajaranDelete}
+            />
+          )}
         </div>
       );
     },

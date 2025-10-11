@@ -1,5 +1,6 @@
 'use client';
 
+import AccessDenied from '@/components/access-denied';
 import LayoutAdmin from '@/components/layout-admin';
 import {
   Breadcrumb,
@@ -19,6 +20,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { usePermissions } from '@/hooks/use-permissions';
 import { adminNegaraCreate } from '@/services/negara-service';
 import { createNegaraSchema } from '@/validation/negara-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -31,6 +33,7 @@ import toast from 'react-hot-toast';
 import z from 'zod';
 export default function Page() {
   const router = useRouter();
+  const { canCreate } = usePermissions('NGR');
 
   const form = useForm<z.infer<typeof createNegaraSchema>>({
     resolver: zodResolver(createNegaraSchema),
@@ -79,6 +82,22 @@ export default function Page() {
   const onSubmit: SubmitHandler<z.infer<typeof createNegaraSchema>> = (data) => {
     mutation.mutate(data);
   };
+
+  if (!canCreate) {
+    return (
+      <AccessDenied
+        title="Akses Ditolak"
+        message="Anda tidak memiliki akses untuk membuat negara."
+        backUrl="/negara"
+        backLabel="Kembali"
+        breadcrumbs={[
+          { label: 'Dashboard', href: '/' },
+          { label: 'Negara', href: '/negara' },
+          { label: 'Tambah' },
+        ]}
+      />
+    );
+  }
 
   return (
     <LayoutAdmin>

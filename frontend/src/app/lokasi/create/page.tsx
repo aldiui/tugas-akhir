@@ -1,5 +1,6 @@
 'use client';
 
+import AccessDenied from '@/components/access-denied';
 import LayoutAdmin from '@/components/layout-admin';
 import {
   Breadcrumb,
@@ -20,6 +21,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { usePermissions } from '@/hooks/use-permissions';
 import { adminLokasiCreate } from '@/services/lokasi-service';
 import { createLokasiSchema } from '@/validation/lokasi-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -32,6 +34,7 @@ import toast from 'react-hot-toast';
 import z from 'zod';
 export default function Page() {
   const router = useRouter();
+  const { canCreate } = usePermissions('LKS');
 
   const form = useForm<z.infer<typeof createLokasiSchema>>({
     resolver: zodResolver(createLokasiSchema),
@@ -99,6 +102,22 @@ export default function Page() {
   const onSubmit: SubmitHandler<z.infer<typeof createLokasiSchema>> = (data) => {
     mutation.mutate(data);
   };
+
+  if (!canCreate) {
+    return (
+      <AccessDenied
+        title="Akses Ditolak"
+        message="Anda tidak memiliki akses untuk membuat lokasi."
+        backUrl="/lokasi"
+        backLabel="Kembali"
+        breadcrumbs={[
+          { label: 'Dashboard', href: '/' },
+          { label: 'Lokasi', href: '/lokasi' },
+          { label: 'Tambah' },
+        ]}
+      />
+    );
+  }
 
   return (
     <LayoutAdmin>

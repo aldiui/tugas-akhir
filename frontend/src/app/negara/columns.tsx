@@ -3,6 +3,7 @@
 import { TableDelete } from '@/components/table-delete';
 import { TableSortableHeader } from '@/components/table-sortable-header';
 import { Button } from '@/components/ui/button';
+import { usePermissions } from '@/hooks/use-permissions';
 import { adminNegaraDelete } from '@/services/negara-service';
 import useAppStore from '@/store/app-store';
 import { Negara } from '@/types/negara';
@@ -65,6 +66,7 @@ export const columns: ColumnDef<Negara>[] = [
     header: 'Aksi',
     cell: ({ row }) => {
       const negara = row.original;
+      const { canDelete } = usePermissions('NGR');
 
       return (
         <div className="flex items-center gap-2">
@@ -78,12 +80,14 @@ export const columns: ColumnDef<Negara>[] = [
               <Pencil className="h-4 w-4" />
             </Link>
           </Button>
-          <TableDelete
-            id={negara.id}
-            itemName={negara.nama}
-            queryKey={['list-negara']}
-            deleteFn={adminNegaraDelete}
-          />
+          {canDelete && (
+            <TableDelete
+              id={negara.id}
+              itemName={negara.nama}
+              queryKey={['list-negara']}
+              deleteFn={adminNegaraDelete}
+            />
+          )}
         </div>
       );
     },

@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { adminAuthLogin } from '@/services/auth-service';
+import { adminPermissionProfile } from '@/services/me-service';
 import { usePermissionStore } from '@/store/permission-store';
 import { loginSchema } from '@/validation/auth-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -28,7 +29,7 @@ import { z } from 'zod';
 export default function Page() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const clearPermissions = usePermissionStore((state) => state.clearPermissions);
+  const { setPermissions, setLoading, setError, clearPermissions } = usePermissionStore();
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -40,23 +41,52 @@ export default function Page() {
 
   const mutation = useMutation({
     mutationFn: (data: z.infer<typeof loginSchema>) => adminAuthLogin(data),
-    onSuccess: (data) => {
-      if (data?.status === 200) {
-        const token = data.data.data.token;
-        if (token) {
-          const maxAge = 7 * 24 * 60 * 60;
-          document.cookie = `token=${encodeURIComponent(token)}; Path=/; Max-Age=${maxAge}; SameSite=Strict${location.protocol === 'https:' ? '; Secure' : ''}`;
+    onSuccess: async (data) => {
+      try {
+        if (data?.status === 200) {
+          const token = data.data.data.token;
+
+          if (token) {
+            const maxAge = 7 * 24 * 60 * 60;
+            document.cookie = `token=${encodeURIComponent(token)}; Path=/; Max-Age=${maxAge}; SameSite=Strict${location.protocol === 'https:' ? '; Secure' : ''}`;
+          }
+
+          setLoading(true);
+
+          try {
+            const permissionResponse = await adminPermissionProfile();
+
+            if (permissionResponse.status === 200 && permissionResponse.data.data) {
+              setPermissions(permissionResponse.data.data);
+              setLoading(false);
+              toast.success(data.data.message || 'Login berhasil');
+              router.push('/');
+            } else {
+              setLoading(false);
+              clearPermissions();
+              toast.error('Gagal mengambil permissions');
+            }
+          } catch (permError) {
+            setLoading(false);
+            console.error('Error fetching permissions:', permError);
+            clearPermissions();
+            toast.error('Gagal mengambil permissions');
+          }
+        } else {
+          toast.error(data.data.message || 'Gagal login');
         }
-        clearPermissions();
-        toast.success(data.data.message || 'Login berhasil');
-        router.push('/');
-      } else {
-        toast.error(data.data.message || 'Gagal login');
+      } catch (error) {
+        setLoading(false);
+        console.error('Error in onSuccess:', error);
+        toast.error('Terjadi kesalahan saat memproses login');
       }
     },
     onError: (error) => {
+      setLoading(false);
+
       if (error instanceof AxiosError && error.response) {
         const errors = error.response.data.data;
+
         if (errors) {
           Object.keys(errors).forEach((key) => {
             return form.setError(key as 'email' | 'password', {

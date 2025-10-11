@@ -3,6 +3,7 @@
 import { TableDelete } from '@/components/table-delete';
 import { TableSortableHeader } from '@/components/table-sortable-header';
 import { Button } from '@/components/ui/button';
+import { usePermissions } from '@/hooks/use-permissions';
 import { adminLokasiDelete } from '@/services/lokasi-service';
 import useAppStore from '@/store/app-store';
 import { Lokasi } from '@/types/lokasi';
@@ -74,6 +75,7 @@ export const columns: ColumnDef<Lokasi>[] = [
     header: 'Aksi',
     cell: ({ row }) => {
       const lokasi = row.original;
+      const { canDelete } = usePermissions('LKS');
 
       return (
         <div className="flex items-center gap-2">
@@ -87,12 +89,14 @@ export const columns: ColumnDef<Lokasi>[] = [
               <Pencil className="h-4 w-4" />
             </Link>
           </Button>
-          <TableDelete
-            id={lokasi.id}
-            itemName={lokasi.nama}
-            queryKey={['list-lokasi']}
-            deleteFn={adminLokasiDelete}
-          />
+          {canDelete && (
+            <TableDelete
+              id={lokasi.id}
+              itemName={lokasi.nama}
+              queryKey={['list-lokasi']}
+              deleteFn={adminLokasiDelete}
+            />
+          )}
         </div>
       );
     },

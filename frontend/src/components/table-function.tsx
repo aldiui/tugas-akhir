@@ -1,6 +1,4 @@
 'use client';
-
-import perPageOptions from '@/source/perpage-option';
 import useAppStore from '@/store/app-store';
 import TableSearchInput from './table-input-search';
 import {
@@ -14,6 +12,12 @@ import {
 
 const TableFunction = ({ withSearch = true }: { withSearch?: boolean }) => {
   const { limit, setLimit } = useAppStore();
+  const perPageOptions = [
+    { value: '10', label: '10' },
+    { value: '25', label: '25' },
+    { value: '50', label: '50' },
+    { value: '100', label: '100' },
+  ];
 
   return (
     <div className="flex flex-col xl:flex-row gap-4 justify-center xl:justify-between items-center">

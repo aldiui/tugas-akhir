@@ -1,5 +1,6 @@
 'use client';
 
+import AccessDenied from '@/components/access-denied';
 import LayoutAdmin from '@/components/layout-admin';
 import {
   Breadcrumb,
@@ -19,6 +20,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { usePermissions } from '@/hooks/use-permissions';
 import { adminMataPelajaranCreate } from '@/services/mata-pelajaran-service';
 import { createMataPelajaranSchema } from '@/validation/mata-pelajaran-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -32,6 +34,7 @@ import z from 'zod';
 
 export default function Page() {
   const router = useRouter();
+  const { canCreate } = usePermissions('MPL');
 
   const form = useForm<z.infer<typeof createMataPelajaranSchema>>({
     resolver: zodResolver(createMataPelajaranSchema),
@@ -74,6 +77,22 @@ export default function Page() {
   const onSubmit: SubmitHandler<z.infer<typeof createMataPelajaranSchema>> = (data) => {
     mutation.mutate(data);
   };
+
+  if (!canCreate) {
+    return (
+      <AccessDenied
+        title="Akses Ditolak"
+        message="Anda tidak memiliki akses untuk membuat mata pelajaran."
+        backUrl="/mata-pelajaran"
+        backLabel="Kembali"
+        breadcrumbs={[
+          { label: 'Dashboard', href: '/' },
+          { label: 'Mata Pelajaran', href: '/mata-pelajaran' },
+          { label: 'Tambah' },
+        ]}
+      />
+    );
+  }
 
   return (
     <LayoutAdmin>

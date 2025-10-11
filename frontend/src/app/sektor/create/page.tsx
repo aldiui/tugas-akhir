@@ -1,5 +1,6 @@
 'use client';
 
+import AccessDenied from '@/components/access-denied';
 import LayoutAdmin from '@/components/layout-admin';
 import {
   Breadcrumb,
@@ -20,6 +21,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { usePermissions } from '@/hooks/use-permissions';
 import { adminSektorCreate } from '@/services/sektor-service';
 import { createSektorSchema } from '@/validation/sektor-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -33,6 +35,7 @@ import z from 'zod';
 
 export default function Page() {
   const router = useRouter();
+  const { canCreate } = usePermissions('SKT');
 
   const form = useForm<z.infer<typeof createSektorSchema>>({
     resolver: zodResolver(createSektorSchema),
@@ -75,6 +78,22 @@ export default function Page() {
   const onSubmit: SubmitHandler<z.infer<typeof createSektorSchema>> = (data) => {
     mutation.mutate(data);
   };
+
+  if (!canCreate) {
+    return (
+      <AccessDenied
+        title="Akses Ditolak"
+        message="Anda tidak memiliki akses untuk membuat sektor."
+        backUrl="/sektor"
+        backLabel="Kembali"
+        breadcrumbs={[
+          { label: 'Dashboard', href: '/' },
+          { label: 'Sektor', href: '/sektor' },
+          { label: 'Tambah' },
+        ]}
+      />
+    );
+  }
 
   return (
     <LayoutAdmin>

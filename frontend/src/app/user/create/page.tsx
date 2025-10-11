@@ -1,5 +1,6 @@
 'use client';
 
+import AccessDenied from '@/components/access-denied';
 import LayoutAdmin from '@/components/layout-admin';
 import {
   Breadcrumb,
@@ -27,6 +28,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { usePermissions } from '@/hooks/use-permissions';
 import { adminLokasiGetAll } from '@/services/lokasi-service';
 import { adminRoleGetAll } from '@/services/role-service';
 import { adminUserCreate } from '@/services/user-service';
@@ -44,6 +46,7 @@ import z from 'zod';
 
 export default function Page() {
   const router = useRouter();
+  const { canCreate } = usePermissions('USR');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -139,6 +142,22 @@ export default function Page() {
   const onSubmit: SubmitHandler<z.infer<typeof createUserSchema>> = (data) => {
     mutation.mutate(data);
   };
+
+  if (!canCreate) {
+    return (
+      <AccessDenied
+        title="Akses Ditolak"
+        message="Anda tidak memiliki akses untuk membuat user."
+        backUrl="/user"
+        backLabel="Kembali"
+        breadcrumbs={[
+          { label: 'Dashboard', href: '/' },
+          { label: 'User', href: '/user' },
+          { label: 'Tambah' },
+        ]}
+      />
+    );
+  }
 
   return (
     <LayoutAdmin>

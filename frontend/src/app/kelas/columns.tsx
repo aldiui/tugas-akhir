@@ -3,6 +3,7 @@
 import { TableDelete } from '@/components/table-delete';
 import { TableSortableHeader } from '@/components/table-sortable-header';
 import { Button } from '@/components/ui/button';
+import { usePermissions } from '@/hooks/use-permissions';
 import { adminKelasDelete } from '@/services/kelas-service';
 import useAppStore from '@/store/app-store';
 import { Kelas } from '@/types/kelas';
@@ -67,6 +68,7 @@ export const columns: ColumnDef<Kelas>[] = [
     header: 'Aksi',
     cell: ({ row }) => {
       const kelas = row.original;
+      const { canDelete } = usePermissions('KLS');
 
       return (
         <div className="flex items-center gap-2">
@@ -80,12 +82,14 @@ export const columns: ColumnDef<Kelas>[] = [
               <Pencil className="h-4 w-4" />
             </Link>
           </Button>
-          <TableDelete
-            id={kelas.id}
-            itemName={kelas.nama}
-            queryKey={['list-kelas']}
-            deleteFn={adminKelasDelete}
-          />
+          {canDelete && (
+            <TableDelete
+              id={kelas.id}
+              itemName={kelas.nama}
+              queryKey={['list-kelas']}
+              deleteFn={adminKelasDelete}
+            />
+          )}
         </div>
       );
     },

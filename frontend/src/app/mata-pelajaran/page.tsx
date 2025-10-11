@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { usePermissions } from '@/hooks/use-permissions';
 import { adminMataPelajaranGetAll } from '@/services/mata-pelajaran-service';
 import useAppStore from '@/store/app-store';
 import { useQuery } from '@tanstack/react-query';
@@ -25,6 +26,7 @@ import { columns } from './columns';
 export default function Page() {
   const { limit, start, setStart, search, sort } = useAppStore();
   const [page, setPage] = useState(1);
+  const { canCreate } = usePermissions('MPL');
 
   const { data, isLoading } = useQuery({
     queryFn: async () =>
@@ -69,12 +71,14 @@ export default function Page() {
             <div className="flex justify-between items-center">
               <h3 className="text-2xl font-bold text-blue-900">Mata Pelajaran</h3>
               <div className="flex gap-2">
-                <Button asChild size="sm" className="bg-blue-600 hover:bg-blue-700">
-                  <Link href="/mata-pelajaran/create">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Tambah
-                  </Link>
-                </Button>
+                {canCreate && (
+                  <Button asChild size="sm" className="bg-blue-600 hover:bg-blue-700">
+                    <Link href="/mata-pelajaran/create">
+                      <Plus className="mr-2 h-4 w-4" />
+                      Tambah
+                    </Link>
+                  </Button>
+                )}
               </div>
             </div>
           </CardHeader>

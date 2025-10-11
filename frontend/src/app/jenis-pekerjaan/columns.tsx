@@ -3,6 +3,7 @@
 import { TableDelete } from '@/components/table-delete';
 import { TableSortableHeader } from '@/components/table-sortable-header';
 import { Button } from '@/components/ui/button';
+import { usePermissions } from '@/hooks/use-permissions';
 import { adminJenisPekerjaanDelete } from '@/services/jenis-pekerjaan-service';
 import useAppStore from '@/store/app-store';
 import { Sektor } from '@/types/sektor';
@@ -67,6 +68,7 @@ export const columns: ColumnDef<Sektor>[] = [
     header: 'Aksi',
     cell: ({ row }) => {
       const jenisPekerjaan = row.original;
+      const { canDelete } = usePermissions('JPK');
 
       return (
         <div className="flex items-center gap-2">
@@ -80,12 +82,14 @@ export const columns: ColumnDef<Sektor>[] = [
               <Pencil className="h-4 w-4" />
             </Link>
           </Button>
-          <TableDelete
-            id={jenisPekerjaan.id}
-            itemName={jenisPekerjaan.nama}
-            queryKey={['list-jenis-pekerjaan']}
-            deleteFn={adminJenisPekerjaanDelete}
-          />
+          {canDelete && (
+            <TableDelete
+              id={jenisPekerjaan.id}
+              itemName={jenisPekerjaan.nama}
+              queryKey={['list-jenis-pekerjaan']}
+              deleteFn={adminJenisPekerjaanDelete}
+            />
+          )}
         </div>
       );
     },

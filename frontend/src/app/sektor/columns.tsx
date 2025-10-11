@@ -3,6 +3,7 @@
 import { TableDelete } from '@/components/table-delete';
 import { TableSortableHeader } from '@/components/table-sortable-header';
 import { Button } from '@/components/ui/button';
+import { usePermissions } from '@/hooks/use-permissions';
 import { adminSektorDelete } from '@/services/sektor-service';
 import useAppStore from '@/store/app-store';
 import { Sektor } from '@/types/sektor';
@@ -60,6 +61,7 @@ export const columns: ColumnDef<Sektor>[] = [
     header: 'Aksi',
     cell: ({ row }) => {
       const sektor = row.original;
+      const { canDelete } = usePermissions('SKT');
 
       return (
         <div className="flex items-center gap-2">
@@ -73,12 +75,14 @@ export const columns: ColumnDef<Sektor>[] = [
               <Pencil className="h-4 w-4" />
             </Link>
           </Button>
-          <TableDelete
-            id={sektor.id}
-            itemName={sektor.nama}
-            queryKey={['list-sektor']}
-            deleteFn={adminSektorDelete}
-          />
+          {canDelete && (
+            <TableDelete
+              id={sektor.id}
+              itemName={sektor.nama}
+              queryKey={['list-sektor']}
+              deleteFn={adminSektorDelete}
+            />
+          )}
         </div>
       );
     },

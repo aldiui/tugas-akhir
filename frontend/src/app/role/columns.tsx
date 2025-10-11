@@ -3,6 +3,7 @@
 import { TableDelete } from '@/components/table-delete';
 import { TableSortableHeader } from '@/components/table-sortable-header';
 import { Button } from '@/components/ui/button';
+import { usePermissions } from '@/hooks/use-permissions';
 import { adminRoleDelete } from '@/services/role-service';
 import useAppStore from '@/store/app-store';
 import { Role } from '@/types/role';
@@ -60,6 +61,7 @@ export const columns: ColumnDef<Role>[] = [
     header: 'Aksi',
     cell: ({ row }) => {
       const role = row.original;
+      const { canDelete } = usePermissions('ROL');
 
       return (
         <div className="flex items-center gap-2">
@@ -73,12 +75,14 @@ export const columns: ColumnDef<Role>[] = [
               <Pencil className="h-4 w-4" />
             </Link>
           </Button>
-          <TableDelete
-            id={role.id}
-            itemName={role.nama}
-            queryKey={['list-role']}
-            deleteFn={adminRoleDelete}
-          />
+          {canDelete && (
+            <TableDelete
+              id={role.id}
+              itemName={role.nama}
+              queryKey={['list-role']}
+              deleteFn={adminRoleDelete}
+            />
+          )}
         </div>
       );
     },

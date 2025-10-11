@@ -1,5 +1,6 @@
 'use client';
 
+import AccessDenied from '@/components/access-denied';
 import { DataTable } from '@/components/data-table';
 import LayoutAdmin from '@/components/layout-admin';
 import LoadingTable from '@/components/loading-table';
@@ -14,6 +15,7 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { usePermissions } from '@/hooks/use-permissions';
 import { adminJenisPekerjaanGetAll } from '@/services/jenis-pekerjaan-service';
 import useAppStore from '@/store/app-store';
 import { useQuery } from '@tanstack/react-query';
@@ -25,6 +27,7 @@ import { columns } from './columns';
 export default function Page() {
   const { limit, start, setStart, search, sort } = useAppStore();
   const [page, setPage] = useState(1);
+  const { canCreate, canRead } = usePermissions('JPK');
 
   const { data, isLoading } = useQuery({
     queryFn: async () =>
@@ -50,6 +53,21 @@ export default function Page() {
     setPage(newPage);
   }, []);
 
+  if (!canRead) {
+    return (
+      <AccessDenied
+        title="Akses Ditolak"
+        message="Anda tidak memiliki akses untuk melihat jenis pekerjaan."
+        backUrl="/jenis-pekerjaan"
+        backLabel="Kembali"
+        breadcrumbs={[
+          { label: 'Dashboard', href: '/' },
+          { label: 'Jenis Pekerjaan', href: '/jenis-pekerjaan' },
+        ]}
+      />
+    );
+  }
+
   return (
     <LayoutAdmin>
       <div className="w-full h-full p-6 space-y-4">
@@ -69,12 +87,14 @@ export default function Page() {
             <div className="flex justify-between items-center">
               <h3 className="text-2xl font-bold text-blue-900">Jenis Pekerjaan</h3>
               <div className="flex gap-2">
-                <Button asChild size="sm" className="bg-blue-600 hover:bg-blue-700">
-                  <Link href="/jenis-pekerjaan/create">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Tambah
-                  </Link>
-                </Button>
+                {canCreate && (
+                  <Button asChild size="sm" className="bg-blue-600 hover:bg-blue-700">
+                    <Link href="/jenis-pekerjaan/create">
+                      <Plus className="mr-2 h-4 w-4" />
+                      Tambah
+                    </Link>
+                  </Button>
+                )}
               </div>
             </div>
           </CardHeader>

@@ -1,5 +1,6 @@
 'use client';
 
+import AccessDenied from '@/components/access-denied';
 import LayoutAdmin from '@/components/layout-admin';
 import {
   Breadcrumb,
@@ -27,6 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { usePermissions } from '@/hooks/use-permissions';
 import { adminPermissionGetAll } from '@/services/permission-service';
 import { adminRoleCreate } from '@/services/role-service';
 import { Permission } from '@/types/permission';
@@ -41,6 +43,7 @@ import toast from 'react-hot-toast';
 import z from 'zod';
 export default function Page() {
   const router = useRouter();
+  const { canCreate } = usePermissions('ROL');
 
   const form = useForm<z.infer<typeof createRoleSchema>>({
     resolver: zodResolver(createRoleSchema),
@@ -95,6 +98,22 @@ export default function Page() {
   const onSubmit: SubmitHandler<z.infer<typeof createRoleSchema>> = (data) => {
     mutation.mutate(data);
   };
+
+  if (!canCreate) {
+    return (
+      <AccessDenied
+        title="Akses Ditolak"
+        message="Anda tidak memiliki akses untuk membuat role."
+        backUrl="/role"
+        backLabel="Kembali"
+        breadcrumbs={[
+          { label: 'Dashboard', href: '/' },
+          { label: 'Role', href: '/role' },
+          { label: 'Tambah' },
+        ]}
+      />
+    );
+  }
 
   return (
     <LayoutAdmin>

@@ -1,5 +1,6 @@
 'use client';
 
+import AccessDenied from '@/components/access-denied';
 import LayoutAdmin from '@/components/layout-admin';
 import {
   Breadcrumb,
@@ -27,6 +28,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { usePermissions } from '@/hooks/use-permissions';
 import { adminJenisPekerjaanCreate } from '@/services/jenis-pekerjaan-service';
 import { adminSektorGetAll } from '@/services/sektor-service';
 import { createJenisPekerjaanSchema } from '@/validation/jenis-pekerjaan-schema';
@@ -41,6 +43,7 @@ import z from 'zod';
 
 export default function Page() {
   const router = useRouter();
+  const { canCreate } = usePermissions('JPK');
 
   const form = useForm<z.infer<typeof createJenisPekerjaanSchema>>({
     resolver: zodResolver(createJenisPekerjaanSchema),
@@ -102,6 +105,22 @@ export default function Page() {
   const onSubmit: SubmitHandler<z.infer<typeof createJenisPekerjaanSchema>> = (data) => {
     mutation.mutate(data);
   };
+
+  if (!canCreate) {
+    return (
+      <AccessDenied
+        title="Akses Ditolak"
+        message="Anda tidak memiliki akses untuk membuat jenis pekerjaan."
+        backUrl="/jenis-pekerjaan"
+        backLabel="Kembali"
+        breadcrumbs={[
+          { label: 'Dashboard', href: '/' },
+          { label: 'Jenis Pekerjaan', href: '/jenis-pekerjaan' },
+          { label: 'Tambah' },
+        ]}
+      />
+    );
+  }
 
   return (
     <LayoutAdmin>
