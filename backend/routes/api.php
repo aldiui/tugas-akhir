@@ -34,6 +34,7 @@ Route::prefix('admin')->group(function () {
         Route::put('/change-password', [AdminMeController::class, 'changePassword']);
         Route::get('/profile', [AdminMeController::class, 'profile']);
         Route::put('/update-profile', [AdminMeController::class, 'updateProfile']);
+        Route::get('/permission-profile', [AdminMeController::class, 'permissionProfile']);
 
         Route::post('/logout', [AdminAuthController::class, 'logout']);
         Route::get('/permission', [AdminPermissionController::class, 'index'])->middleware('permission:PERM_READ');

@@ -89,4 +89,23 @@ class AdminMeController extends Controller
 
         return $this->successResponse($user, 'Profile berhasil diupdate');
     }
+
+    /**
+     * Get permission user
+     */
+    public function permissionProfile(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        if (! $user) {
+            throw new AuthenticationException('User tidak ditemukan');
+        }
+
+        $role = $user->role()->first();
+        if ($role->tipe !== 'Admin') {
+            throw new AuthenticationException('Akses ditolak');
+        }
+
+        $permissions = $role->permissions()->pluck('permission.kode')->toArray();
+        return $this->successResponse($permissions, 'Daftar izin pengguna');
+    }
 }
