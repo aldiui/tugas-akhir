@@ -78,7 +78,7 @@ export const columns: ColumnDef<Izin>[] = [
             className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
             asChild
           >
-            <Link href={`/admin/izin/${izin.id}`}>
+            <Link href={`/izin/${izin.id}`}>
               <Pencil className="h-4 w-4" />
             </Link>
           </Button>

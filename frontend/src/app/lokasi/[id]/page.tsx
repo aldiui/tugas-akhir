@@ -83,14 +83,14 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     onSuccess: (data) => {
       if (data.status === 200) {
         toast.success(data.data.message || 'Lokasi berhasil diperbarui');
-        router.push('/admin/lokasi');
+        router.push('/lokasi');
       } else {
         toast.error(data.data.message || 'Gagal memperbarui lokasi');
       }
     },
     onError: (error) => {
       if (error instanceof AxiosError && error.response) {
-        const errors = error.response.data.errors;
+        const errors = error.response.data.data;
 
         if (errors) {
           Object.keys(errors).forEach((key) => {
@@ -113,8 +113,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
               }
             );
           });
+        } else {
+          toast.error(error.response.data.message || 'Terjadi kesalahan');
         }
-        toast.error(error.response.data.message || 'Terjadi kesalahan');
       } else if (error instanceof Error) {
         toast.error(error.message);
       }

@@ -54,15 +54,17 @@ export default function Page() {
     mutationFn: (data: z.infer<typeof createLokasiSchema>) => adminLokasiCreate(data),
     onSuccess: (data) => {
       if (data?.status === 201) {
+        console.log(data.data.message);
         toast.success(data.data.message || 'Lokasi berhasil ditambahkan');
         router.push('/admin/lokasi');
       } else {
+        console.log(data.data.message);
         toast.error(data.data.message || 'Gagal menambahkan lokasi');
       }
     },
     onError: (error) => {
       if (error instanceof AxiosError && error.response) {
-        const errors = error.response.data.errors;
+        const errors = error.response.data.data;
 
         if (errors) {
           Object.keys(errors).forEach((key) => {
@@ -85,8 +87,9 @@ export default function Page() {
               }
             );
           });
+        } else {
+          toast.error(error.response.data.message || 'Terjadi kesalahan');
         }
-        toast.error(error.response.data.message || 'Terjadi kesalahan');
       } else if (error instanceof Error) {
         toast.error(error.message);
       }

@@ -76,7 +76,7 @@ export const columns: ColumnDef<Notifikasi>[] = [
             className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
             asChild
           >
-            <Link href={`/admin/notifikasi/${notifikasi.id}`}>
+            <Link href={`/notifikasi/${notifikasi.id}`}>
               <Pencil className="h-4 w-4" />
             </Link>
           </Button>

@@ -12,13 +12,16 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import {
+  Bell,
   BookOpen,
   Briefcase,
+  FileText,
   Globe,
   GraduationCap,
   Home,
   MapPin,
   Shield,
+  UserCheck,
   Users,
 } from 'lucide-react';
 import Image from 'next/image';
@@ -46,11 +49,11 @@ const items = [
   {
     group: 'Data CPMI',
     items: [
-      // { title: 'CPMI', url: '/cpmi', icon: UserCheck },
+      { title: 'CPMI', url: '/cpmi', icon: UserCheck },
       // { title: 'Absensi', url: '/absensi', icon: CalendarCheck },
       // { title: 'Piket', url: '/piket', icon: Clock },
-      // { title: 'Izin', url: '/izin', icon: FileText },
-      // { title: 'Notifikasi', url: '/notifikasi', icon: Bell },
+      { title: 'Izin', url: '/izin', icon: FileText },
+      { title: 'Notifikasi', url: '/notifikasi', icon: Bell },
     ],
   },
 ];

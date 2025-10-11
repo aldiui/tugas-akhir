@@ -69,7 +69,7 @@ export const columns: ColumnDef<MataPelajaran>[] = [
             className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
             asChild
           >
-            <Link href={`/admin/mata-pelajaran/${mataPelajaran.id}`}>
+            <Link href={`/mata-pelajaran/${mataPelajaran.id}`}>
               <Pencil className="h-4 w-4" />
             </Link>
           </Button>

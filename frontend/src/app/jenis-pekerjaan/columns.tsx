@@ -76,7 +76,7 @@ export const columns: ColumnDef<Sektor>[] = [
             className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
             asChild
           >
-            <Link href={`/admin/jenis-pekerjaan/${jenisPekerjaan.id}`}>
+            <Link href={`/jenis-pekerjaan/${jenisPekerjaan.id}`}>
               <Pencil className="h-4 w-4" />
             </Link>
           </Button>

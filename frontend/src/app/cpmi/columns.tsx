@@ -76,7 +76,7 @@ export const columns: ColumnDef<CPMI>[] = [
             className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
             asChild
           >
-            <Link href={`/admin/cpmi/${user.id}`}>
+            <Link href={`/cpmi/${user.id}`}>
               <Pencil className="h-4 w-4" />
             </Link>
           </Button>
