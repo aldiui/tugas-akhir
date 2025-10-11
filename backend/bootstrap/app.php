@@ -31,7 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
             if ($e instanceof AuthenticationException) {
                 $code    = 401;
-                $message = 'Tidak terautentikasi';
+                $message = 'Kredensial tidak valid';
                 $errors  = null;
             }
 
