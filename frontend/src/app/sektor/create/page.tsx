@@ -47,7 +47,7 @@ export default function Page() {
     onSuccess: (data) => {
       if (data?.status === 201) {
         toast.success(data.data.message || 'Sektor berhasil ditambahkan');
-        router.push('/admin/sektor');
+        router.push('/sektor');
       } else {
         toast.error(data.data.message || 'Gagal menambahkan sektor');
       }

@@ -46,7 +46,7 @@ export default function Page() {
     onSuccess: (data) => {
       if (data?.status === 201) {
         toast.success(data.data.message || 'Mata pelajaran berhasil ditambahkan');
-        router.push('/admin/mata-pelajaran');
+        router.push('/mata-pelajaran');
       } else {
         toast.error(data.data.message || 'Gagal menambahkan mata pelajaran');
       }

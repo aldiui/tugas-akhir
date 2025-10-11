@@ -100,7 +100,7 @@ export default function Page() {
     onSuccess: (data) => {
       if (data?.status === 201) {
         toast.success(data.data.message || 'User berhasil ditambahkan');
-        router.push('/admin/user');
+        router.push('/user');
       } else {
         toast.error(data.data.message || 'Gagal menambahkan user');
       }

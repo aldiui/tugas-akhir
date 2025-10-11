@@ -67,7 +67,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     onSuccess: (data) => {
       if (data.status === 200) {
         toast.success(data.data.message || 'Mata pelajaran berhasil diperbarui');
-        router.push('/admin/mata-pelajaran');
+        router.push('/mata-pelajaran');
       } else {
         toast.error(data.data.message || 'Gagal memperbarui mata pelajaran');
       }

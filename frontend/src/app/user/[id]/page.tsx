@@ -119,7 +119,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     onSuccess: (data) => {
       if (data.status === 200) {
         toast.success(data.data.message || 'User berhasil diperbarui');
-        router.push('/admin/user');
+        router.push('/user');
       } else {
         toast.error(data.data.message || 'Gagal memperbarui user');
       }

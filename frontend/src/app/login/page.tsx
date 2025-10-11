@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { adminAuthLogin } from '@/services/auth-service';
+import { usePermissionStore } from '@/store/permission-store';
 import { loginSchema } from '@/validation/auth-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -21,12 +22,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { toast } from 'sonner';
+import toast from 'react-hot-toast';
 import { z } from 'zod';
 
 export default function Page() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const clearPermissions = usePermissionStore((state) => state.clearPermissions);
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -45,6 +47,7 @@ export default function Page() {
           const maxAge = 7 * 24 * 60 * 60;
           document.cookie = `token=${encodeURIComponent(token)}; Path=/; Max-Age=${maxAge}; SameSite=Strict${location.protocol === 'https:' ? '; Secure' : ''}`;
         }
+        clearPermissions();
         toast.success(data.data.message || 'Login berhasil');
         router.push('/');
       } else {
@@ -54,7 +57,6 @@ export default function Page() {
     onError: (error) => {
       if (error instanceof AxiosError && error.response) {
         const errors = error.response.data.data;
-
         if (errors) {
           Object.keys(errors).forEach((key) => {
             return form.setError(key as 'email' | 'password', {

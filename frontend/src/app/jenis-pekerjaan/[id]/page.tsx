@@ -95,7 +95,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     onSuccess: (data) => {
       if (data.status === 200) {
         toast.success(data.data.message || 'Jenis pekerjaan berhasil diperbarui');
-        router.push('/admin/jenis-pekerjaan');
+        router.push('/jenis-pekerjaan');
       } else {
         toast.error(data.data.message || 'Gagal memperbarui jenis pekerjaan');
       }

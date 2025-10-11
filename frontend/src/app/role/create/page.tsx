@@ -67,7 +67,7 @@ export default function Page() {
     onSuccess: (data) => {
       if (data?.status === 201) {
         toast.success(data.data.message || 'Role berhasil ditambahkan');
-        router.push('/admin/role');
+        router.push('/role');
       } else {
         toast.error(data.data.message || 'Gagal menambahkan sektor');
       }

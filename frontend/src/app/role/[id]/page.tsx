@@ -87,7 +87,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     onSuccess: (data) => {
       if (data.status === 200) {
         toast.success(data.data.message || 'Role berhasil diperbarui');
-        router.push('/admin/role');
+        router.push('/role');
       } else {
         toast.error(data.data.message || 'Gagal memperbarui role');
       }

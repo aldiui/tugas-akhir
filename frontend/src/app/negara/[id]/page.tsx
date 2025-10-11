@@ -70,7 +70,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     onSuccess: (data) => {
       if (data.status === 200) {
         toast.success(data.data.message || 'Negara berhasil diperbarui');
-        router.push('/admin/negara');
+        router.push('/negara');
       } else {
         toast.error(data.data.message || 'Gagal memperbarui negara');
       }

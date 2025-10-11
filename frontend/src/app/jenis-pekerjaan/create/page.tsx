@@ -74,7 +74,7 @@ export default function Page() {
     onSuccess: (data) => {
       if (data?.status === 201) {
         toast.success(data.data.message || 'Jenis pekerjaan berhasil ditambahkan');
-        router.push('/admin/jenis-pekerjaan');
+        router.push('/jenis-pekerjaan');
       } else {
         toast.error(data.data.message || 'Gagal menambahkan jenis pekerjaan');
       }

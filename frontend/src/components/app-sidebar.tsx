@@ -3,6 +3,7 @@
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -11,14 +12,20 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { adminAuthLogout } from '@/services/auth-service';
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import {
   Bell,
   BookOpen,
   Briefcase,
+  CalendarCheck,
+  Clock,
   FileText,
   Globe,
   GraduationCap,
   Home,
+  LogOut,
   MapPin,
   Shield,
   UserCheck,
@@ -26,7 +33,9 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
+import { Button } from './ui/button';
 
 const items = [
   {
@@ -50,8 +59,8 @@ const items = [
     group: 'Data CPMI',
     items: [
       { title: 'CPMI', url: '/cpmi', icon: UserCheck },
-      // { title: 'Absensi', url: '/absensi', icon: CalendarCheck },
-      // { title: 'Piket', url: '/piket', icon: Clock },
+      { title: 'Absensi', url: '/absensi', icon: CalendarCheck },
+      { title: 'Piket', url: '/piket', icon: Clock },
       { title: 'Izin', url: '/izin', icon: FileText },
       { title: 'Notifikasi', url: '/notifikasi', icon: Bell },
     ],
@@ -60,6 +69,33 @@ const items = [
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const mutation = useMutation({
+    mutationFn: () => adminAuthLogout(),
+    onSuccess: (data) => {
+      if (data?.status === 200) {
+        document.cookie = 'token=; Path=/; Max-Age=0';
+        toast.success(data?.data.message || 'Logout berhasil');
+        router.push('/login');
+      } else {
+        toast.error(data?.data.message || 'Gagal logout');
+      }
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError && error.response) {
+        toast.error(error.response.data.message || 'Terjadi kesalahan');
+      } else if (error instanceof Error) {
+        toast.error(error.message);
+      }
+      document.cookie = 'token=; Path=/; Max-Age=0';
+      router.push('/login');
+    },
+  });
+
+  const handleLogout = () => {
+    mutation.mutate();
+  };
 
   return (
     <Sidebar data-sidebar="sidebar">
@@ -109,6 +145,18 @@ export function AppSidebar() {
           </SidebarGroup>
         ))}
       </SidebarContent>
+
+      <SidebarFooter className="p-4">
+        <Button
+          variant="outline"
+          className="w-full justify-start gap-3 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+          onClick={handleLogout}
+          disabled={mutation.isPending}
+        >
+          <LogOut className="h-4 w-4" />
+          <span>{mutation.isPending ? 'Keluar...' : 'Keluar'}</span>
+        </Button>
+      </SidebarFooter>
     </Sidebar>
   );
 }

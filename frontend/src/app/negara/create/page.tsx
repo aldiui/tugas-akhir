@@ -48,7 +48,7 @@ export default function Page() {
     onSuccess: (data) => {
       if (data?.status === 201) {
         toast.success(data.data.message || 'Negara berhasil ditambahkan');
-        router.push('/admin/negara');
+        router.push('/negara');
       } else {
         toast.error(data.data.message || 'Gagal menambahkan negara');
       }

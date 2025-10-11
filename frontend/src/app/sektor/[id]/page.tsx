@@ -65,7 +65,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     onSuccess: (data) => {
       if (data.status === 200) {
         toast.success(data.data.message || 'Sektor berhasil diperbarui');
-        router.push('/admin/sektor');
+        router.push('/sektor');
       } else {
         toast.error(data.data.message || 'Gagal memperbarui sektor');
       }

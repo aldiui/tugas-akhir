@@ -56,7 +56,7 @@ export default function Page() {
       if (data?.status === 201) {
         console.log(data.data.message);
         toast.success(data.data.message || 'Lokasi berhasil ditambahkan');
-        router.push('/admin/lokasi');
+        router.push('/lokasi');
       } else {
         console.log(data.data.message);
         toast.error(data.data.message || 'Gagal menambahkan lokasi');
