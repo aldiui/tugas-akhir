@@ -1,5 +1,6 @@
 'use client';
 
+import AccessDenied from '@/components/access-denied';
 import LayoutAdmin from '@/components/layout-admin';
 import LoadingTable from '@/components/loading-table';
 import {
@@ -28,6 +29,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { usePermissions } from '@/hooks/use-permissions';
 import {
   adminJenisPekerjaanGetById,
   adminJenisPekerjaanUpdate,
@@ -47,6 +49,7 @@ import z from 'zod';
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
+  const { canRead, canUpdate } = usePermissions('JPK');
 
   const { data, isLoading } = useQuery({
     queryFn: async () => await adminJenisPekerjaanGetById(String(id)),
@@ -124,6 +127,22 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     mutation.mutate(formData);
   };
 
+  if (!canRead) {
+    return (
+      <AccessDenied
+        title="Akses Ditolak"
+        message="Anda tidak memiliki akses untuk melihat jenis pekerjaan."
+        backUrl="/jenis-pekerjaan"
+        backLabel="Kembali"
+        breadcrumbs={[
+          { label: 'Dashboard', href: '/' },
+          { label: 'Jenis Pekerjaan', href: '/jenis-pekerjaan' },
+          { label: 'Edit', href: `/jenis-pekerjaan/${id}` },
+        ]}
+      />
+    );
+  }
+
   if (isLoading) {
     return (
       <LayoutAdmin>
@@ -181,6 +200,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                             placeholder="Masukkan nama"
                             {...field}
                             className="border-blue-300 focus:border-blue-500 focus:ring-blue-500"
+                            disabled={!canUpdate}
                           />
                         </FormControl>
                         <FormMessage className="text-sm" />
@@ -200,6 +220,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                           onValueChange={field.onChange}
                           value={field.value}
                           key={field.value}
+                          disabled={!canUpdate}
                         >
                           <FormControl>
                             <SelectTrigger className="border-blue-300 focus:border-blue-500 focus:ring-blue-500 w-full">
@@ -233,6 +254,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                             {...field}
                             className="border-blue-300 focus:border-blue-500 focus:ring-blue-500 min-h-[120px]"
                             rows={5}
+                            disabled={!canUpdate}
                           />
                         </FormControl>
                         <FormMessage className="text-sm" />
@@ -242,14 +264,17 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                 </div>
 
                 <div className="flex justify-end pt-4 gap-2 border-t">
-                  <Button
-                    type="submit"
-                    size="sm"
-                    disabled={mutation.isPending}
-                    className="bg-blue-600 hover:bg-blue-700"
-                  >
-                    {mutation.isPending ? 'Menyimpan...' : 'Perbarui'}
-                  </Button>
+                  {canUpdate && (
+                    <Button
+                      type="submit"
+                      size="sm"
+                      disabled={mutation.isPending}
+                      className="bg-blue-600 hover:bg-blue-700"
+                    >
+                      {mutation.isPending ? 'Menyimpan...' : 'Perbarui'}
+                    </Button>
+                  )}
+
                   <Link href="/jenis-pekerjaan">
                     <Button
                       type="button"
